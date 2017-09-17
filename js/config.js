@@ -33,4 +33,4 @@ var tableMedReg = 50; // Registros medios a mostrar en tabla
 var tableMinReg = 25; // Registros mínimos a mostrar en tabla
 var timeDurationProcessBar = 700; // Tiempo en ms de efecto de círculo de progreso
 var timeProcessOnGETurl = 200; // Tiempo en ms de espera para procesar template pasado por parámetro get en url
-var timeShowContentOnLoad = 300; // Tiempo en ms que demora en mostrar contenido generado
+var timeShowContentOnLoad = 400; // Tiempo en ms que demora en mostrar contenido generado
