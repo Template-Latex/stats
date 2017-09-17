@@ -63,7 +63,7 @@ function loadTemplate(templateid) {
         hasLoaded = true;
     }
     st = stat[templateid];
-    $('#templateName').html(String.format('<img src=".res/icon.png" /> {0}', st.name));
+    $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
     $('#tableMem').html('');
     jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
         data = data.split('\n');
@@ -84,7 +84,7 @@ function loadTemplate(templateid) {
         }
         $('#mainTable').DataTable({
             "language": {
-                "url": ".res/tableSpanish.json"
+                "url": "res/tableSpanish.json"
             },
             "order": [
                 [0, "desc"]
