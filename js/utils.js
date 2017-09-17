@@ -97,7 +97,7 @@ function loadTemplate(templateid) {
     } finally {}
 
     // Muestra barra progreso y nombre template
-    $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
+    $('#templateName').html(String.format('<img src="res/icon.png" /> <a href="{1}">{0}</a>', st.name, st.link));
     $('#progressLoading').css('opacity', '1.0');
     $('#progressLoading').css('display', 'block');
     loadingBarTrigger();
@@ -402,39 +402,40 @@ function loadTemplate(templateid) {
                         data: {
                             labels: lastversion_releases,
                             datasets: [{
-                                data: downloads_link_normal,
-                                label: "Versión normal",
-                                borderColor: "#057375",
-                                backgroundColor: "#057375",
-                                fill: false,
-                                borderWidth: plotLineWidth,
-                                radius: 2,
-                                pointStyle: 'circle',
-                                tension: 0
-                            },
-                            {
-                                data: downloads_link_compact,
-                                label: "Versión compacta",
-                                borderColor: "#aab104",
-                                backgroundColor: "#aab104",
-                                fill: false,
-                                borderWidth: plotLineWidth,
-                                radius: 2,
-                                pointStyle: 'circle',
-                                tension: 0
-                            },
-                            {
-                                data: lastdownloads_total,
-                                label: "Suma",
-                                borderColor: "#001471",
-                                backgroundColor: "#001471",
-                                fill: false,
-                                borderWidth: plotLineWidth,
-                                radius: 0,
-                                borderDash: [5, 5],
-                                pointStyle: 'circle',
-                                tension: 0
-                            }]
+                                    data: downloads_link_normal,
+                                    label: "Versión normal",
+                                    borderColor: "#057375",
+                                    backgroundColor: "#057375",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 2,
+                                    pointStyle: 'circle',
+                                    tension: 0
+                                },
+                                {
+                                    data: downloads_link_compact,
+                                    label: "Versión compacta",
+                                    borderColor: "#aab104",
+                                    backgroundColor: "#aab104",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 2,
+                                    pointStyle: 'circle',
+                                    tension: 0
+                                },
+                                {
+                                    data: lastdownloads_total,
+                                    label: "Suma",
+                                    borderColor: "#001471",
+                                    backgroundColor: "#001471",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 0,
+                                    borderDash: [5, 5],
+                                    pointStyle: 'circle',
+                                    tension: 0
+                                }
+                            ]
                         },
                         options: {
                             title: {
@@ -460,6 +461,35 @@ function loadTemplate(templateid) {
                             }
                         }
                     });
+                    // Genera gráfico torta
+                    if (showPieDownloadChart) {
+                        $('#plot-piedownloads').css('display', 'block');
+                        total_downloads_colors_pie = [];
+                        for (var i = 0; i < downloads_total.length; i++) {
+                            total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+                        };
+                        new Chart($('#plot-piedownloads'), {
+                            type: 'pie',
+                            data: {
+                                labels: version_releases,
+                                datasets: [{
+                                    label: "Population (millions)",
+                                    backgroundColor: total_downloads_colors_pie,
+                                    borderColor: total_downloads_colors_pie,
+                                    data: downloads_total
+                                }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Descargas por versión'
+                                },
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        });
+                    }
                 } catch (e) {
                     throwErrorID(errorID.downloadgraph, e);
                     return;
@@ -488,7 +518,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id

@@ -26,6 +26,7 @@ Licence:
 
 var plotLineWidth = 2; // Ancho de línea en gráficos
 var processBarStrokeWidth = 12; // Ancho del círculo de progreso
+var showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
 var tableHighReg = 75; // Registros altos a mostrar en tabla
 var tableMaxReg = 100; // Registros máximos a mostrar en tabla
 var tableMedReg = 50; // Registros medios a mostrar en tabla
