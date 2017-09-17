@@ -310,10 +310,12 @@ function loadTemplate(templateid) {
         downloads_link_compact = [];
         downloads_link_normal = [];
         downloads_total = [];
+        lastday_released = [];
+        lastdownloads_compact_size = [];
+        lastdownloads_normal_size = [];
         lastdownloads_total = [];
         lastversion_releases = [];
         version_releases = [];
-        lastday_released = [];
         try {
             $.getJSON(st.json, function(json) {
                 for (i = json.length - 1; i >= 0; i--) {
@@ -322,6 +324,8 @@ function loadTemplate(templateid) {
                         downloads_link_normal.push(json[i].assets[1].download_count);
                         downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                         lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
+                        lastdownloads_compact_size.push(json[i].assets[0].size / 1000);
+                        lastdownloads_normal_size.push(json[i].assets[1].size / 1000);
                         lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                         lastversion_releases.push(json[i].tag_name);
                         version_releases.push(json[i].tag_name);
