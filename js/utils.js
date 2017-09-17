@@ -434,6 +434,55 @@ function loadTemplate(templateid) {
                             }
                         }
                     });
+                    new Chart($('#plot-sizeversion'), {
+                        type: 'line',
+                        data: {
+                            labels: lastversion_releases,
+                            datasets: [{
+                                data: lastdownloads_normal_size,
+                                label: "Versión normal",
+                                borderColor: "#ff8f2e",
+                                backgroundColor: "#ff8f2e",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 2,
+                                pointStyle: 'circle'
+                            },
+                            {
+                                data: lastdownloads_compact_size,
+                                label: "Versión compacta",
+                                borderColor: "#ff346f",
+                                backgroundColor: "#ff346f",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 2,
+                                pointStyle: 'triangle'
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: false,
+                                text: 'Peso en kb de cada versión'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Peso (kb)'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Número de versión'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true
+                            }
+                        }
+                    });
                     new Chart($('#plot-partdownloads'), {
                         type: 'line',
                         data: {
@@ -458,7 +507,7 @@ function loadTemplate(templateid) {
                                     fill: false,
                                     borderWidth: plotLineWidth,
                                     radius: 2,
-                                    pointStyle: 'circle',
+                                    pointStyle: 'rect',
                                     tension: 0,
                                     yAxisID: "y-axis-1"
                                 },
@@ -583,7 +632,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
