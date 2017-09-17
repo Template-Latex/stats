@@ -324,8 +324,8 @@ function loadTemplate(templateid) {
                         downloads_link_normal.push(json[i].assets[1].download_count);
                         downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                         lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                        lastdownloads_compact_size.push(json[i].assets[0].size / 1000);
-                        lastdownloads_normal_size.push(json[i].assets[1].size / 1000);
+                        lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
+                        lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
                         lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                         lastversion_releases.push(json[i].tag_name);
                         version_releases.push(json[i].tag_name);
@@ -439,36 +439,37 @@ function loadTemplate(templateid) {
                         data: {
                             labels: lastversion_releases,
                             datasets: [{
-                                data: lastdownloads_normal_size,
-                                label: "Versión normal",
-                                borderColor: "#ff8f2e",
-                                backgroundColor: "#ff8f2e",
-                                fill: false,
-                                borderWidth: plotLineWidth,
-                                radius: 2,
-                                pointStyle: 'circle'
-                            },
-                            {
-                                data: lastdownloads_compact_size,
-                                label: "Versión compacta",
-                                borderColor: "#ff346f",
-                                backgroundColor: "#ff346f",
-                                fill: false,
-                                borderWidth: plotLineWidth,
-                                radius: 2,
-                                pointStyle: 'triangle'
-                            }]
+                                    data: lastdownloads_normal_size,
+                                    label: "Versión normal",
+                                    borderColor: "#ff8f2e",
+                                    backgroundColor: "#ff8f2e",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 2,
+                                    pointStyle: 'circle'
+                                },
+                                {
+                                    data: lastdownloads_compact_size,
+                                    label: "Versión compacta",
+                                    borderColor: "#ff346f",
+                                    backgroundColor: "#ff346f",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 2,
+                                    pointStyle: 'triangle'
+                                }
+                            ]
                         },
                         options: {
                             title: {
                                 display: false,
-                                text: 'Peso en kb de cada versión'
+                                text: 'Peso en KB de cada versión'
                             },
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Peso (kb)'
+                                        labelString: 'Peso (KB)'
                                     }
                                 }],
                                 xAxes: [{
@@ -480,6 +481,16 @@ function loadTemplate(templateid) {
                             },
                             legend: {
                                 display: true
+                            },
+                            tooltips: {
+                                callbacks: {
+                                    label: function(tooltipItem, data) {
+                                        var value = data.datasets[0].data[tooltipItem.index];
+                                        value = value.toString();
+                                        value = value.replace('.', ',');
+                                        return 'Peso: ' + value + ' KB';
+                                    }
+                                }
                             }
                         }
                     });
