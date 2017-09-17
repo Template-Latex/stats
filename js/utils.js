@@ -80,19 +80,23 @@ function loadTemplate(templateid) {
         return;
     } finally {}
 
-    // Muestra barra progreso
+    // Muestra barra progreso y nombre template
+    $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
+    $('#progressLoading').css('opacity', '1.0');
+    $('#progressLoading').css('display', 'block');
     var bar = new ProgressBar.Circle('#progressLoading', {
-        strokeWidth: 15,
+        strokeWidth: 12,
         easing: 'easeInOut',
-        duration: 2000,
+        duration: 700,
         color: '#3598DB',
         trailColor: '#eee',
-        trailWidth: 1,
+        trailWidth: 0.01,
         svgStyle: null
     });
     bar.animate(1);
 
     // Limpia estado anterior
+    $('#tableMem').html('');
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
     } else {
@@ -102,12 +106,12 @@ function loadTemplate(templateid) {
             writeTableHeader();
         }
     }
-    $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
-    $('#tableMem').html('');
+
+    // Se carga archivo de estadísticas
     jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
         data = data.split('\n');
 
-        // Se cargan datos desde archivo externo
+        // Se cargan datos a listas
         plot_id = [];
         plot_ctime = [];
         plot_nline = [];
@@ -169,98 +173,112 @@ function loadTemplate(templateid) {
         } finally {}
 
         // Plotea las estadísticas
-        new Chart($('#plot-ctime'), {
-            type: 'line',
-            data: {
-                labels: plot_id,
-                datasets: [{
-                        data: plot_ctime,
-                        label: "Tiempo de compilación (s)",
-                        borderColor: "#8436d7",
-                        backgroundColor: "#8436d7",
+        try {
+            writeGraphCanvases();
+
+            new Chart($('#plot-ctime'), {
+                type: 'line',
+                data: {
+                    labels: plot_id,
+                    datasets: [{
+                            data: plot_ctime,
+                            label: "Tiempo de compilación (s)",
+                            borderColor: "#8436d7",
+                            backgroundColor: "#8436d7",
+                            fill: false,
+                            radius: 1
+                        },
+                        {
+                            data: plot_mean_ctime,
+                            label: "Promedio (s)",
+                            borderColor: "#e470f6",
+                            backgroundColor: "#e470f6",
+                            borderDash: [5, 5],
+                            fill: false,
+                            radius: 0
+                        }
+                    ]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Tiempo de compilación'
+                    },
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Tiempo de compilación (s)'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'ID de compilación'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true
+                    }
+                }
+            });
+            new Chart($('#plot-nline'), {
+                type: 'line',
+                data: {
+                    labels: plot_id,
+                    datasets: [{
+                        data: plot_nline,
+                        label: "Número de líneas de código",
+                        borderColor: "#3e95cd",
                         fill: false,
                         radius: 1
+                    }]
+                },
+                options: {
+                    title: {
+                        display: false,
+                        text: 'Línea de código en el tiempo'
                     },
-                    {
-                        data: plot_mean_ctime,
-                        label: "Promedio (s)",
-                        borderColor: "#e470f6",
-                        backgroundColor: "#e470f6",
-                        borderDash: [5, 5],
-                        fill: false,
-                        radius: 0
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Líneas de código'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'ID de compilación'
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: true
                     }
-                ]
-            },
-            options: {
-                title: {
-                    display: false,
-                    text: 'Tiempo de compilación'
-                },
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Tiempo de compilación (s)'
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'ID de compilación'
-                        }
-                    }]
-                },
-                legend: {
-                    display: true
                 }
-            }
-        });
-        new Chart($('#plot-nline'), {
-            type: 'line',
-            data: {
-                labels: plot_id,
-                datasets: [{
-                    data: plot_nline,
-                    label: "Número de líneas de código",
-                    borderColor: "#3e95cd",
-                    fill: false,
-                    radius: 1
-                }]
-            },
-            options: {
-                title: {
-                    display: false,
-                    text: 'Línea de código en el tiempo'
-                },
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Líneas de código'
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'ID de compilación'
-                        }
-                    }]
-                },
-                legend: {
-                    display: true
-                }
-            }
-        });
+            });
+        } catch (e) {
+            throwErrorID(errorID.genplots, e);
+            return;
+        } finally {}
 
         // Muestra el contenido final con efecto
         setTimeout(function() {
             $('#mainContent').fadeIn('slow', function() {});
-        }, 200);
+            $('#progressLoading').fadeOut('slow', function() {
+                $('#progressLoading').html(' ');
+            });
+        }, 300);
 
     });
 }
 
 function writeTableHeader() {
     $('#tableData').html('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></thead><tfoot><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></tfoot><tbody id="tableMem"></tbody></table>');
+}
+
+function writeGraphCanvases() {
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas>');
 }

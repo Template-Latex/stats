@@ -41,10 +41,16 @@ var errorID = {
         "code": 3,
         "moreinfo": "Existe un error en los datos, imposible calcular el tiempo de compilación promedio"
     },
+    "genplots": {
+        "msg": "Error al generar los gráficos",
+        "code": 4,
+        "moreinfo": "Ocurrió un error inesperado al generar los gráficos, posible error de datos"
+    }
 }
 
 // Escribe el error en el panel
 function throwErrorID(errorid, exceptionmsg) {
+    $('#progressLoading').html('');
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');
     $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
