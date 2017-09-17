@@ -73,8 +73,8 @@ function loadingBarTrigger() {
         strokeWidth: processBarStrokeWidth,
         easing: 'easeInOut',
         duration: timeDurationProcessBar,
-        color: '#3598DB',
-        trailColor: '#eee',
+        color: processBarColor,
+        trailColor: processBarColor,
         trailWidth: 0.01,
         svgStyle: null
     });
@@ -108,9 +108,11 @@ function loadTemplate(templateid) {
     } finally {}
 
     // Muestra barra progreso y nombre template
-    $('#templateName').html(String.format('<img src="res/icon.png" /> <a href="{1}">{0}</a>', st.name, st.link));
-    $('#progressLoading').css('opacity', '1.0');
-    $('#progressLoading').css('display', 'block');
+    $('#progressLoading').fadeTo('slow', processBarSetOpacity, function() {
+        $('#templateNameTxt').fadeOut(0, function() {
+            $('#templateName').html(String.format('<span id="templateNameTxt"><a href="{1}">{0}</a></span>', st.name, st.link));
+        });
+    });
     loadingBarTrigger();
     loadingBarAnimation = setInterval(function() {
         loadingBarTrigger();
@@ -122,6 +124,7 @@ function loadTemplate(templateid) {
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
     } else {
+        $('#footer').css('display', 'none');
         $('#mainContent').css('display', 'none');
         if ($.fn.DataTable.isDataTable('#mainTable')) {
             $('#mainTable').DataTable().clear().destroy();
@@ -192,7 +195,7 @@ function loadTemplate(templateid) {
             mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
             plot_mean_ctime = [];
             plot_partial_mean_ctime = [];
-            total_sum = 0;
+            total_sum = 0.0;
             for (k = 0; k < loadedData.length; k++) {
                 plot_mean_ctime.push(mean_ctime);
                 total_sum += plot_ctime[k];
@@ -271,6 +274,7 @@ function loadTemplate(templateid) {
                         data: plot_nline,
                         label: "Número de líneas de código",
                         borderColor: "#3e95cd",
+                        backgroundColor: "#3e95cd",
                         fill: false,
                         radius: 0,
                         tension: 0,
@@ -623,10 +627,11 @@ function loadTemplate(templateid) {
                 // Muestra el contenido final con efecto
                 setTimeout(function() {
                     $('#mainContent').fadeIn('slow', function() {
-                        $('#footer').css('display', 'inline-block')
+                        $('#footer').css('display', 'inline-block');
+                        clearInterval(loadingBarAnimation);
+                        $('#progressLoading').html('');
+                        $('#progressLoading').fadeTo('slow', 1.0);
                     });
-                    $('#progressLoading').html(' ');
-                    clearInterval(loadingBarAnimation);
                 }, timeShowContentOnLoad);
             });
         } catch (e) {

@@ -25,7 +25,9 @@ Licence:
 */
 
 var plotLineWidth = 2; // Ancho de línea en gráficos
-var processBarStrokeWidth = 12; // Ancho del círculo de progreso
+var processBarColor = '#3598DB'; // Color del círculo de progreso
+var processBarSetOpacity = 0.5; // Opacidad en la que se fija la barra de progreso de carga
+var processBarStrokeWidth = 10; // Ancho del círculo de progreso
 var showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
 var tableHighReg = 75; // Registros altos a mostrar en tabla
 var tableMaxReg = 100; // Registros máximos a mostrar en tabla
