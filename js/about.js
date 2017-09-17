@@ -25,7 +25,7 @@ Licence:
 */
 
 var aboutinfo = {
-    "version": "0.46",
+    "version": "0.47",
     "date": "17/09/2017",
     "author": {
         "name": "Pablo Pizarro R.",
