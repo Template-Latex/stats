@@ -50,6 +50,16 @@ var errorID = {
         "msg": "Error al procesar los datos",
         "code": 5,
         "moreinfo": "Ocurrió un error al procesar los datos de las estadísticas, datos erróneos o mal parseados"
+    },
+    "getdownloads": {
+        "msg": "Error al obtener estadística de descargas",
+        "code": 6,
+        "moreinfo": "Ocurrió un error al accesar a la estadística de descargas de la API de Github"
+    },
+    "downloadgraph": {
+        "msg": "Error al generar los gráficos de descargas",
+        "code": 7,
+        "moreinfo": "Ocurrió un error al procesar los datos de descargas totales y parciales por versión al generar los gráficos"
     }
 }
 

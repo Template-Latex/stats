@@ -47,5 +47,5 @@ function printAboutInfo() {
 }
 
 function generateFooter() {
-    $('#footer').html(String.format('<a href="{5}">{0}</a> v{1} ({2}) | Autor: <a href="{4}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource));
+    $('#footer').html(String.format('<a href="{5}"><img src="res/github.png" /> {0}</a> v{1} ({2}) | Autor: <a href="{4}" title="{6}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource, aboutinfo.author.name));
 }

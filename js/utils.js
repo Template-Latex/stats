@@ -24,6 +24,7 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var loadingBarAnimation; // Animación de la barra de carga
 var staticUrl = location.protocol + '//' + location.host + location.pathname; // Ubicación del archivo web
 
 // Añade format a los strings
@@ -65,6 +66,21 @@ function roundNumber(num, scale) {
     }
 }
 
+// Crea un loadingbar
+function loadingBarTrigger() {
+    $('#progressLoading').html(' ');
+    var bar = new ProgressBar.Circle('#progressLoading', {
+        strokeWidth: processBarStrokeWidth,
+        easing: 'easeInOut',
+        duration: timeDurationProcessBar,
+        color: '#3598DB',
+        trailColor: '#eee',
+        trailWidth: 0.01,
+        svgStyle: null
+    });
+    bar.animate(1);
+}
+
 // Carga un template y genera gráficos
 function loadTemplate(templateid) {
 
@@ -84,18 +100,13 @@ function loadTemplate(templateid) {
     $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
     $('#progressLoading').css('opacity', '1.0');
     $('#progressLoading').css('display', 'block');
-    var bar = new ProgressBar.Circle('#progressLoading', {
-        strokeWidth: processBarStrokeWidth,
-        easing: 'easeInOut',
-        duration: timeDurationProcessBar,
-        color: '#3598DB',
-        trailColor: '#eee',
-        trailWidth: 0.01,
-        svgStyle: null
-    });
-    bar.animate(1);
+    loadingBarTrigger();
+    loadingBarAnimation = setInterval(function() {
+        loadingBarTrigger();
+    }, timeDurationProcessBar + 50)
 
     // Limpia estado anterior
+    writeGraphCanvases();
     $('#tableMem').html('');
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
@@ -179,7 +190,6 @@ function loadTemplate(templateid) {
 
         // Plotea las estadísticas
         try {
-            writeGraphCanvases();
             new Chart($('#plot-ctime'), {
                 type: 'line',
                 data: {
@@ -239,6 +249,7 @@ function loadTemplate(templateid) {
                         borderColor: "#3e95cd",
                         fill: false,
                         radius: 0,
+                        tension: 0,
                         borderWidth: plotLineWidth
                     }]
                 },
@@ -271,21 +282,217 @@ function loadTemplate(templateid) {
             return;
         } finally {}
 
-        // Muestra el contenido final con efecto
-        setTimeout(function() {
-            $('#mainContent').fadeIn('slow', function() {});
-            $('#progressLoading').fadeOut('slow', function() {
-                $('#progressLoading').html(' ');
-            });
-        }, timeShowContentOnLoad);
+        // Obtiene descargas de la versión
+        downloads_link_compact = [];
+        downloads_link_normal = [];
+        downloads_total = [];
+        lastdownloads_total = [];
+        lastversion_releases = [];
+        version_releases = [];
+        try {
+            $.getJSON(st.json, function(json) {
+                for (i = json.length - 1; i >= 0; i--) {
+                    try {
+                        downloads_link_compact.push(json[i].assets[0].download_count);
+                        downloads_link_normal.push(json[i].assets[1].download_count);
+                        downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                        lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                        lastversion_releases.push(json[i].tag_name);
+                        version_releases.push(json[i].tag_name);
+                    } catch (err) {}
+                }
 
+                // Obtiene descargas anteriores
+                prev_downloads = getDownloadCounter(st.name);
+                prev_downloads.reverse();
+                for (var i = 0; i < prev_downloads.length; i++) {
+                    version_releases.unshift(prev_downloads[i][1]);
+                    downloads_total.unshift(prev_downloads[i][0]);
+                }
+
+                // Genera descargas acumulado
+                acum_downloads = [downloads_total[0]];
+                for (var i = 1; i < downloads_total.length; i++) {
+                    acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
+                }
+
+                // Genera el gráfico de descargas
+                try {
+                    new Chart($('#plot-totaldownloads'), {
+                        type: 'line',
+                        data: {
+                            labels: version_releases,
+                            datasets: [{
+                                data: downloads_total,
+                                label: "N° descargas de cada versión",
+                                borderColor: "#004f16",
+                                backgroundColor: "#004f16",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 2,
+                                tension: 0,
+                                pointStyle: 'circle'
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: false,
+                                text: 'Descargas de cada versión'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Descargas de cada versión'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Número de versión'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true
+                            }
+                        }
+                    });
+                    new Chart($('#plot-acumdownloads'), {
+                        type: 'line',
+                        data: {
+                            labels: version_releases,
+                            datasets: [{
+                                data: acum_downloads,
+                                label: "N° descargas acumuladas hasta versión",
+                                borderColor: "#9f0000",
+                                backgroundColor: "#9f0000",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 0,
+                                pointStyle: 'circle'
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: false,
+                                text: 'Descargas acumuladas'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Descargas acumuladas'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Número de versión'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true
+                            }
+                        }
+                    });
+                    new Chart($('#plot-partdownloads'), {
+                        type: 'line',
+                        data: {
+                            labels: lastversion_releases,
+                            datasets: [{
+                                data: downloads_link_normal,
+                                label: "Versión normal",
+                                borderColor: "#057375",
+                                backgroundColor: "#057375",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 2,
+                                pointStyle: 'circle',
+                                tension: 0
+                            },
+                            {
+                                data: downloads_link_compact,
+                                label: "Versión compacta",
+                                borderColor: "#aab104",
+                                backgroundColor: "#aab104",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 2,
+                                pointStyle: 'circle',
+                                tension: 0
+                            },
+                            {
+                                data: lastdownloads_total,
+                                label: "Suma",
+                                borderColor: "#001471",
+                                backgroundColor: "#001471",
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 0,
+                                borderDash: [5, 5],
+                                pointStyle: 'circle',
+                                tension: 0
+                            }]
+                        },
+                        options: {
+                            title: {
+                                display: false,
+                                text: 'Descargas por modo'
+                            },
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Número descargas'
+                                    }
+                                }],
+                                xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Número de versión'
+                                    }
+                                }]
+                            },
+                            legend: {
+                                display: true
+                            }
+                        }
+                    });
+                } catch (e) {
+                    throwErrorID(errorID.downloadgraph, e);
+                    return;
+                } finally {}
+
+                // Muestra el contenido final con efecto
+                setTimeout(function() {
+                    $('#mainContent').fadeIn('slow', function() {
+                        $('#footer').css('display', 'inline-block')
+                    });
+                    $('#progressLoading').html(' ');
+                    clearInterval(loadingBarAnimation);
+                }, timeShowContentOnLoad);
+            });
+        } catch (e) {
+            throwErrorID(errorID.getdownloads, e);
+            return;
+        } finally {}
     });
 }
 
+// Regenera los datos de la tabla
 function writeTableHeader() {
     $('#tableData').html('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>ID</th><th>Versión</th><th>ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></thead><tfoot><tr><th>ID</th><th>Versión</th><th>ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></tfoot><tbody id="tableMem"></tbody></table>');
 }
 
+// Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas>');
+}
+
+// Obtiene la lista de descargas y versiones de un id
+function getDownloadCounter(templateid) {
+    updateDownloadCounter(0, templateid);
+    return download_list_counter;
 }
