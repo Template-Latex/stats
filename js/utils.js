@@ -140,6 +140,7 @@ function loadTemplate(templateid) {
         plot_id = [];
         plot_ctime = [];
         plot_nline = [];
+        plot_ver = [];
 
         try {
             for (var i = 1; i < data.length; i++) {
@@ -154,6 +155,7 @@ function loadTemplate(templateid) {
                 plot_id.push(parseInt(a[0]));
                 plot_ctime.push(parseFloat(a[2]));
                 plot_nline.push(parseInt(a[4]));
+                plot_ver.push(a[1]);
                 $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
             }
         } catch (e) {
@@ -211,7 +213,7 @@ function loadTemplate(templateid) {
             new Chart($('#plot-ctime'), {
                 type: 'line',
                 data: {
-                    labels: plot_id,
+                    labels: plot_ver,
                     datasets: [{
                             data: plot_ctime,
                             label: "Tiempo de compilación (s)",
@@ -256,8 +258,8 @@ function loadTemplate(templateid) {
                         }],
                         xAxes: [{
                             scaleLabel: {
-                                display: true,
-                                labelString: 'ID de compilación'
+                                display: false,
+                                labelString: 'Número de versión'
                             }
                         }]
                     },
@@ -269,7 +271,7 @@ function loadTemplate(templateid) {
             new Chart($('#plot-nline'), {
                 type: 'line',
                 data: {
-                    labels: plot_id,
+                    labels: plot_ver,
                     datasets: [{
                         data: plot_nline,
                         label: "Número de líneas de código",
@@ -295,8 +297,8 @@ function loadTemplate(templateid) {
                         }],
                         xAxes: [{
                             scaleLabel: {
-                                display: true,
-                                labelString: 'ID de compilación'
+                                display: false,
+                                labelString: 'Número de versión'
                             }
                         }]
                     },
@@ -648,7 +650,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-9px;"></canvas><canvas id="plot-nline" class="graphCanvas" style="margin-top:-38px; margin-bottom:-19px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas" style="margin-top:0px;"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
