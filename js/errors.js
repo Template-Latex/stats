@@ -30,7 +30,17 @@ var errorID = {
         "msg": "ID de Template incorrecto",
         "code": 1,
         "moreinfo": "ID del Template no encontrada en la base de datos, se recomienda acceder al subtemplate mediante el menú desplegable en la esquina superior derecha"
-    }
+    },
+    "generatetable": {
+        "msg": "Error al generar la tabla de datos",
+        "code": 2,
+        "moreinfo": "No se pudo generar la tabla de datos, posiblemente error en configuración"
+    },
+    "calcctimemean": {
+        "msg": "Error al calcular tiempo de compilación promedio",
+        "code": 3,
+        "moreinfo": "Existe un error en los datos, imposible calcular el tiempo de compilación promedio"
+    },
 }
 
 // Escribe el error en el panel

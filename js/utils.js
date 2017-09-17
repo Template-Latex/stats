@@ -48,25 +48,51 @@ $.urlParam = function(name) {
     }
 }
 
-function FileHelper() {
-    FileHelper.readStringFromFileAtPath = function(pathOfFileToReadFrom) {
-        var request = new XMLHttpRequest();
-        request.open("GET", pathOfFileToReadFrom, false);
-        request.send(null);
-        var returnValue = request.responseText;
-        return returnValue;
+// Redondea un número
+function roundNumber(num, scale) {
+    if (!("" + num).includes("e")) {
+        return +(Math.round(num + "e+" + scale) + "e-" + scale);
+    } else {
+        var arr = ("" + num).split("e");
+        var sig = ""
+        if (+arr[1] + scale > 0) {
+            sig = "+";
+        }
+        var i = +arr[0] + "e" + sig + (+arr[1] + scale);
+        var j = Math.round(i);
+        var k = +(j + "e-" + scale);
+        return k;
     }
 }
 
 // Carga un template y genera gráficos
 function loadTemplate(templateid) {
+
+    // Limpia errores anteriores
     cleanErrorMsg();
     console.log(String.format('Cargando ID <{0}>', templateid));
+
+    // Carga el id
     try {
         st = stat[templateid];
     } catch (e) {
-
+        throwErrorID(errorID.badtemplateid);
+        return;
     } finally {}
+
+    // Muestra barra progreso
+    var bar = new ProgressBar.Circle('#progressLoading', {
+        strokeWidth: 15,
+        easing: 'easeInOut',
+        duration: 2000,
+        color: '#3598DB',
+        trailColor: '#eee',
+        trailWidth: 1,
+        svgStyle: null
+    });
+    bar.animate(1);
+
+    // Limpia estado anterior
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
     } else {
@@ -114,24 +140,33 @@ function loadTemplate(templateid) {
         } else {
             lenghtmenuoption = [loadedData.length];
         }
-        $('#mainTable').DataTable({
-            "language": {
-                "url": "http://latex.ppizarror.com/stats/res/tableSpanish.json"
-            },
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": lenghtmenuoption
-        });
+        try {
+            $('#mainTable').DataTable({
+                "language": {
+                    "url": "http://latex.ppizarror.com/stats/res/tableSpanish.json"
+                },
+                "order": [
+                    [0, "desc"]
+                ],
+                "lengthMenu": lenghtmenuoption
+            });
+        } catch (e) {
+            throwErrorID(errorID.generatetable, e);
+            return;
+        } finally {}
         hasLoaded = true;
 
         // Genera estadísticas adicionales
-        mean_ctime = Math.round(jStat.mean(plot_ctime), 4);
-        plot_mean_ctime = [];
-        for (k = 0; k < loadedData.length; k++) {
-            plot_mean_ctime.push(mean_ctime);
-        }
-        console.log(mean_ctime);
+        try {
+            mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
+            plot_mean_ctime = [];
+            for (k = 0; k < loadedData.length; k++) {
+                plot_mean_ctime.push(mean_ctime);
+            }
+        } catch (e) {
+            throwErrorID(errorID.calcctimemean, e);
+            return;
+        } finally {}
 
         // Plotea las estadísticas
         new Chart($('#plot-ctime'), {
@@ -221,7 +256,7 @@ function loadTemplate(templateid) {
         // Muestra el contenido final con efecto
         setTimeout(function() {
             $('#mainContent').fadeIn('slow', function() {});
-        }, 100);
+        }, 200);
 
     });
 }

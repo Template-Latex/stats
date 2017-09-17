@@ -12,11 +12,21 @@ body {
 
 #templateName {
     position: relative;
-    width: 70%;
     float: left;
     display: inline-block;
     font-size: 40px;
     font-weight: 500;
+}
+
+#progressLoading {
+    position: relative;
+    float: left;
+    display: block;
+    height: 30px;
+    width: 30px;
+    margin: auto;
+    margin-left: 20px;
+    top: 22px;
 }
 
 #templateName img {
