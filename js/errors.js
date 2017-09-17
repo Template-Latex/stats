@@ -65,6 +65,7 @@ var errorID = {
 
 // Escribe el error en el panel
 function throwErrorID(errorid, exceptionmsg) {
+    clearInterval(loadingBarAnimation);
     $('#progressLoading').html('');
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');

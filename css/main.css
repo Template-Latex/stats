@@ -107,7 +107,7 @@ body {
 }
 
 #tableData {
-    width: 56%;
+    width: 53%;
     display: block;
     position: relative;
     float: left;
@@ -115,7 +115,7 @@ body {
 }
 
 #graphSection {
-    width: 43%;
+    width: 46%;
     display: block;
     float: right;
     position: relative;
@@ -168,7 +168,7 @@ body {
 
 .graphCanvas {
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: block;
 }
 

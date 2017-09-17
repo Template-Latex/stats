@@ -81,6 +81,17 @@ function loadingBarTrigger() {
     bar.animate(1);
 }
 
+// Crea una fecha a partir de un string
+function parseDate(str) {
+    var mdy = str.split('-');
+    return new Date(mdy[0], mdy[1] - 1, mdy[2]);
+}
+
+// Hace la diferencia entre dos días
+function daydiff(first, second) {
+    return Math.round((second - first) / (1000 * 60 * 60 * 24));
+}
+
 // Carga un template y genera gráficos
 function loadTemplate(templateid) {
 
@@ -180,8 +191,12 @@ function loadTemplate(templateid) {
         try {
             mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
             plot_mean_ctime = [];
+            plot_partial_mean_ctime = [];
+            total_sum = 0;
             for (k = 0; k < loadedData.length; k++) {
                 plot_mean_ctime.push(mean_ctime);
+                total_sum += plot_ctime[k];
+                plot_partial_mean_ctime.push(roundNumber(total_sum / (k + 1), 2));
             }
         } catch (e) {
             throwErrorID(errorID.calcctimemean, e);
@@ -210,6 +225,15 @@ function loadTemplate(templateid) {
                             backgroundColor: "#e470f6",
                             borderDash: [5, 5],
                             borderWidth: plotLineWidth,
+                            fill: false,
+                            radius: 0
+                        },
+                        {
+                            data: plot_partial_mean_ctime,
+                            label: "Promedio parcial (s)",
+                            borderColor: "#fccf5f",
+                            backgroundColor: "#fccf5f",
+                            borderWidth: 2,
                             fill: false,
                             radius: 0
                         }
@@ -289,6 +313,7 @@ function loadTemplate(templateid) {
         lastdownloads_total = [];
         lastversion_releases = [];
         version_releases = [];
+        lastday_released = [];
         try {
             $.getJSON(st.json, function(json) {
                 for (i = json.length - 1; i >= 0; i--) {
@@ -296,6 +321,7 @@ function loadTemplate(templateid) {
                         downloads_link_compact.push(json[i].assets[0].download_count);
                         downloads_link_normal.push(json[i].assets[1].download_count);
                         downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                        lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
                         lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                         lastversion_releases.push(json[i].tag_name);
                         version_releases.push(json[i].tag_name);
@@ -315,6 +341,13 @@ function loadTemplate(templateid) {
                 for (var i = 1; i < downloads_total.length; i++) {
                     acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                 }
+
+                // Calcula días de cada versión disponibles
+                lastday_total = [];
+                for (var i = 0; i < lastday_released.length - 1; i++) {
+                    lastday_total.push(daydiff(lastday_released[i], lastday_released[i + 1]));
+                }
+                lastday_total.push(daydiff(lastday_released[lastday_released.length - 1], new Date()));
 
                 // Genera el gráfico de descargas
                 try {
@@ -410,7 +443,8 @@ function loadTemplate(templateid) {
                                     borderWidth: plotLineWidth,
                                     radius: 2,
                                     pointStyle: 'circle',
-                                    tension: 0
+                                    tension: 0,
+                                    yAxisID: "y-axis-1"
                                 },
                                 {
                                     data: downloads_link_compact,
@@ -421,7 +455,8 @@ function loadTemplate(templateid) {
                                     borderWidth: plotLineWidth,
                                     radius: 2,
                                     pointStyle: 'circle',
-                                    tension: 0
+                                    tension: 0,
+                                    yAxisID: "y-axis-1"
                                 },
                                 {
                                     data: lastdownloads_total,
@@ -433,7 +468,20 @@ function loadTemplate(templateid) {
                                     radius: 0,
                                     borderDash: [5, 5],
                                     pointStyle: 'circle',
-                                    tension: 0
+                                    tension: 0,
+                                    yAxisID: "y-axis-1"
+                                },
+                                {
+                                    data: lastday_total,
+                                    label: "Días activo",
+                                    borderColor: "#530071",
+                                    backgroundColor: "#530071",
+                                    fill: false,
+                                    borderWidth: plotLineWidth,
+                                    radius: 1,
+                                    pointStyle: 'triangle',
+                                    tension: 0,
+                                    yAxisID: "y-axis-2"
                                 }
                             ]
                         },
@@ -444,9 +492,22 @@ function loadTemplate(templateid) {
                             },
                             scales: {
                                 yAxes: [{
+                                    display: true,
+                                    position: "left",
+                                    id: "y-axis-1",
                                     scaleLabel: {
+                                        labelString: 'Número de descargas',
                                         display: true,
-                                        labelString: 'Número descargas'
+                                    }
+                                }, {
+                                    position: "right",
+                                    id: "y-axis-2",
+                                    gridLines: {
+                                        drawOnChartArea: false,
+                                    },
+                                    scaleLabel: {
+                                        labelString: 'Días disponible',
+                                        display: true,
                                     }
                                 }],
                                 xAxes: [{
@@ -518,7 +579,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-ctime" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
