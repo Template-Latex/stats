@@ -28,10 +28,14 @@ Licence:
 var hasLoaded = false; // Indica si se ha cargado ya un template
 var initTemplate = ''; // Template pasado por get en url
 var loadedData = []; // Datos cargados
+var loadedTable; // Tabla creada
 var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 // Analizar parámetros de entrada y establecer subtemplates disponibles
 jQuery(document).ready(function($) {
+
+    // Escribe el header de la tabla
+    writeTableHeader();
 
     // Escribe los templates disponibles en el selector
     for (var i = 0; i < Object.keys(stat).length; i++) {

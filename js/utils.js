@@ -60,7 +60,12 @@ function FileHelper() {
 function loadTemplate(templateid) {
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
-        hasLoaded = true;
+    } else {
+        $('#mainContent').css('display', 'none');
+        if ($.fn.DataTable.isDataTable('#mainTable')) {
+            $('#mainTable').DataTable().clear().destroy();
+            writeTableHeader();
+        }
     }
     st = stat[templateid];
     $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
@@ -80,16 +85,27 @@ function loadTemplate(templateid) {
             $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
         }
         for (var i = 0; i < loadedData.length; i++) {
-            $('#graphSection').html(loadedData[0])
+            $('#graphSection').html(loadedData[0]);
         }
         $('#mainTable').DataTable({
             "language": {
-                "url": "res/tableSpanish.json"
+                "url": "http://latex.ppizarror.com/stats/res/tableSpanish.json"
             },
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [20, 50, 100]
+            "lengthMenu": [15, 50, 100]
         });
+        hasLoaded = true;
+
+        // Show element
+        setTimeout(function() {
+            $('#mainContent').fadeIn('slow', function() {});
+        }, 100);
+
     });
+}
+
+function writeTableHeader() {
+    $('#tableData').html('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></thead><tfoot><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></tfoot><tbody id="tableMem"></tbody></table>');
 }

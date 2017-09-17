@@ -60,10 +60,11 @@ body {
     max-width: 60rem;
     margin: auto;
     margin-top: 25px;
+    display: none;
 }
 
 #tableData {
-    width: 49%;
+    width: 60%;
     display: block;
     position: relative;
     float: left;
@@ -71,12 +72,12 @@ body {
 }
 
 #graphSection {
-    width: 49%;
+    width: 39%;
     display: block;
     float: right;
     position: relative;
 }
 
 #mainTable {
-    font-size: 11px;
+    font-size: 10px;
 }
