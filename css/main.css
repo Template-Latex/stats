@@ -3,11 +3,6 @@ body {
     font-weight: 500;
 }
 
-#content {
-    max-width: 64rem;
-    margin: auto;
-}
-
 #header {
     display: inline-block;
     width: 100%;
@@ -52,19 +47,25 @@ body {
     border-color: rgb(180, 180, 180);
     overflow: hidden;
     font-size: 13px;
-    -webkit-appearance: none;
     background-color: #f6f7f8;
+    cursor: pointer;
+}
+
+#content {
+    max-width: 68rem;
+    margin: auto;
+    min-width: 975px;
 }
 
 #mainContent {
-    max-width: 60rem;
+    max-width: 64rem;
     margin: auto;
     margin-top: 25px;
     display: none;
 }
 
 #tableData {
-    width: 60%;
+    width: 56%;
     display: block;
     position: relative;
     float: left;
@@ -72,12 +73,59 @@ body {
 }
 
 #graphSection {
-    width: 39%;
+    width: 43%;
     display: block;
     float: right;
     position: relative;
+    word-wrap: break-word;
 }
 
 #mainTable {
     font-size: 10px;
+}
+
+#errorMsg {
+    margin:auto;
+    position: relative;
+    width: 40%;
+    padding: 20px;
+    margin-top: 10%;
+    border-color: rgb(218, 218, 218);
+    background-color: rgb(235, 235, 235);
+    text-align: center;
+    font-size: 25px;
+    font-weight: 300;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    box-shadow:  0px 0px 6px 0px rgba(0, 0, 0, 0.2);
+    display: none;
+    word-wrap: break-word;
+    cursor: pointer;
+}
+
+#errorMsg:hover{
+    box-shadow:  0px 0px 0px 0px rgba(0, 0, 0, 0.2);
+}
+
+#errorMsg img {
+    width: 35px;
+    position: relative;
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 8px;
+    margin-right: 5px;
+    opacity: 0.6;
+}
+
+#errorMsgText {
+    position: relative;
+    top: -5px;
+}
+
+.graphCanvas {
+    width: 100%;
+    margin-bottom: 10px;
+    display: block;
 }

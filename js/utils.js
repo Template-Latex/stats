@@ -24,6 +24,8 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var staticUrl = location.protocol + '//' + location.host + location.pathname; // Ubicación del archivo web
+
 // Añade format a los strings
 if (!String.format) {
     String.format = function(format) {
@@ -58,6 +60,13 @@ function FileHelper() {
 
 // Carga un template y genera gráficos
 function loadTemplate(templateid) {
+    cleanErrorMsg();
+    console.log(String.format('Cargando ID <{0}>', templateid));
+    try {
+        st = stat[templateid];
+    } catch (e) {
+
+    } finally {}
     if (!hasLoaded) {
         $("#mainSelector option[value='none']").remove();
     } else {
@@ -67,12 +76,16 @@ function loadTemplate(templateid) {
             writeTableHeader();
         }
     }
-    st = stat[templateid];
     $('#templateName').html(String.format('<img src="res/icon.png" /> {0}', st.name));
     $('#tableMem').html('');
     jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
         data = data.split('\n');
-        loadedData = [];
+
+        // Se cargan datos desde archivo externo
+        plot_id = [];
+        plot_ctime = [];
+        plot_nline = [];
+
         for (var i = 1; i < data.length; i++) {
             a = [];
             line = data[i].split(' ');
@@ -82,10 +95,24 @@ function loadTemplate(templateid) {
                 }
             }
             loadedData.push(a);
+            plot_id.push(parseInt(a[0]));
+            plot_ctime.push(parseFloat(a[2]));
+            plot_nline.push(parseInt(a[4]));
             $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
         }
-        for (var i = 0; i < loadedData.length; i++) {
-            $('#graphSection').html(loadedData[0]);
+
+        // Se genera la tabla
+        lenghtmenuoption = [];
+        if (loadedData.length >= 100) {
+            lenghtmenuoption = [15, 30, 50, 100];
+        } else if (50 <= loadedData.length && loadedData.length < 100) {
+            lenghtmenuoption = [15, 30, 50, loadedData.length];
+        } else if (30 <= loadedData.length && loadedData.length < 50) {
+            lenghtmenuoption = [15, 30, loadedData.length];
+        } else if (15 <= loadedData.length && loadedData.length < 30) {
+            lenghtmenuoption = [15, loadedData.length];
+        } else {
+            lenghtmenuoption = [loadedData.length];
         }
         $('#mainTable').DataTable({
             "language": {
@@ -94,11 +121,104 @@ function loadTemplate(templateid) {
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [15, 30, 50, 100]
+            "lengthMenu": lenghtmenuoption
         });
         hasLoaded = true;
 
-        // Show element
+        // Genera estadísticas adicionales
+        mean_ctime = Math.round(jStat.mean(plot_ctime), 4);
+        plot_mean_ctime = [];
+        for (k = 0; k < loadedData.length; k++) {
+            plot_mean_ctime.push(mean_ctime);
+        }
+        console.log(mean_ctime);
+
+        // Plotea las estadísticas
+        new Chart($('#plot-ctime'), {
+            type: 'line',
+            data: {
+                labels: plot_id,
+                datasets: [{
+                        data: plot_ctime,
+                        label: "Tiempo de compilación (s)",
+                        borderColor: "#8436d7",
+                        backgroundColor: "#8436d7",
+                        fill: false,
+                        radius: 1
+                    },
+                    {
+                        data: plot_mean_ctime,
+                        label: "Promedio (s)",
+                        borderColor: "#e470f6",
+                        backgroundColor: "#e470f6",
+                        borderDash: [5, 5],
+                        fill: false,
+                        radius: 0
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: 'Tiempo de compilación'
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Tiempo de compilación (s)'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'ID de compilación'
+                        }
+                    }]
+                },
+                legend: {
+                    display: true
+                }
+            }
+        });
+        new Chart($('#plot-nline'), {
+            type: 'line',
+            data: {
+                labels: plot_id,
+                datasets: [{
+                    data: plot_nline,
+                    label: "Número de líneas de código",
+                    borderColor: "#3e95cd",
+                    fill: false,
+                    radius: 1
+                }]
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: 'Línea de código en el tiempo'
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Líneas de código'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'ID de compilación'
+                        }
+                    }]
+                },
+                legend: {
+                    display: true
+                }
+            }
+        });
+
+        // Muestra el contenido final con efecto
         setTimeout(function() {
             $('#mainContent').fadeIn('slow', function() {});
         }, 100);

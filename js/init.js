@@ -34,6 +34,9 @@ var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 // Analizar parámetros de entrada y establecer subtemplates disponibles
 jQuery(document).ready(function($) {
 
+    // Escribe un acerca de en consola
+    printAboutInfo();
+
     // Escribe el header de la tabla
     writeTableHeader();
 
@@ -54,12 +57,23 @@ jQuery(document).ready(function($) {
 
     // Obtiene el template desde $GET
     initTemplate = $.urlParam('template');
-    if (initTemplate != '') {
+    if (initTemplate != null) {
+        found = false;
         for (var i = 0; i < Object.keys(stat).length; i++) {
             if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].avaiable) {
                 $("#mainSelector").val(Object.keys(stat)[i]);
-                loadTemplate(Object.keys(stat)[i]);
+                setTimeout(function() {
+                    loadTemplate(Object.keys(stat)[i]);
+                }, 100);
+                found = true;
+                break;
             }
         }
+        if (!found) {
+            throwErrorID(errorID.badtemplateid);
+        }
     }
+
+    // Desactiva primera opción en el selector
+    $("#mainSelector option[value='none']").attr('disabled', 'disabled')
 });

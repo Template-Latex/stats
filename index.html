@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<meta charset="UTF-8">
 <!--
 TEMPLATE-LATEX STATS WEBSITE
 
@@ -28,8 +29,6 @@ Licence:
 <html lang="es">
 
 <head>
-
-    <meta charset="UTF-8">
     <title>Stats</title>
 
     <!-- Meta tags -->
@@ -47,20 +46,25 @@ Licence:
     <meta name="msapplication-config" content="res/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Javascript -->
+    <!-- Importación librerías -->
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/pace.min.js"></script>
     <script type="text/javascript" src="js/Chart.bundle.min.js"></script>
     <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/jstat.min.js"></script>
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="js/about.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="http://latex.ppizarror.com/Template-Informe/js/utils.js"></script>
     <script type="text/javascript" src="js/status.js"></script>
+    <script type="text/javascript" src="js/errors.js"></script>
     <script type="text/javascript" src="js/init.js"></script>
-    <script type="text/javascript" src="js/require.js"></script>
 
     <!-- Css -->
     <link rel="stylesheet" type="text/css" href="css/main.css" media="screen">
     <link rel="stylesheet" type="text/css" href="css/pace.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="css/tooltips.css" media="screen">
     <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css" media="screen">
 </head>
 
@@ -79,6 +83,15 @@ Licence:
             <div id="tableData">
             </div>
             <div id="graphSection">
+                <canvas id="plot-ctime" class="graphCanvas"></canvas>
+                <canvas id="plot-nline" class="graphCanvas"></canvas>
+            </div>
+        </div>
+
+        <div id="errorMsg" class="tooltip">
+            <div id="errorMsgText">
+            </div>
+            <div id="errorMoreInfoMsg" class="tooltiptext_errormsg">
             </div>
         </div>
 
