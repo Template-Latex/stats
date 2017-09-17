@@ -85,9 +85,9 @@ function loadTemplate(templateid) {
     $('#progressLoading').css('opacity', '1.0');
     $('#progressLoading').css('display', 'block');
     var bar = new ProgressBar.Circle('#progressLoading', {
-        strokeWidth: 12,
+        strokeWidth: processBarStrokeWidth,
         easing: 'easeInOut',
-        duration: 700,
+        duration: timeDurationProcessBar,
         color: '#3598DB',
         trailColor: '#eee',
         trailWidth: 0.01,
@@ -116,35 +116,40 @@ function loadTemplate(templateid) {
         plot_ctime = [];
         plot_nline = [];
 
-        for (var i = 1; i < data.length; i++) {
-            a = [];
-            line = data[i].split(' ');
-            for (var j = 0; j < line.length; j++) {
-                if (line[j] != '') {
-                    a.push(line[j]);
+        try {
+            for (var i = 1; i < data.length; i++) {
+                a = [];
+                line = data[i].split(' ');
+                for (var j = 0; j < line.length; j++) {
+                    if (line[j] != '') {
+                        a.push(line[j]);
+                    }
                 }
+                loadedData.push(a);
+                plot_id.push(parseInt(a[0]));
+                plot_ctime.push(parseFloat(a[2]));
+                plot_nline.push(parseInt(a[4]));
+                $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
             }
-            loadedData.push(a);
-            plot_id.push(parseInt(a[0]));
-            plot_ctime.push(parseFloat(a[2]));
-            plot_nline.push(parseInt(a[4]));
-            $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
-        }
+        } catch (e) {
+            throwErrorID(errorID.parsedata, e);
+            return;
+        } finally {}
 
         // Se genera la tabla
-        lenghtmenuoption = [];
-        if (loadedData.length >= 100) {
-            lenghtmenuoption = [15, 30, 50, 100];
-        } else if (50 <= loadedData.length && loadedData.length < 100) {
-            lenghtmenuoption = [15, 30, 50, loadedData.length];
-        } else if (30 <= loadedData.length && loadedData.length < 50) {
-            lenghtmenuoption = [15, 30, loadedData.length];
-        } else if (15 <= loadedData.length && loadedData.length < 30) {
-            lenghtmenuoption = [15, loadedData.length];
-        } else {
-            lenghtmenuoption = [loadedData.length];
-        }
         try {
+            lenghtmenuoption = [];
+            if (loadedData.length >= tableMaxReg) {
+                lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, tableMaxReg];
+            } else if (tableHighReg <= loadedData.length && loadedData.length < tableMaxReg) {
+                lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, loadedData.length];
+            } else if (tableMedReg <= loadedData.length && loadedData.length < tableHighReg) {
+                lenghtmenuoption = [tableMinReg, tableMedReg, loadedData.length];
+            } else if (tableMinReg <= loadedData.length && loadedData.length < tableMedReg) {
+                lenghtmenuoption = [tableMinReg, loadedData.length];
+            } else {
+                lenghtmenuoption = [loadedData.length];
+            }
             $('#mainTable').DataTable({
                 "language": {
                     "url": "http://latex.ppizarror.com/stats/res/tableSpanish.json"
@@ -175,7 +180,6 @@ function loadTemplate(templateid) {
         // Plotea las estadísticas
         try {
             writeGraphCanvases();
-
             new Chart($('#plot-ctime'), {
                 type: 'line',
                 data: {
@@ -186,6 +190,7 @@ function loadTemplate(templateid) {
                             borderColor: "#8436d7",
                             backgroundColor: "#8436d7",
                             fill: false,
+                            borderWidth: plotLineWidth,
                             radius: 1
                         },
                         {
@@ -194,6 +199,7 @@ function loadTemplate(templateid) {
                             borderColor: "#e470f6",
                             backgroundColor: "#e470f6",
                             borderDash: [5, 5],
+                            borderWidth: plotLineWidth,
                             fill: false,
                             radius: 0
                         }
@@ -232,7 +238,8 @@ function loadTemplate(templateid) {
                         label: "Número de líneas de código",
                         borderColor: "#3e95cd",
                         fill: false,
-                        radius: 1
+                        radius: 0,
+                        borderWidth: plotLineWidth
                     }]
                 },
                 options: {
@@ -270,13 +277,13 @@ function loadTemplate(templateid) {
             $('#progressLoading').fadeOut('slow', function() {
                 $('#progressLoading').html(' ');
             });
-        }, 300);
+        }, timeShowContentOnLoad);
 
     });
 }
 
 function writeTableHeader() {
-    $('#tableData').html('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></thead><tfoot><tr><th>ID</th><th>Versión</th><th>Ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></tfoot><tbody id="tableMem"></tbody></table>');
+    $('#tableData').html('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>ID</th><th>Versión</th><th>ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></thead><tfoot><tr><th>ID</th><th>Versión</th><th>ctime</th><th>Fecha</th><th>Líneas</th><th>HASH</th></tr></tfoot><tbody id="tableMem"></tbody></table>');
 }
 
 function writeGraphCanvases() {

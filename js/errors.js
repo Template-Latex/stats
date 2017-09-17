@@ -45,6 +45,11 @@ var errorID = {
         "msg": "Error al generar los gráficos",
         "code": 4,
         "moreinfo": "Ocurrió un error inesperado al generar los gráficos, posible error de datos"
+    },
+    "parsedata": {
+        "msg": "Error al procesar los datos",
+        "code": 5,
+        "moreinfo": "Ocurrió un error al procesar los datos de las estadísticas, datos erróneos o mal parseados"
     }
 }
 

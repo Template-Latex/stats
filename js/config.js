@@ -24,28 +24,12 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var aboutinfo = {
-    "version": "0.43",
-    "date": "17/09/2017",
-    "author": {
-        "name": "Pablo Pizarro R.",
-        "tag": "@ppizarror",
-        "email": "pablo.pizarro@ing.uchile.cl",
-        "website": "http://ppizarror.com/",
-        "github": "https://github.com/ppizarror"
-    },
-    "productname": "Template-Latex Stats",
-    "productnamefooter": "Stats",
-    "productsource": "https://github.com/Template-Latex"
-};
-
-// Imprime un acerca-de en consola
-function printAboutInfo() {
-    console.log(String.format('{0} v{1} ({2})', aboutinfo.productname, aboutinfo.version, aboutinfo.date));
-    console.log(String.format('{0} | {1}', aboutinfo.author.name, aboutinfo.author.website));
-    console.log(' ');
-}
-
-function generateFooter() {
-    $('#footer').html(String.format('<a href="{5}">{0}</a> v{1} ({2}) | Autor: <a href="{4}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource));
-}
+var plotLineWidth = 2; // Ancho de línea en gráficos
+var processBarStrokeWidth = 12; // Ancho del círculo de progreso
+var tableHighReg = 75; // Registros altos a mostrar en tabla
+var tableMaxReg = 100; // Registros máximos a mostrar en tabla
+var tableMedReg = 50; // Registros medios a mostrar en tabla
+var tableMinReg = 25; // Registros mínimos a mostrar en tabla
+var timeDurationProcessBar = 700; // Tiempo en ms de efecto de círculo de progreso
+var timeProcessOnGETurl = 200; // Tiempo en ms de espera para procesar template pasado por parámetro get en url
+var timeShowContentOnLoad = 300; // Tiempo en ms que demora en mostrar contenido generado

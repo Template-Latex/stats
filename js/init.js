@@ -34,8 +34,9 @@ var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 // Analizar parámetros de entrada y establecer subtemplates disponibles
 jQuery(document).ready(function($) {
 
-    // Escribe un acerca de en consola
+    // Genera los acerca de
     printAboutInfo();
+    generateFooter();
 
     // Escribe el header de la tabla
     writeTableHeader();
@@ -64,7 +65,7 @@ jQuery(document).ready(function($) {
                 $("#mainSelector").val(Object.keys(stat)[i]);
                 setTimeout(function() {
                     loadTemplate(Object.keys(stat)[i]);
-                }, 100);
+                }, timeProcessOnGETurl);
                 found = true;
                 break;
             }
