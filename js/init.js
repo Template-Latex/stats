@@ -58,7 +58,9 @@ jQuery(document).ready(function($) {
         for (var i = 0; i < Object.keys(stat).length; i++) {
             if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].avaiable) {
                 $("#mainSelector").val(Object.keys(stat)[i]);
-                loadTemplate(Object.keys(stat)[i]);
+                setTimeout(function() {
+                    loadTemplate(Object.keys(stat)[i]);
+                }, 150);
             }
         }
     }
