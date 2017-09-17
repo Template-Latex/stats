@@ -94,7 +94,7 @@ function loadTemplate(templateid) {
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [15, 50, 100]
+            "lengthMenu": [15, 30, 50, 100]
         });
         hasLoaded = true;
 
