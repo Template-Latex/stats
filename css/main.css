@@ -128,7 +128,7 @@ body {
     border-width: 1px;
     padding: 5px;
     font-weight: 600;
-    border-color: rgb(180, 180, 180);
+    /*border-color: rgb(180, 180, 180);*/
     overflow: hidden;
     font-size: 13px;
     background-color: #f6f7f8;
@@ -171,7 +171,7 @@ body {
 }
 
 @media screen and (min-width: 570px) {
-    body{
+    body {
         overflow-x: hidden;
     }
 }
@@ -191,20 +191,19 @@ body {
         font-size: 11px;
     }
     #tableData {
-        width: 100%;
-        min-width: 530px;
-        display: inline-block;
+        max-width: 530px;
+        margin-bottom: 30px;
         position: relative;
-        float: left;
         font-size: 12px;
+        margin-left: auto;
+        margin-right: auto;
     }
     #graphSection {
-        width: 100%;
+        width: 80%;
         min-width: 530px;
-        display: inline-block;
-        float: left;
         position: relative;
-        margin-top: 45px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 

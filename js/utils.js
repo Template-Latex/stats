@@ -147,11 +147,8 @@ function loadTemplate(templateid) {
     } finally {}
 
     // Muestra barra progreso y nombre template
-    $('#progressLoading').fadeTo('slow', processBarSetOpacity, function() {
-        $('#templateNameTxt').fadeOut(0, function() {
-            $('#templateName').html(String.format('<span id="templateNameTxt"><a href="{1}">{0}</a></span>', st.header, st.link));
-        });
-    });
+    $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', st.header, st.link));
+    $('#progressLoading').fadeTo('slow', processBarSetOpacity);
     loadingBarTrigger();
     loadingBarAnimation = setInterval(function() {
         loadingBarTrigger();
@@ -251,7 +248,7 @@ function loadTemplate(templateid) {
         try {
             if (plotXaxisID) {
                 new Chart($('#plot-ctime'), {
-                    type: 'line',
+                    type: "line",
                     data: {
                         labels: plot_id,
                         datasets: [{
@@ -287,19 +284,19 @@ function loadTemplate(templateid) {
                     options: {
                         title: {
                             display: false,
-                            text: 'Tiempo de compilación'
+                            text: "Tiempo de compilación"
                         },
                         scales: {
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Tiempo de compilación (s)'
+                                    labelString: "Tiempo de compilación (s)"
                                 }
                             }],
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'ID de compilación'
+                                    labelString: "ID de compilación"
                                 }
                             }]
                         },
@@ -309,7 +306,7 @@ function loadTemplate(templateid) {
                     }
                 });
                 new Chart($('#plot-nline'), {
-                    type: 'line',
+                    type: "line",
                     data: {
                         labels: plot_id,
                         datasets: [{
@@ -318,7 +315,7 @@ function loadTemplate(templateid) {
                             borderColor: "#3e95cd",
                             backgroundColor: "#3e95cd",
                             fill: false,
-                            radius: 0,
+                            radius: 1,
                             tension: 0,
                             borderWidth: plotLineWidth
                         }]
@@ -326,19 +323,19 @@ function loadTemplate(templateid) {
                     options: {
                         title: {
                             display: false,
-                            text: 'Línea de código en el tiempo'
+                            text: "Línea de código en el tiempo"
                         },
                         scales: {
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Líneas de código'
+                                    labelString: "Líneas de código"
                                 }
                             }],
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'ID de compilación'
+                                    labelString: "ID de compilación"
                                 }
                             }]
                         },
@@ -349,7 +346,7 @@ function loadTemplate(templateid) {
                 });
             } else {
                 new Chart($('#plot-ctime'), {
-                    type: 'line',
+                    type: "line",
                     data: {
                         labels: plot_ver,
                         datasets: [{
@@ -385,19 +382,19 @@ function loadTemplate(templateid) {
                     options: {
                         title: {
                             display: false,
-                            text: 'Tiempo de compilación'
+                            text: "Tiempo de compilación"
                         },
                         scales: {
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Tiempo de compilación (s)'
+                                    labelString: "Tiempo de compilación (s)"
                                 }
                             }],
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Número de versión'
+                                    labelString: "Número de versión"
                                 }
                             }]
                         },
@@ -407,7 +404,7 @@ function loadTemplate(templateid) {
                     }
                 });
                 new Chart($('#plot-nline'), {
-                    type: 'line',
+                    type: "line",
                     data: {
                         labels: plot_ver,
                         datasets: [{
@@ -424,19 +421,19 @@ function loadTemplate(templateid) {
                     options: {
                         title: {
                             display: false,
-                            text: 'Línea de código en el tiempo'
+                            text: "Línea de código en el tiempo"
                         },
                         scales: {
                             yAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Líneas de código'
+                                    labelString: "Líneas de código"
                                 }
                             }],
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Número de versión'
+                                    labelString: "Número de versión"
                                 }
                             }]
                         },
@@ -501,7 +498,7 @@ function loadTemplate(templateid) {
                 // Genera el gráfico de descargas
                 try {
                     new Chart($('#plot-totaldownloads'), {
-                        type: 'line',
+                        type: "line",
                         data: {
                             labels: version_releases,
                             datasets: [{
@@ -518,19 +515,19 @@ function loadTemplate(templateid) {
                         options: {
                             title: {
                                 display: false,
-                                text: 'Descargas de cada versión'
+                                text: "Descargas de cada versión"
                             },
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Descargas de cada versión'
+                                        labelString: "Descargas de cada versión"
                                     }
                                 }],
                                 xAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Número de versión'
+                                        labelString: "Número de versión"
                                     }
                                 }]
                             },
@@ -540,7 +537,7 @@ function loadTemplate(templateid) {
                         }
                     });
                     new Chart($('#plot-acumdownloads'), {
-                        type: 'line',
+                        type: "line",
                         data: {
                             labels: version_releases,
                             datasets: [{
@@ -550,26 +547,26 @@ function loadTemplate(templateid) {
                                 backgroundColor: "#9f0000",
                                 fill: false,
                                 borderWidth: plotLineWidth,
-                                radius: 0,
+                                radius: 1,
                                 pointStyle: 'circle'
                             }]
                         },
                         options: {
                             title: {
                                 display: false,
-                                text: 'Descargas acumuladas'
+                                text: "Descargas acumuladas"
                             },
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Descargas acumuladas'
+                                        labelString: "Descargas acumuladas"
                                     }
                                 }],
                                 xAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Número de versión'
+                                        labelString: "Número de versión"
                                     }
                                 }]
                             },
@@ -579,7 +576,7 @@ function loadTemplate(templateid) {
                         }
                     });
                     new Chart($('#plot-sizeversion'), {
-                        type: 'line',
+                        type: "line",
                         data: {
                             labels: lastversion_releases,
                             datasets: [{
@@ -607,19 +604,19 @@ function loadTemplate(templateid) {
                         options: {
                             title: {
                                 display: false,
-                                text: 'Peso en KB de cada versión'
+                                text: "Peso en KB de cada versión"
                             },
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Peso (KB)'
+                                        labelString: "Peso (KB)"
                                     }
                                 }],
                                 xAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Número de versión'
+                                        labelString: "Número de versión"
                                     }
                                 }]
                             },
@@ -639,7 +636,7 @@ function loadTemplate(templateid) {
                         }
                     });
                     new Chart($('#plot-partdownloads'), {
-                        type: 'line',
+                        type: "line",
                         data: {
                             labels: lastversion_releases,
                             datasets: [{
@@ -696,7 +693,7 @@ function loadTemplate(templateid) {
                         options: {
                             title: {
                                 display: false,
-                                text: 'Descargas por modo'
+                                text: "Descargas por modo"
                             },
                             scales: {
                                 yAxes: [{
@@ -704,7 +701,7 @@ function loadTemplate(templateid) {
                                     position: "left",
                                     id: "y-axis-1",
                                     scaleLabel: {
-                                        labelString: 'Número de descargas',
+                                        labelString: "Número de descargas",
                                         display: true,
                                     }
                                 }, {
@@ -714,14 +711,14 @@ function loadTemplate(templateid) {
                                         drawOnChartArea: false,
                                     },
                                     scaleLabel: {
-                                        labelString: 'Días disponible',
+                                        labelString: "Días disponible",
                                         display: true,
                                     }
                                 }],
                                 xAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Número de versión'
+                                        labelString: "Número de versión"
                                     }
                                 }]
                             },
@@ -738,7 +735,7 @@ function loadTemplate(templateid) {
                             total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
                         };
                         new Chart($('#plot-piedownloads'), {
-                            type: 'pie',
+                            type: "pie",
                             data: {
                                 labels: version_releases,
                                 datasets: [{
@@ -751,7 +748,7 @@ function loadTemplate(templateid) {
                             options: {
                                 title: {
                                     display: true,
-                                    text: 'Descargas por versión'
+                                    text: "Descargas por versión"
                                 },
                                 legend: {
                                     display: false
@@ -789,7 +786,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-9px;"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
