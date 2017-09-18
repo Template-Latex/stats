@@ -67,11 +67,11 @@ var errorID = {
 function throwErrorID(errorid, exceptionmsg) {
     clearInterval(loadingBarAnimation);
     $('#progressLoading').html('');
+    $('#progressLoading').fadeTo('slow', 1.0);
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');
     $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
     $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
-
     if (exceptionmsg != '') {
         console.log(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
         console.log(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
