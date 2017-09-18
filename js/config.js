@@ -25,7 +25,10 @@ Licence:
 */
 
 var plotLineWidth = 2; // Ancho de línea en gráficos
+var plotXaxisID = true; // Indica si plotea por id o versión en el eje x
+var processBarAnimationStyle = 1; // Animación del círculo de progreso (1, 2)
 var processBarColor = '#3598DB'; // Color del círculo de progreso
+var processBarLColor = '#93bad5'; // Color del círculo de progreso + claro
 var processBarSetOpacity = 0.5; // Opacidad en la que se fija la barra de progreso de carga
 var processBarStrokeWidth = 10; // Ancho del círculo de progreso
 var showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
