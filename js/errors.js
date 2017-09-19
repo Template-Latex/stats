@@ -60,7 +60,22 @@ var errorID = {
         "msg": "Error al generar los gráficos de descargas",
         "code": 7,
         "moreinfo": "Ocurrió un error al procesar los datos de descargas totales y parciales por versión al generar los gráficos"
-    }
+    },
+    "deletetable": {
+        "msg": "Error al limpiar la tabla anterior de datos",
+        "code": 8,
+        "moreinfo": "Ocurrió un error crítico al limpiar (resetear) la tabla de datos generada en el proceso anterior"
+    },
+    "criticaltemplateloading": {
+        "msg": "Ocurrió un error inesperado al cargar los datos del template",
+        "code": 9,
+        "moreinfo": "Ocurrió un error inesperado y no atrapado al procesar los datos de la solicitud, navegue por la consola del navegador para saber más sobre la excepción atrapada"
+    },
+    "loadingbarsetup": {
+        "msg": "Ocurrió un error al generar la barra de progreso de carga",
+        "code": 10,
+        "moreinfo": "Ocurrió un error inesperado al generar la barra de progreso de carga (progressLoadingBar)"
+    },
 }
 
 // Escribe el error en el panel

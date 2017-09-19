@@ -37,12 +37,12 @@ Licence:
     color: #fff;
     text-align: center;
     border-radius: 5px;
-    padding: 5px 0;
+    padding: 10px;
     position: absolute;
     z-index: 1;
     top: 115%;
     left: 50%;
-    margin-left: -40%;
+    margin-left: -42.5%;
     border-color: rgba(255, 255, 255, 0.2);
     border-width: 1px;
     border-style: solid;
