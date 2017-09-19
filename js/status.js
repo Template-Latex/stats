@@ -27,7 +27,7 @@ Licence:
 var stat = {
     "informe": {
         "avaiable": true,
-        "data": "Informe/stats.txt",
+        "data": "data/informe.txt",
         "header": "Template Informe",
         "index": 0,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
@@ -37,7 +37,7 @@ var stat = {
     },
     "auxiliares": {
         "avaiable": true,
-        "data": "Auxiliares/stats.txt",
+        "data": "data/auxiliares.txt",
         "header": "Template Auxiliares",
         "index": 1,
         "json": "https://api.github.com/repos/Template-Latex/Template-Auxiliares/releases",
@@ -47,7 +47,7 @@ var stat = {
     },
     "controles": {
         "avaiable": true,
-        "data": "Controles/stats.txt",
+        "data": "data/controles.txt",
         "header": "Template Controles",
         "index": 2,
         "json": "https://api.github.com/repos/Template-Latex/Template-Controles/releases",
@@ -57,7 +57,7 @@ var stat = {
     },
     "tesis": {
         "avaiable": false,
-        "data": "Tesis/stats.txt",
+        "data": "data/tesis.txt",
         "header": "Template Tesis",
         "index": 3,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
@@ -67,7 +67,7 @@ var stat = {
     },
     "apunte": {
         "avaiable": false,
-        "data": "Apunte/stats.txt",
+        "data": "data/apunte.txt",
         "header": "Template Apunte",
         "index": 4,
         "json": "https://api.github.com/repos/Template-Latex/Template-Apunte/releases",
@@ -77,7 +77,7 @@ var stat = {
     },
     "pautas": {
         "avaiable": false,
-        "data": "Pautas/stats.txt",
+        "data": "data/pautas.txt",
         "header": "Template Pautas",
         "index": 5,
         "json": "https://api.github.com/repos/Template-Latex/Template-Pautas/releases",
@@ -87,7 +87,7 @@ var stat = {
     },
     "tareas": {
         "avaiable": false,
-        "data": "Tareas/stats.txt",
+        "data": "data/tareas.txt",
         "header": "Template Tareas",
         "index": 6,
         "json": "https://api.github.com/repos/Template-Latex/Template-Tareas/releases",
