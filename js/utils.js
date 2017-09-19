@@ -330,7 +330,9 @@ function loadTemplate(templateid) {
                     options: {
                         title: {
                             display: false,
-                            text: "Actividad por día"
+                            text: "Actividad por día",
+                            fontSize: plotTitleFontSize,
+                            fontStyle: plotTitleFontStyle
                         },
                         scales: {
                             yAxes: [{
@@ -388,9 +390,16 @@ function loadTemplate(templateid) {
                         },
                         options: {
                             title: {
-                                display: false,
-                                text: "Tiempo de compilación"
+                                display: true,
+                                text: "Tiempo de compilación",
+                                fontSize: plotTitleFontSize,
+                                fontStyle: plotTitleFontStyle
                             },
+                            tooltips: {
+                                mode: "index",
+                                intersect: false
+                            },
+                            responsive: true,
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
@@ -420,15 +429,17 @@ function loadTemplate(templateid) {
                                 borderColor: "#3e95cd",
                                 backgroundColor: "#3e95cd",
                                 fill: false,
-                                radius: 1,
+                                radius: 0,
                                 tension: 0,
                                 borderWidth: plotLineWidth
                             }]
                         },
                         options: {
                             title: {
-                                display: false,
-                                text: "Línea de código en el tiempo"
+                                display: true,
+                                text: "Número líneas de código en el tiempo",
+                                fontSize: plotTitleFontSize,
+                                fontStyle: plotTitleFontStyle
                             },
                             scales: {
                                 yAxes: [{
@@ -445,7 +456,12 @@ function loadTemplate(templateid) {
                                 }]
                             },
                             legend: {
-                                display: true
+                                display: false
+                            },
+                            responsive: true,
+                            tooltips: {
+                                mode: "index",
+                                intersect: false
                             }
                         }
                     });
@@ -486,9 +502,16 @@ function loadTemplate(templateid) {
                         },
                         options: {
                             title: {
-                                display: false,
-                                text: "Tiempo de compilación"
+                                display: true,
+                                text: "Tiempo de compilación (ctime)",
+                                fontSize: plotTitleFontSize,
+                                fontStyle: plotTitleFontStyle
                             },
+                            tooltips: {
+                                mode: "index",
+                                intersect: false
+                            },
+                            responsive: true,
                             scales: {
                                 yAxes: [{
                                     scaleLabel: {
@@ -526,7 +549,9 @@ function loadTemplate(templateid) {
                         options: {
                             title: {
                                 display: false,
-                                text: "Línea de código en el tiempo"
+                                text: "Línea de código en el tiempo",
+                                fontSize: plotTitleFontSize,
+                                fontStyle: plotTitleFontStyle
                             },
                             scales: {
                                 yAxes: [{
@@ -558,13 +583,14 @@ function loadTemplate(templateid) {
             downloads_link_normal = [];
             downloads_total = [];
             lastday_released = [];
+            var lastday_released_str = [];
             lastdownloads_compact_size = [];
             lastdownloads_normal_size = [];
             lastdownloads_total = [];
             lastversion_releases = [];
             sum_compactdownloads = 0;
             sum_normaldownloads = 0;
-            version_releases = [];
+            var version_releases = [];
             try {
                 $.getJSON(st.json, function(json) {
                     for (i = json.length - 1; i >= 0; i--) {
@@ -572,6 +598,7 @@ function loadTemplate(templateid) {
                             downloads_link_compact.push(json[i].assets[0].download_count);
                             downloads_link_normal.push(json[i].assets[1].download_count);
                             downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                            lastday_released_str.push(json[i].published_at.substring(0, 10));
                             lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
                             lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
                             lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
@@ -601,12 +628,96 @@ function loadTemplate(templateid) {
                     // Calcula días de cada versión disponibles
                     lastday_total = [];
                     for (var i = 0; i < lastday_released.length - 1; i++) {
-                        lastday_total.push(daydiff(lastday_released[i], lastday_released[i + 1]));
+                        lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
                     }
-                    lastday_total.push(daydiff(lastday_released[lastday_released.length - 1], new Date()));
+                    lastday_total.push(Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1));
+
+                    // Descargas por día
+                    downloads_compact_per_day = [];
+                    downloads_normal_per_day = [];
+                    downloads_per_day = [];
+                    for (var i = 0; i < lastday_total.length; i++) {
+                        downloads_compact_per_day.push(roundNumber(downloads_link_compact[i] / lastday_total[i], 2));
+                        downloads_normal_per_day.push(roundNumber(downloads_link_normal[i] / lastday_total[i], 2));
+                        downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
+                    }
 
                     // Genera el gráfico de descargas
                     try {
+                        new Chart($('#plot-downloadsperday'), {
+                            type: "line",
+                            data: {
+                                labels: lastversion_releases,
+                                datasets: [{
+                                        data: downloads_per_day,
+                                        label: "Descargas totales",
+                                        borderColor: "#2b2b2b",
+                                        backgroundColor: "#2b2b2b",
+                                        fill: false,
+                                        radius: 1,
+                                        borderWidth: plotLineWidth
+                                    },
+                                    {
+                                        data: downloads_normal_per_day,
+                                        label: "Modo normal",
+                                        borderColor: "#606060",
+                                        backgroundColor: "#606060",
+                                        fill: false,
+                                        radius: 1,
+                                        borderWidth: plotLineWidth
+                                    },
+                                    {
+                                        data: downloads_compact_per_day,
+                                        label: "Modo compacto",
+                                        borderColor: "#a4a4a4",
+                                        backgroundColor: "#a4a4a4",
+                                        fill: false,
+                                        radius: 1,
+                                        borderWidth: plotLineWidth
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Descargas por día",
+                                    fontSize: plotTitleFontSize,
+                                    fontStyle: plotTitleFontStyle
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: "Descargas por día"
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: "Número de versión"
+                                        }
+                                    }]
+                                },
+                                legend: {
+                                    display: true
+                                },
+                                responsive: true,
+                                tooltips: {
+                                    enabled: true,
+                                    mode: "index",
+                                    callbacks: {
+                                        title: function(tooltipItem, data) {
+                                            elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                            if (elemindex != -1) {
+                                                return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                            } else {
+                                                return tooltipItem[0].xLabel;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
                         new Chart($('#plot-pielastdays'), {
                             type: "pie",
                             data: {
@@ -627,7 +738,7 @@ function loadTemplate(templateid) {
                                 },
                                 legend: {
                                     display: true,
-                                    position: 'right'
+                                    position: "right"
                                 },
                                 showAllTooltips: false,
                                 tooltips: {
@@ -659,7 +770,7 @@ function loadTemplate(templateid) {
                                     fill: false,
                                     borderWidth: plotLineWidth,
                                     radius: 2,
-                                    pointStyle: 'circle'
+                                    pointStyle: "circle"
                                 }]
                             },
                             options: {
@@ -685,7 +796,12 @@ function loadTemplate(templateid) {
                                 },
                                 legend: {
                                     display: false
-                                }
+                                },
+                                tooltips: {
+                                    mode: "index",
+                                    intersect: false
+                                },
+                                responsive: true
                             }
                         });
                         new Chart($('#plot-acumdownloads'), {
@@ -700,13 +816,15 @@ function loadTemplate(templateid) {
                                     fill: false,
                                     borderWidth: plotLineWidth,
                                     radius: 1,
-                                    pointStyle: 'circle'
+                                    pointStyle: "circle"
                                 }]
                             },
                             options: {
                                 title: {
                                     display: false,
-                                    text: "Descargas acumuladas"
+                                    text: "Descargas acumuladas",
+                                    fontSize: plotTitleFontSize,
+                                    fontStyle: plotTitleFontStyle
                                 },
                                 scales: {
                                     yAxes: [{
@@ -749,14 +867,16 @@ function loadTemplate(templateid) {
                                         fill: false,
                                         borderWidth: plotLineWidth,
                                         radius: 2,
-                                        pointStyle: 'triangle'
+                                        pointStyle: "triangle"
                                     }
                                 ]
                             },
                             options: {
                                 title: {
                                     display: false,
-                                    text: "Peso en KB de cada versión"
+                                    text: "Peso en KB de cada versión",
+                                    fontSize: plotTitleFontSize,
+                                    fontStyle: plotTitleFontStyle
                                 },
                                 scales: {
                                     yAxes: [{
@@ -778,7 +898,7 @@ function loadTemplate(templateid) {
                                 tooltips: {
                                     callbacks: {
                                         label: function(tooltipItem, data) {
-                                            var value = data.datasets[0].data[tooltipItem.index];
+                                            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             value = value.toString();
                                             value = value.replace('.', ',');
                                             return 'Peso: ' + value + ' KB';
@@ -787,98 +907,214 @@ function loadTemplate(templateid) {
                                 }
                             }
                         });
-                        new Chart($('#plot-partdownloads'), {
-                            type: "line",
-                            data: {
-                                labels: lastversion_releases,
-                                datasets: [{
-                                        data: downloads_link_normal,
-                                        label: "Versión normal",
-                                        borderColor: "#057375",
-                                        backgroundColor: "#057375",
-                                        fill: false,
-                                        borderWidth: plotLineWidth,
-                                        radius: 2,
-                                        pointStyle: 'circle',
-                                        tension: 0,
-                                        yAxisID: "y-axis-1"
+                        switch (downloadPartChartType) {
+                            case 'style1':
+                                new Chart($('#plot-partdownloads'), {
+                                    type: "bar",
+                                    data: {
+                                        labels: lastversion_releases,
+                                        datasets: [{
+                                                data: lastday_total,
+                                                label: "Días activo",
+                                                borderColor: "#530071",
+                                                backgroundColor: "#530071",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 1,
+                                                pointStyle: "circle",
+                                                yAxisID: "y-axis-2",
+                                                type: "line"
+                                            },
+                                            {
+                                                data: downloads_link_normal,
+                                                label: "Versión normal",
+                                                borderColor: "#057375",
+                                                backgroundColor: "#057375",
+                                                yAxisID: "y-axis-1"
+                                            },
+                                            {
+                                                data: downloads_link_compact,
+                                                label: "Versión compacta",
+                                                borderColor: "#aab104",
+                                                backgroundColor: "#aab104",
+                                                yAxisID: "y-axis-1"
+                                            }
+                                        ]
                                     },
-                                    {
-                                        data: downloads_link_compact,
-                                        label: "Versión compacta",
-                                        borderColor: "#aab104",
-                                        backgroundColor: "#aab104",
-                                        fill: false,
-                                        borderWidth: plotLineWidth,
-                                        radius: 2,
-                                        pointStyle: 'rect',
-                                        tension: 0,
-                                        yAxisID: "y-axis-1"
-                                    },
-                                    {
-                                        data: lastdownloads_total,
-                                        label: "Suma",
-                                        borderColor: "#001471",
-                                        backgroundColor: "#001471",
-                                        fill: false,
-                                        borderWidth: plotLineWidth,
-                                        radius: 2,
-                                        borderDash: [5, 5],
-                                        pointStyle: 'cross',
-                                        tension: 0,
-                                        yAxisID: "y-axis-1"
-                                    },
-                                    {
-                                        data: lastday_total,
-                                        label: "Días activo",
-                                        borderColor: "#530071",
-                                        backgroundColor: "#530071",
-                                        fill: false,
-                                        borderWidth: plotLineWidth,
-                                        radius: 1,
-                                        pointStyle: 'triangle',
-                                        tension: 0,
-                                        yAxisID: "y-axis-2"
-                                    }
-                                ]
-                            },
-                            options: {
-                                title: {
-                                    display: false,
-                                    text: "Descargas por modo"
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        display: true,
-                                        position: "left",
-                                        id: "y-axis-1",
-                                        scaleLabel: {
-                                            labelString: "Número de descargas",
-                                            display: true,
-                                        }
-                                    }, {
-                                        position: "right",
-                                        id: "y-axis-2",
-                                        gridLines: {
-                                            drawOnChartArea: false,
+                                    options: {
+                                        title: {
+                                            display: false,
+                                            text: "Descargas por modo",
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
                                         },
-                                        scaleLabel: {
-                                            labelString: "Días disponible",
-                                            display: true,
-                                        }
-                                    }],
-                                    xAxes: [{
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: "Número de versión"
-                                        }
-                                    }]
-                                },
-                                legend: {
-                                    display: true
-                                }
-                            }
-                        });
+                                        scales: {
+                                            yAxes: [{
+                                                display: true,
+                                                position: "left",
+                                                id: "y-axis-1",
+                                                scaleLabel: {
+                                                    labelString: "Número de descargas",
+                                                    display: true,
+                                                },
+                                                stacked: true
+                                            }, {
+                                                position: "right",
+                                                id: "y-axis-2",
+                                                gridLines: {
+                                                    drawOnChartArea: false,
+                                                },
+                                                scaleLabel: {
+                                                    labelString: "Días disponible",
+                                                    display: true,
+                                                },
+                                                stacked: false
+                                            }],
+                                            xAxes: [{
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: "Número de versión"
+                                                },
+                                                stacked: true
+                                            }]
+                                        },
+                                        legend: {
+                                            display: true
+                                        },
+                                        tooltips: {
+                                            mode: "index",
+                                            intersect: false,
+                                            callbacks: {
+                                                title: function(tooltipItem, data) {
+                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex != -1) {
+                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                    } else {
+                                                        return tooltipItem[0].xLabel;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        responsive: true
+                                    }
+                                });
+                                break;
+                            case 'style2':
+                                new Chart($('#plot-partdownloads'), {
+                                    type: "line",
+                                    data: {
+                                        labels: lastversion_releases,
+                                        datasets: [{
+                                                data: downloads_link_normal,
+                                                label: "Versión normal",
+                                                borderColor: "#057375",
+                                                backgroundColor: "#057375",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 2,
+                                                pointStyle: 'circle',
+                                                tension: 0,
+                                                yAxisID: "y-axis-1"
+                                            },
+                                            {
+                                                data: downloads_link_compact,
+                                                label: "Versión compacta",
+                                                borderColor: "#aab104",
+                                                backgroundColor: "#aab104",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 2,
+                                                pointStyle: 'rect',
+                                                tension: 0,
+                                                yAxisID: "y-axis-1"
+                                            },
+                                            {
+                                                data: lastdownloads_total,
+                                                label: "Suma",
+                                                borderColor: "#001471",
+                                                backgroundColor: "#001471",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 2,
+                                                borderDash: [5, 5],
+                                                pointStyle: 'cross',
+                                                tension: 0,
+                                                yAxisID: "y-axis-1"
+                                            },
+                                            {
+                                                data: lastday_total,
+                                                label: "Días activo",
+                                                borderColor: "#530071",
+                                                backgroundColor: "#530071",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 1,
+                                                pointStyle: 'triangle',
+                                                tension: 0,
+                                                yAxisID: "y-axis-2"
+                                            }
+                                        ]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: false,
+                                            text: "Descargas por modo",
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
+                                        },
+                                        scales: {
+                                            yAxes: [{
+                                                display: true,
+                                                position: "left",
+                                                id: "y-axis-1",
+                                                scaleLabel: {
+                                                    labelString: "Número de descargas",
+                                                    display: true,
+                                                }
+                                            }, {
+                                                display: true,
+                                                position: "right",
+                                                id: "y-axis-2",
+                                                gridLines: {
+                                                    drawOnChartArea: false,
+                                                },
+                                                scaleLabel: {
+                                                    labelString: "Días disponible",
+                                                    display: true
+                                                }
+                                            }],
+                                            xAxes: [{
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: "Número de versión"
+                                                }
+                                            }]
+                                        },
+                                        legend: {
+                                            display: true
+                                        },
+                                        tooltips: {
+                                            mode: "index",
+                                            intersect: false,
+                                            callbacks: {
+                                                title: function(tooltipItem, data) {
+                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex != -1) {
+                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                    } else {
+                                                        return tooltipItem[0].xLabel;
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        responsive: true
+                                    }
+                                });
+                                break;
+                            default:
+                                throwErrorID(errorID.invalidchartdownloadparttype, '');
+                                return;
+                        }
                         // Genera gráfico torta
                         if (showPieDownloadChart) {
                             $('#plot-piedownloads').css('display', 'block');
@@ -900,7 +1136,9 @@ function loadTemplate(templateid) {
                                 options: {
                                     title: {
                                         display: true,
-                                        text: "Descargas por versión"
+                                        text: "Descargas por versión",
+                                        fontSize: plotTitleFontSize,
+                                        fontStyle: plotTitleFontStyle
                                     },
                                     legend: {
                                         display: false
@@ -942,7 +1180,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id

@@ -80,6 +80,11 @@ var errorID = {
         "msg": "Error al generar estadísticas actividad por día",
         "code": 11,
         "moreinfo": "Ocurrió un error al generar las estadísticas de actividad (número de compilaciones) por día"
+    },
+    "invalidchartdownloadparttype": {
+        "msg": "Estilo de gráfico descargas parciales incorrecto",
+        "code": 12,
+        "moreinfo": "La configuración <b>downloadPartChartType</b> no es correcta"
     }
 }
 
