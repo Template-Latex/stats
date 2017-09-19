@@ -329,7 +329,7 @@ function loadTemplate(templateid) {
                     },
                     options: {
                         title: {
-                            display: false,
+                            display: true,
                             text: "Actividad por día",
                             fontSize: plotTitleFontSize,
                             fontStyle: plotTitleFontStyle
@@ -344,12 +344,12 @@ function loadTemplate(templateid) {
                             xAxes: [{
                                 scaleLabel: {
                                     display: true,
-                                    labelString: "Día"
+                                    labelString: "Fecha"
                                 }
                             }]
                         },
                         legend: {
-                            display: true
+                            display: false
                         }
                     }
                 });
@@ -471,7 +471,17 @@ function loadTemplate(templateid) {
                             responsive: true,
                             tooltips: {
                                 mode: "index",
-                                intersect: false
+                                intersect: false,
+                                callbacks: {
+                                    title: function(tooltipItem, data) {
+                                        elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
+                                        if (elemindex != -1) {
+                                            return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
+                                        } else {
+                                            return tooltipItem[0].xLabel;
+                                        }
+                                    }
+                                }
                             }
                         }
                     });
@@ -558,7 +568,7 @@ function loadTemplate(templateid) {
                         },
                         options: {
                             title: {
-                                display: false,
+                                display: true,
                                 text: "Línea de código en el tiempo",
                                 fontSize: plotTitleFontSize,
                                 fontStyle: plotTitleFontStyle
@@ -578,7 +588,7 @@ function loadTemplate(templateid) {
                                 }]
                             },
                             legend: {
-                                display: true
+                                display: false
                             }
                         }
                     });
@@ -690,7 +700,7 @@ function loadTemplate(templateid) {
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Descargas por día",
+                                    text: "Descargas por día últimas 30 versiones",
                                     fontSize: plotTitleFontSize,
                                     fontStyle: plotTitleFontStyle
                                 },
@@ -786,7 +796,7 @@ function loadTemplate(templateid) {
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Total de descargas de cada versión",
+                                    text: "Total de descargas",
                                     fontSize: plotTitleFontSize,
                                     fontStyle: plotTitleFontStyle
                                 },
@@ -809,7 +819,12 @@ function loadTemplate(templateid) {
                                 },
                                 tooltips: {
                                     mode: "index",
-                                    intersect: false
+                                    intersect: false,
+                                    callbacks: {
+                                        title: function(tooltipItem, data) {
+                                            return String.format('Versión {0}', tooltipItem[0].xLabel);
+                                        }
+                                    }
                                 },
                                 responsive: true
                             }
@@ -831,8 +846,8 @@ function loadTemplate(templateid) {
                             },
                             options: {
                                 title: {
-                                    display: false,
-                                    text: "Descargas acumuladas",
+                                    display: true,
+                                    text: "N° de descargas acumuladas",
                                     fontSize: plotTitleFontSize,
                                     fontStyle: plotTitleFontStyle
                                 },
@@ -851,8 +866,18 @@ function loadTemplate(templateid) {
                                     }]
                                 },
                                 legend: {
-                                    display: true
-                                }
+                                    display: false
+                                },
+                                tooltips: {
+                                    mode: "index",
+                                    intersect: false,
+                                    callbacks: {
+                                        title: function(tooltipItem, data) {
+                                            return String.format('Versión {0}', tooltipItem[0].xLabel);
+                                        }
+                                    }
+                                },
+                                responsive: true
                             }
                         });
                         new Chart($('#plot-sizeversion'), {
@@ -883,8 +908,8 @@ function loadTemplate(templateid) {
                             },
                             options: {
                                 title: {
-                                    display: false,
-                                    text: "Peso en KB de cada versión",
+                                    display: true,
+                                    text: "Peso en KB de últimas 30 versiones",
                                     fontSize: plotTitleFontSize,
                                     fontStyle: plotTitleFontStyle
                                 },
@@ -906,15 +931,26 @@ function loadTemplate(templateid) {
                                     display: true
                                 },
                                 tooltips: {
+                                    mode: "index",
+                                    intersect: true,
                                     callbacks: {
                                         label: function(tooltipItem, data) {
                                             var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                             value = value.toString();
                                             value = value.replace('.', ',');
-                                            return 'Peso: ' + value + ' KB';
+                                            return String.format('{0}: {1} KB', data.datasets[tooltipItem.datasetIndex].label, value);
+                                        },
+                                        title: function(tooltipItem, data) {
+                                            elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                            if (elemindex != -1) {
+                                                return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                            } else {
+                                                return tooltipItem[0].xLabel;
+                                            }
                                         }
                                     }
-                                }
+                                },
+                                responsive: true
                             }
                         });
                         switch (downloadPartChartType) {
@@ -937,14 +973,14 @@ function loadTemplate(templateid) {
                                             },
                                             {
                                                 data: downloads_link_normal,
-                                                label: "Versión normal",
+                                                label: "Descargas normal",
                                                 borderColor: "#057375",
                                                 backgroundColor: "#057375",
                                                 yAxisID: "y-axis-1"
                                             },
                                             {
                                                 data: downloads_link_compact,
-                                                label: "Versión compacta",
+                                                label: "Descargas compacta",
                                                 borderColor: "#aab104",
                                                 backgroundColor: "#aab104",
                                                 yAxisID: "y-axis-1"
@@ -953,8 +989,8 @@ function loadTemplate(templateid) {
                                     },
                                     options: {
                                         title: {
-                                            display: false,
-                                            text: "Descargas por modo",
+                                            display: true,
+                                            text: "Descargas por versión y días activos últimas 30 versiones",
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -975,7 +1011,7 @@ function loadTemplate(templateid) {
                                                     drawOnChartArea: false,
                                                 },
                                                 scaleLabel: {
-                                                    labelString: "Días disponible",
+                                                    labelString: "Días activo",
                                                     display: true,
                                                 },
                                                 stacked: false
@@ -993,7 +1029,7 @@ function loadTemplate(templateid) {
                                         },
                                         tooltips: {
                                             mode: "index",
-                                            intersect: false,
+                                            intersect: true,
                                             callbacks: {
                                                 title: function(tooltipItem, data) {
                                                     elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
@@ -1089,7 +1125,7 @@ function loadTemplate(templateid) {
                                                     drawOnChartArea: false,
                                                 },
                                                 scaleLabel: {
-                                                    labelString: "Días disponible",
+                                                    labelString: "Días activo",
                                                     display: true
                                                 }
                                             }],
