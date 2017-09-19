@@ -24,8 +24,8 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar, line)
 var downloadPartChartType = 'style1'; // Tipo de gráfico de descargas ultimas 30 (type1, type2)
+var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar, line)
 var plotLineWidth = 2; // Ancho de línea en gráficos
 var plotTitleFontSize = 13; // Tamaño fuente de títulos en gráficos
 var plotTitleFontStyle = 'bold'; // Tipo de fuente en título de gráficos
