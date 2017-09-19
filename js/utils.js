@@ -131,6 +131,54 @@ function parseDevVersion(version) {
     return version;
 }
 
+// Agrega plugins a Chart.js
+function initializeChartjsPlugins() {
+    Chart.pluginService.register({
+        beforeRender: function(chart) {
+            if (chart.config.options.showAllTooltips) {
+                // create an array of tooltips
+                // we can't use the chart tooltip because there is only one tooltip per chart
+                chart.pluginTooltips = [];
+                chart.config.data.datasets.forEach(function(dataset, i) {
+                    chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+                        chart.pluginTooltips.push(new Chart.Tooltip({
+                            _chart: chart.chart,
+                            _chartInstance: chart,
+                            _data: chart.data,
+                            _options: chart.options.tooltips,
+                            _active: [sector]
+                        }, chart));
+                    });
+                });
+
+                // turn off normal tooltips
+                chart.options.tooltips.enabled = false;
+            }
+        },
+        afterDraw: function(chart, easing) {
+            if (chart.config.options.showAllTooltips) {
+                // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+                if (!chart.allTooltipsOnce) {
+                    if (easing !== 1)
+                        return;
+                    chart.allTooltipsOnce = true;
+                }
+
+                // turn on tooltips
+                chart.options.tooltips.enabled = true;
+                Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+                    tooltip.initialize();
+                    tooltip.update();
+                    // we don't actually need this since we are not animating tooltips
+                    tooltip.pivot();
+                    tooltip.transition(easing).draw();
+                });
+                chart.options.tooltips.enabled = false;
+            }
+        }
+    });
+}
+
 // Carga un template y genera gráficos
 function loadTemplate(templateid) {
 
@@ -240,7 +288,7 @@ function loadTemplate(templateid) {
             } finally {}
             hasLoaded = true;
 
-            // Genera estadísticas adicionales
+            // Estadística tiempos de compilación
             try {
                 mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
                 plot_mean_ctime = [];
@@ -256,8 +304,61 @@ function loadTemplate(templateid) {
                 return;
             } finally {}
 
+            // Estadística versiones por día
+            try {
+                day_activity = [];
+                day_activity_counter = [];
+                for (var i = 0; i < loadedData.length; i++) {
+                    k = jQuery.inArray(loadedData[i][3], day_activity);
+                    if (k == -1) {
+                        day_activity.push(loadedData[i][3]);
+                        day_activity_counter.push(1);
+                    } else {
+                        day_activity_counter[k] += 1;
+                    }
+                }
+            } catch (e) {
+                throwErrorID(errorID.errorcreatedayactivitystat, e);
+                return;
+            } finally {}
+
             // Plotea las estadísticas
             try {
+                new Chart($('#plot-activityday'), {
+                    type: "bar",
+                    data: {
+                        labels: day_activity,
+                        datasets: [{
+                            data: day_activity_counter,
+                            label: "Número de versiones",
+                            borderColor: "#7e0042",
+                            backgroundColor: "#7e0042"
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: false,
+                            text: "Actividad por día"
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Número de versiones"
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "Día"
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: true
+                        }
+                    }
+                });
                 if (plotXaxisID) {
                     new Chart($('#plot-ctime'), {
                         type: "line",
@@ -469,6 +570,8 @@ function loadTemplate(templateid) {
             lastdownloads_normal_size = [];
             lastdownloads_total = [];
             lastversion_releases = [];
+            sum_compactdownloads = 0;
+            sum_normaldownloads = 0;
             version_releases = [];
             try {
                 $.getJSON(st.json, function(json) {
@@ -482,6 +585,8 @@ function loadTemplate(templateid) {
                             lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
                             lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                             lastversion_releases.push(json[i].tag_name);
+                            sum_compactdownloads += json[i].assets[0].download_count;
+                            sum_normaldownloads += json[i].assets[1].download_count;
                             version_releases.push(json[i].tag_name);
                         } catch (err) {}
                     }
@@ -509,6 +614,44 @@ function loadTemplate(templateid) {
 
                     // Genera el gráfico de descargas
                     try {
+                        new Chart($('#plot-pielastdays'), {
+                            type: "pie",
+                            data: {
+                                labels: ["Versión compacta", "Versión normal"],
+                                datasets: [{
+                                    data: [sum_compactdownloads, sum_normaldownloads],
+                                    label: "N° descargas de cada versión",
+                                    borderColor: ["#ff6000", "#bbb700"],
+                                    backgroundColor: ["#ff6000", "#bbb700"]
+                                }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: "Distribución descargas últimos 30 días"
+                                },
+                                legend: {
+                                    display: true,
+                                    position: 'right'
+                                },
+                                showAllTooltips: true,
+                                tooltips: {
+                                    callbacks: {
+                                        label: function(tooltipItem, data) {
+                                            var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                            var tooltipLabel = data.labels[tooltipItem.index];
+                                            var tooltipData = allData[tooltipItem.index];
+                                            var total = 0;
+                                            for (var i in allData) {
+                                                total += allData[i];
+                                            }
+                                            var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                            return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                                        }
+                                    }
+                                }
+                            }
+                        });
                         new Chart($('#plot-totaldownloads'), {
                             type: "line",
                             data: {
@@ -802,7 +945,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id

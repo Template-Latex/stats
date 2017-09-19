@@ -41,6 +41,9 @@ $(document).ready(function($) {
     // Escribe el header de la tabla
     writeTableHeader();
 
+    // Se agregan plugins a Chart.js
+    initializeChartjsPlugins();
+
     // Escribe los templates disponibles en el selector
     for (var i = 0; i < Object.keys(stat).length; i++) {
         if (stat[Object.keys(stat)[i]].avaiable) {

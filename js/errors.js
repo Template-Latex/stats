@@ -76,6 +76,11 @@ var errorID = {
         "code": 10,
         "moreinfo": "Ocurrió un error inesperado al generar la barra de progreso de carga (progressLoadingBar)"
     },
+    "errorcreatedayactivitystat": {
+        "msg": "Error al generar estadísticas actividad por día",
+        "code": 11,
+        "moreinfo": "Ocurrió un error al generar las estadísticas de actividad (número de compilaciones) por día"
+    }
 }
 
 // Escribe el error en el panel
