@@ -225,10 +225,10 @@ function loadTemplate(templateid) {
             data = data.split('\n');
 
             // Se cargan datos a listas
-            plot_id = [];
-            plot_ctime = [];
-            plot_nline = [];
-            plot_ver = [];
+            var plot_id = [];
+            var plot_ctime = [];
+            var plot_nline = [];
+            var plot_ver = [];
 
             try {
                 for (var i = 1; i < data.length; i++) {
@@ -397,7 +397,17 @@ function loadTemplate(templateid) {
                             },
                             tooltips: {
                                 mode: "index",
-                                intersect: false
+                                intersect: false,
+                                callbacks: {
+                                    title: function(tooltipItem, data) {
+                                        elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
+                                        if (elemindex != -1) {
+                                            return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
+                                        } else {
+                                            return tooltipItem[0].xLabel;
+                                        }
+                                    }
+                                }
                             },
                             responsive: true,
                             scales: {
