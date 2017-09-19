@@ -40,12 +40,10 @@ body {
 
 #footer {
     margin-top: 0.5rem;
-    margin-bottom: 1rem;
     display: none;
     width: 100%;
     height: 30px;
     bottom: 0;
-    text-align: right;
     font-size: 10px;
     font-weight: 400;
     color: rgb(112, 112, 112);
@@ -155,10 +153,8 @@ body {
 
 @media screen and (min-width: 68em) {
     #tableData {
-        width: 44%;
         min-width: 544px;
         display: inline-block;
-        position: relative;
         float: left;
         font-size: 13px;
     }
@@ -167,6 +163,18 @@ body {
         display: inline-block;
         float: right;
         position: relative;
+    }
+    .fixedTableData {
+        position: fixed;
+        top: 13px;
+        max-width: 544px;
+    }
+    .nonFixedTableData {
+        width: 44%;
+        position: relative;
+    }
+    #footer {
+        text-align: right;
     }
 }
 
@@ -177,6 +185,9 @@ body {
 }
 
 @media screen and (max-width: 68em) {
+    body {
+        min-width: 540px;
+    }
     #header {
         min-width: 540px;
     }
@@ -193,17 +204,23 @@ body {
     #tableData {
         max-width: 530px;
         margin-bottom: 30px;
-        position: relative;
         font-size: 12px;
         margin-left: auto;
         margin-right: auto;
     }
     #graphSection {
-        width: 80%;
+        width: 75%;
         min-width: 530px;
         position: relative;
         margin-left: auto;
         margin-right: auto;
+    }
+    .fixedTableData {}
+    .nonFixedTableData {
+        position: relative;
+    }
+    #footer {
+        text-align: center;
     }
 }
 

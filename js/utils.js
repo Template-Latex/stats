@@ -148,6 +148,7 @@ function loadTemplate(templateid) {
 
     // Muestra barra progreso y nombre template
     $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', st.header, st.link));
+    $(document).prop('title', 'Stats - ' + st.header);
     $('#progressLoading').fadeTo('slow', processBarSetOpacity);
     loadingBarTrigger();
     loadingBarAnimation = setInterval(function() {
@@ -670,9 +671,9 @@ function loadTemplate(templateid) {
                                     backgroundColor: "#001471",
                                     fill: false,
                                     borderWidth: plotLineWidth,
-                                    radius: 0,
+                                    radius: 2,
                                     borderDash: [5, 5],
-                                    pointStyle: 'circle',
+                                    pointStyle: 'cross',
                                     tension: 0,
                                     yAxisID: "y-axis-1"
                                 },

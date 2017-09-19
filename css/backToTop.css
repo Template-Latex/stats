@@ -24,18 +24,53 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var plotLineWidth = 2; // Ancho de línea en gráficos
-var plotXaxisID = true; // Indica si plotea por id o versión en el eje x
-var processBarAnimationStyle = 1; // Animación del círculo de progreso (1, 2)
-var processBarColor = '#3598DB'; // Color del círculo de progreso
-var processBarLColor = '#93bad5'; // Color del círculo de progreso + claro
-var processBarSetOpacity = 0.5; // Opacidad en la que se fija la barra de progreso de carga
-var processBarStrokeWidth = 10; // Ancho del círculo de progreso
-var showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
-var tableHighReg = 50; // Registros altos a mostrar en tabla
-var tableMaxReg = 100; // Registros máximos a mostrar en tabla
-var tableMedReg = 25; // Registros medios a mostrar en tabla
-var tableMinReg = 10; // Registros mínimos a mostrar en tabla
-var timeDurationProcessBar = 700; // Tiempo en ms de efecto de círculo de progreso
-var timeProcessOnGETurl = 200; // Tiempo en ms de espera para procesar template pasado por parámetro get en url
-var timeShowContentOnLoad = 400; // Tiempo en ms que demora en mostrar contenido generado
+a.back-to-top {
+    display: none;
+    text-indent: -9999px;
+    position: fixed;
+    z-index: 999;
+    right: 20px;
+    bottom: 20px;
+    background: #27AE61 url("../res/up-arrow.png") no-repeat center 43%;
+    background-color: rgb(91, 91, 91);
+    opacity: 0.7;
+}
+
+@media screen and (min-width: 64em) {
+    a.back-to-top {
+        width: 70px;
+        height: 70px;
+        -webkit-border-radius: 35px;
+        -moz-border-radius: 35px;
+        border-radius: 35px;
+    }
+    #footer {
+        margin-bottom: 1.7rem;
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    a.back-to-top {
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+    }
+    #footer {
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 42em) {
+    a.back-to-top {
+        width: 50px;
+        height: 50px;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+    }
+    #footer {
+        margin-bottom: 1.3rem;
+    }
+}

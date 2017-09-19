@@ -32,7 +32,7 @@ var loadedTable; // Tabla creada
 var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 // Analizar parámetros de entrada y establecer subtemplates disponibles
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 
     // Genera los acerca de
     printAboutInfo();
@@ -76,5 +76,50 @@ jQuery(document).ready(function($) {
     }
 
     // Desactiva primera opción en el selector
-    $("#mainSelector option[value='none']").attr('disabled', 'disabled')
+    $("#mainSelector option[value='none']").attr('disabled', 'disabled');
+
+    // Se fija tabla al hacer scroll
+    var lockScrollUpClass = false;
+    var lockScrollDownClass = false;
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 88) {
+            lockScrollDownClass = false;
+            if (!lockScrollUpClass && $(window).height() >= $('#tableData').height()) {
+                $('#tableData').removeClass('nonFixedTableData');
+                $('#tableData').addClass('fixedTableData');
+                lockScrollUpClass = true;
+            }
+        } else {
+            lockScrollUpClass = false;
+            if (!lockScrollDownClass) {
+                $('#tableData').addClass('nonFixedTableData');
+                $('#tableData').removeClass('fixedTableData');
+                lockScrollDownClass = true;
+            }
+        }
+    });
+    $(window).resize(function() {
+        lockScrollDownClass = false;
+        lockScrollUpClass = false;
+        if ($(window).height() < $('#tableData').height()) {
+            $('#tableData').addClass('nonFixedTableData');
+            $('#tableData').removeClass('fixedTableData');
+        } else {
+            if ($(window).scrollTop() > 90) {
+                $('#tableData').removeClass('nonFixedTableData');
+                $('#tableData').addClass('fixedTableData');
+            }
+        }
+    });
+
+    // Muestra botón scrollToTop
+    $(window).scroll(function() {
+        location.pathname.replace(/^\//, '')
+        if ($(window).scrollTop() > 600) {
+            $('a.back-to-top').fadeIn('slow');
+        } else {
+            $('a.back-to-top').fadeOut('slow');
+        }
+    });
+
 });
