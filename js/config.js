@@ -24,7 +24,10 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar, line)
 var plotLineWidth = 2; // Ancho de línea en gráficos
+var plotTitleFontSize = 13; // Tamaño fuente de títulos en gráficos
+var plotTitleFontStyle = 'bold'; // Tipo de fuente en título de gráficos
 var plotXaxisID = true; // Indica si plotea por id o versión en el eje x
 var processBarAnimationStyle = 1; // Animación del círculo de progreso (1, 2)
 var processBarColor = '#3598DB'; // Color del círculo de progreso

@@ -136,8 +136,6 @@ function initializeChartjsPlugins() {
     Chart.pluginService.register({
         beforeRender: function(chart) {
             if (chart.config.options.showAllTooltips) {
-                // create an array of tooltips
-                // we can't use the chart tooltip because there is only one tooltip per chart
                 chart.pluginTooltips = [];
                 chart.config.data.datasets.forEach(function(dataset, i) {
                     chart.getDatasetMeta(i).data.forEach(function(sector, j) {
@@ -150,26 +148,20 @@ function initializeChartjsPlugins() {
                         }, chart));
                     });
                 });
-
-                // turn off normal tooltips
                 chart.options.tooltips.enabled = false;
             }
         },
         afterDraw: function(chart, easing) {
             if (chart.config.options.showAllTooltips) {
-                // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
                 if (!chart.allTooltipsOnce) {
                     if (easing !== 1)
                         return;
                     chart.allTooltipsOnce = true;
                 }
-
-                // turn on tooltips
                 chart.options.tooltips.enabled = true;
                 Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
                     tooltip.initialize();
                     tooltip.update();
-                    // we don't actually need this since we are not animating tooltips
                     tooltip.pivot();
                     tooltip.transition(easing).draw();
                 });
@@ -330,7 +322,7 @@ function loadTemplate(templateid) {
                         labels: day_activity,
                         datasets: [{
                             data: day_activity_counter,
-                            label: "Número de versiones",
+                            label: "Número de versiones por día",
                             borderColor: "#7e0042",
                             backgroundColor: "#7e0042"
                         }]
@@ -604,6 +596,7 @@ function loadTemplate(templateid) {
                     for (var i = 1; i < downloads_total.length; i++) {
                         acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                     }
+                    sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
 
                     // Calcula días de cada versión disponibles
                     lastday_total = [];
@@ -621,20 +614,22 @@ function loadTemplate(templateid) {
                                 datasets: [{
                                     data: [sum_compactdownloads, sum_normaldownloads],
                                     label: "N° descargas de cada versión",
-                                    borderColor: ["#ff6000", "#bbb700"],
-                                    backgroundColor: ["#ff6000", "#bbb700"]
+                                    borderColor: ["#ff6000", "#afac1a"],
+                                    backgroundColor: ["#ff6000", "#afac1a"]
                                 }]
                             },
                             options: {
                                 title: {
                                     display: true,
-                                    text: "Distribución descargas últimos 30 días"
+                                    text: String.format("Distribución descargas últimas 30 versiones ({0} descargas)", sum_lastdownloads),
+                                    fontSize: plotTitleFontSize,
+                                    fontStyle: plotTitleFontStyle
                                 },
                                 legend: {
                                     display: true,
                                     position: 'right'
                                 },
-                                showAllTooltips: true,
+                                showAllTooltips: false,
                                 tooltips: {
                                     callbacks: {
                                         label: function(tooltipItem, data) {
@@ -653,12 +648,12 @@ function loadTemplate(templateid) {
                             }
                         });
                         new Chart($('#plot-totaldownloads'), {
-                            type: "line",
+                            type: downloadTotalChartType,
                             data: {
                                 labels: version_releases,
                                 datasets: [{
                                     data: downloads_total,
-                                    label: "N° descargas de cada versión",
+                                    label: "Número de descargas de versión",
                                     borderColor: "#004f16",
                                     backgroundColor: "#004f16",
                                     fill: false,
@@ -669,8 +664,10 @@ function loadTemplate(templateid) {
                             },
                             options: {
                                 title: {
-                                    display: false,
-                                    text: "Descargas de cada versión"
+                                    display: true,
+                                    text: "Total de descargas de cada versión",
+                                    fontSize: plotTitleFontSize,
+                                    fontStyle: plotTitleFontStyle
                                 },
                                 scales: {
                                     yAxes: [{
@@ -687,7 +684,7 @@ function loadTemplate(templateid) {
                                     }]
                                 },
                                 legend: {
-                                    display: true
+                                    display: false
                                 }
                             }
                         });
