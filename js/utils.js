@@ -840,7 +840,8 @@ function loadTemplate(templateid) {
                                     backgroundColor: "#9f0000",
                                     fill: false,
                                     borderWidth: plotLineWidth,
-                                    radius: 1,
+                                    radius: 0,
+                                    tension: 0,
                                     pointStyle: "circle"
                                 }]
                             },
