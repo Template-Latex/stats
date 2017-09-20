@@ -85,7 +85,7 @@ $(document).ready(function($) {
     var lockScrollUpClass = false;
     var lockScrollDownClass = false;
     $(window).scroll(function() {
-        if ($(window).scrollTop() > 88) {
+        if ($(window).scrollTop() > pxScrollDownToFixTable) {
             lockScrollDownClass = false;
             if (!lockScrollUpClass && $(window).height() >= $('#tableData').height()) {
                 $('#tableData').removeClass('nonFixedTableData');
@@ -108,7 +108,7 @@ $(document).ready(function($) {
             $('#tableData').addClass('nonFixedTableData');
             $('#tableData').removeClass('fixedTableData');
         } else {
-            if ($(window).scrollTop() > 90) {
+            if ($(window).scrollTop() > pxScrollDownToFixTable) {
                 $('#tableData').removeClass('nonFixedTableData');
                 $('#tableData').addClass('fixedTableData');
             }
@@ -117,8 +117,8 @@ $(document).ready(function($) {
 
     // Muestra botón scrollToTop
     $(window).scroll(function() {
-        location.pathname.replace(/^\//, '')
-        if ($(window).scrollTop() > 600) {
+        location.pathname.replace(/^\//, '');
+        if ($(window).scrollTop() > pxScrollToShowButton) {
             $('a.back-to-top').fadeIn('slow');
         } else {
             $('a.back-to-top').fadeOut('slow');

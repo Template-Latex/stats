@@ -157,6 +157,7 @@ body {
         display: inline-block;
         float: left;
         font-size: 13px;
+        padding-top: 4px;
     }
     #graphSection {
         width: 48%;
@@ -166,7 +167,7 @@ body {
     }
     .fixedTableData {
         position: fixed;
-        top: 13px;
+        top: 15px;
         max-width: 544px;
     }
     .nonFixedTableData {
