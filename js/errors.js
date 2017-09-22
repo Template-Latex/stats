@@ -85,6 +85,16 @@ var errorID = {
         "msg": "Estilo de gráfico descargas parciales incorrecto",
         "code": 12,
         "moreinfo": "La configuración <b>downloadPartChartType</b> no es correcta"
+    },
+    "errorretrievetemplatelist": {
+        "msg": "Error al cargar la lista de templates disponibles",
+        "code": 13,
+        "moreinfo": "Un error de configuración en <b>status.js</b> impide cargar la lista completa de templates disponibles"
+    },
+    "retrievedownloadcounter": {
+        "msg": "Error al obtener lista de descargas anteriores",
+        "code": 14,
+        "moreinfo": "Ocurrió un error al acceder a la función <i>getDownloadCounter</i> de Template-Informe, probablemente el tag del Template no existe o no fue definido correctamente"
     }
 }
 

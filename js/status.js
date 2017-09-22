@@ -26,7 +26,7 @@ Licence:
 
 var stat = {
     "informe": {
-        "avaiable": true,
+        "available": true,
         "data": "data/informe.txt",
         "header": "Template Informe",
         "index": 0,
@@ -36,7 +36,7 @@ var stat = {
         "tag": "Informe"
     },
     "auxiliares": {
-        "avaiable": true,
+        "available": true,
         "data": "data/auxiliares.txt",
         "header": "Template Auxiliares",
         "index": 1,
@@ -46,7 +46,7 @@ var stat = {
         "tag": "Auxiliares"
     },
     "controles": {
-        "avaiable": true,
+        "available": true,
         "data": "data/controles.txt",
         "header": "Template Controles",
         "index": 2,
@@ -56,7 +56,7 @@ var stat = {
         "tag": "Controles"
     },
     "tesis": {
-        "avaiable": false,
+        "available": false,
         "data": "data/tesis.txt",
         "header": "Template Tesis",
         "index": 3,
@@ -66,7 +66,7 @@ var stat = {
         "tag": "Tesis"
     },
     "apunte": {
-        "avaiable": false,
+        "available": false,
         "data": "data/apunte.txt",
         "header": "Template Apunte",
         "index": 4,
@@ -76,7 +76,7 @@ var stat = {
         "tag": "Apunte"
     },
     "pautas": {
-        "avaiable": false,
+        "available": false,
         "data": "data/pautas.txt",
         "header": "Template Pautas",
         "index": 5,
@@ -86,7 +86,7 @@ var stat = {
         "tag": "Pautas"
     },
     "tareas": {
-        "avaiable": false,
+        "available": false,
         "data": "data/tareas.txt",
         "header": "Template Tareas",
         "index": 6,
@@ -94,5 +94,15 @@ var stat = {
         "link": "http://latex.ppizarror.com/Template-Tareas/",
         "name": "Template-Tareas",
         "tag": "Tareas"
+    },
+    "professional-cv": {
+        "available": true,
+        "data": "data/professional-cv.txt",
+        "header": "Professional CV",
+        "index": 7,
+        "json": "https://api.github.com/repos/Template-Latex/Professional-CV/releases",
+        "link": "http://latex.ppizarror.com/Professional-CV/",
+        "name": "Professional-CV",
+        "tag": "Professional-CV"
     }
 };

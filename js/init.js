@@ -45,26 +45,35 @@ $(document).ready(function($) {
     initializeChartjsPlugins();
 
     // Escribe los templates disponibles en el selector
-    for (var i = 0; i < Object.keys(stat).length; i++) {
-        if (stat[Object.keys(stat)[i]].avaiable) {
-            $('#mainSelector').append($('<option>', {
-                value: Object.keys(stat)[i],
-                text: stat[Object.keys(stat)[i]].name
-            }));
+    try {
+        for (var i = 0; i < Object.keys(stat).length; i++) {
+            if (stat[Object.keys(stat)[i]].available) {
+                $('#mainSelector').append($('<option>', {
+                    value: Object.keys(stat)[i],
+                    text: stat[Object.keys(stat)[i]].name
+                }));
+            }
         }
-    }
 
-    // Añade evento change en selector
-    $("#mainSelector").change(function() {
-        loadTemplate($("#mainSelector").val());
-    });
+        // Añade evento change en selector
+        $("#mainSelector").change(function() {
+            loadTemplate($("#mainSelector").val());
+        });
+
+        // Desactiva primera opción en el selector
+        $("#mainSelector option[value='none']").attr('disabled', 'disabled');
+
+    } catch (e) {
+        throwErrorID(errorID.errorretrievetemplatelist, e);
+        return;
+    } finally {}
 
     // Obtiene el template desde $GET
     initTemplate = $.urlParam('template');
     if (initTemplate != null) {
         found = false;
         for (var i = 0; i < Object.keys(stat).length; i++) {
-            if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].avaiable) {
+            if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].available) {
                 $("#mainSelector").val(Object.keys(stat)[i]);
                 setTimeout(function() {
                     loadTemplate(Object.keys(stat)[i]);
@@ -75,11 +84,10 @@ $(document).ready(function($) {
         }
         if (!found) {
             throwErrorID(errorID.badtemplateid);
+            return;
         }
     }
 
-    // Desactiva primera opción en el selector
-    $("#mainSelector option[value='none']").attr('disabled', 'disabled');
 
     // Se fija tabla al hacer scroll
     var lockScrollUpClass = false;
