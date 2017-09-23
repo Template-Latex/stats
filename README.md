@@ -1,19 +1,20 @@
-# Stats
-
-[![@ppizarror](http://latex.ppizarror.com/Template-Informe/resources/autor2.svg)](http://ppizarror.com)
-[![Licencia MiT](http://latex.ppizarror.com/Template-Informe/resources/Licencia-MIT-blue.svg)](https://opensource.org/licenses/MIT/)<br>
-[![Template-Tesis](http://latex.ppizarror.com/Template-Informe/resources/templates/tesis.svg)](https://github.com/Template-Latex/Template-Tesis/)
-[![Template-Apunte](http://latex.ppizarror.com/Template-Informe/resources/templates/apunte.svg)](https://github.com/Template-Latex/Template-Apunte/)
-[![Template-Tareas](http://latex.ppizarror.com/Template-Informe/resources/templates/tareas.svg)](https://github.com/Template-Latex/Template-Tareas/)
-[![Template-Auxiliares](http://latex.ppizarror.com/Template-Informe/resources/templates/auxiliares.svg)](https://github.com/Template-Latex/Template-Auxiliares/)
-[![Template-Controles](http://latex.ppizarror.com/Template-Informe/resources/templates/controles.svg)](https://github.com/Template-Latex/Template-Controles/)
-[![Template-Pautas](http://latex.ppizarror.com/Template-Informe/resources/templates/pauta.svg)](https://github.com/Template-Latex/Template-Pautas/)
-[![Template-Informes](http://latex.ppizarror.com/Template-Informe/resources/templates/informe.svg)](https://github.com/Template-Latex/Template-Informe/)
-
-Estadísticas de compilación y descargas de los distintos subtemplates.
+<h1 align="center">
+  <a href="http://latex.ppizarror.com/stats/" title="Template-Latex Stats">
+    <img alt="Stats" src="icon.png" width="200px" height="200px" />
+  </a>
+  <br /><br />
+  Stats</h1>
+<p align="center">Estadísticas de compilación y descargas de los distintos subtemplates</p>
+<div align="center"><a href="http://ppizarror.com"><img alt="@ppizarror" src="http://ppizarror.com/badges/autor.svg" /></a>
+<a href="https://opensource.org/licenses/MIT/"><img alt="Licencia MIT" src="http://ppizarror.com/badges/licenciamit.svg" /></a>
+<br><a href="https://github.com/Template-Latex/Template-Auxiliares/"><img alt="Template-Auxiliares" src="http://latex.ppizarror.com/Template-Informe/resources/templates/auxiliares.svg" /></a>
+<a href="https://github.com/Template-Latex/Template-Controles/"><img alt="Template-Controles" src="http://latex.ppizarror.com/Template-Informe/resources/templates/controles.svg" /></a>
+<a href="https://github.com/Template-Latex/Template-Informe/"><img alt="Template-Informe" src="http://latex.ppizarror.com/Template-Informe/resources/templates/informe.svg" /></a>
+</div><br />
 
 ## Licencia
-Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT].
+Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT]
+
 
 ## Autor
-<a href="http://ppizarror.com">Pablo Pizarro R.</a> | 2017.
+<a href="http://ppizarror.com" title="ppizarror">Pablo Pizarro R.</a> | 2017
