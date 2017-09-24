@@ -24,9 +24,10 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+// About
 var aboutinfo = {
-    "version": "0.62",
-    "date": "22/09/2017",
+    "version": "0.64",
+    "date": "23/09/2017",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -46,6 +47,7 @@ function printAboutInfo() {
     console.log(' ');
 }
 
+// Muestra el footer
 function generateFooter() {
     $('#footer').html(String.format('<a href="{5}"><img src="res/github.png" /> {0}</a> v{1} ({2}) | Autor: <a href="{4}" title="{6}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource, aboutinfo.author.name));
 }
