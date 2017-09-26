@@ -26,8 +26,8 @@ Licence:
 
 // About
 var aboutinfo = {
-    "version": "0.64",
-    "date": "23/09/2017",
+    "version": "0.65",
+    "date": "26/09/2017",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -37,7 +37,7 @@ var aboutinfo = {
     },
     "productname": "Template-Latex Stats",
     "productnamefooter": "Stats",
-    "productsource": "https://github.com/Template-Latex"
+    "productsource": "https://github.com/Template-Latex/stats"
 };
 
 // Imprime un acerca-de en consola
