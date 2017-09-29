@@ -705,6 +705,9 @@ function loadTemplate(templateid) {
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
                     }
 
+                    // Número de versión correcto en últimas n-versiones
+                    last_n_version = Math.min(30, json.length);
+
                     // Genera el gráfico de descargas
                     try {
                         if (json.length >= 1) {
@@ -715,7 +718,7 @@ function loadTemplate(templateid) {
                                         labels: lastversion_releases,
                                         datasets: [{
                                                 data: downloads_per_day,
-                                                label: "Descargas totales",
+                                                label: "Total descargas por día",
                                                 borderColor: "#2b2b2b",
                                                 backgroundColor: "#2b2b2b",
                                                 fill: false,
@@ -745,7 +748,7 @@ function loadTemplate(templateid) {
                                     options: {
                                         title: {
                                             display: true,
-                                            text: "Descargas por día últimas 30 versiones",
+                                            text: String.format("Descargas por día últimas {0} versiones", last_n_version),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -789,7 +792,7 @@ function loadTemplate(templateid) {
                                         labels: version_releases,
                                         datasets: [{
                                             data: acum_downloads,
-                                            label: "N° descargas acumuladas hasta versión",
+                                            label: "N° de descargas acumuladas",
                                             borderColor: "#9f0000",
                                             backgroundColor: "#9f0000",
                                             fill: false,
@@ -849,7 +852,7 @@ function loadTemplate(templateid) {
                                     options: {
                                         title: {
                                             display: true,
-                                            text: String.format("Distribución descargas últimas 30 versiones ({0} descargas)", sum_lastdownloads),
+                                            text: String.format("Distribución descargas últimas {1} versiones ({0} descargas)", sum_lastdownloads, last_n_version),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -966,7 +969,7 @@ function loadTemplate(templateid) {
                                             options: {
                                                 title: {
                                                     display: true,
-                                                    text: "Descargas por versión y días activos últimas 30 versiones",
+                                                    text: String.format("Descargas por versión y días activos últimas {0} versiones", last_n_version),
                                                     fontSize: plotTitleFontSize,
                                                     fontStyle: plotTitleFontStyle
                                                 },
@@ -1144,46 +1147,50 @@ function loadTemplate(templateid) {
                                 $('#plot-totaldownloads').remove();
                                 $('#plot-partdownloads').remove();
                             }
-                            new Chart($('#plot-pielastversion'), {
-                                type: "pie",
-                                data: {
-                                    labels: ["Versión compacta", "Versión normal"],
-                                    datasets: [{
-                                        data: [downloads_link_compact[json.length - 1], downloads_link_normal[json.length - 1]],
-                                        label: "N° descargas de cada versión",
-                                        borderColor: ["#70dad0", "#535eda"],
-                                        backgroundColor: ["#70dad0", "#535eda"]
-                                    }]
-                                },
-                                options: {
-                                    title: {
-                                        display: true,
-                                        text: String.format("Distribución descargas última versión v{0} ({1} descargas)", lastversion_releases[json.length - 1], downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]),
-                                        fontSize: plotTitleFontSize,
-                                        fontStyle: plotTitleFontStyle
+                            if ((downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]) > 0) {
+                                new Chart($('#plot-pielastversion'), {
+                                    type: "pie",
+                                    data: {
+                                        labels: ["Versión compacta", "Versión normal"],
+                                        datasets: [{
+                                            data: [downloads_link_compact[json.length - 1], downloads_link_normal[json.length - 1]],
+                                            label: "N° descargas de cada versión",
+                                            borderColor: ["#70dad0", "#535eda"],
+                                            backgroundColor: ["#70dad0", "#535eda"]
+                                        }]
                                     },
-                                    legend: {
-                                        display: true,
-                                        position: "right"
-                                    },
-                                    showAllTooltips: false,
-                                    tooltips: {
-                                        callbacks: {
-                                            label: function(tooltipItem, data) {
-                                                var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                var tooltipLabel = data.labels[tooltipItem.index];
-                                                var tooltipData = allData[tooltipItem.index];
-                                                var total = 0;
-                                                for (var i in allData) {
-                                                    total += allData[i];
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: String.format("Distribución descargas última versión v{0} ({1} descargas)", lastversion_releases[json.length - 1], downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]),
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
+                                        },
+                                        legend: {
+                                            display: true,
+                                            position: "right"
+                                        },
+                                        showAllTooltips: false,
+                                        tooltips: {
+                                            callbacks: {
+                                                label: function(tooltipItem, data) {
+                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                                    var tooltipLabel = data.labels[tooltipItem.index];
+                                                    var tooltipData = allData[tooltipItem.index];
+                                                    var total = 0;
+                                                    for (var i in allData) {
+                                                        total += allData[i];
+                                                    }
+                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                                                 }
-                                                var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                                             }
                                         }
                                     }
-                                }
-                            });
+                                });
+                            } else {
+                                $('#plot-pielastversion').remove();
+                            }
                             new Chart($('#plot-sizeversion'), {
                                 type: "line",
                                 data: {
@@ -1213,7 +1220,7 @@ function loadTemplate(templateid) {
                                 options: {
                                     title: {
                                         display: true,
-                                        text: "Peso en KB de últimas 30 versiones",
+                                        text: String.format("Peso en KB de últimas {0} versiones", last_n_version),
                                         fontSize: plotTitleFontSize,
                                         fontStyle: plotTitleFontStyle
                                     },
