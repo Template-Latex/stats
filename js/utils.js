@@ -798,7 +798,7 @@ function loadTemplate(templateid) {
                                             fill: false,
                                             borderWidth: plotLineWidth,
                                             radius: 0,
-                                            tension: 0,
+                                            tension: 0.02,
                                             pointStyle: "circle"
                                         }]
                                     },
