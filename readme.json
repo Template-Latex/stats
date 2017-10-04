@@ -37,19 +37,19 @@
         },
         "3": {
             "IMAGE": "http://latex.ppizarror.com/badges/tesis.svg",
-            "HREF": "https://github.com/Template-Latex/Template-Tesis/",
+            "HREF": "http://latex.ppizarror.com/stats/?template=Tesis",
             "ALT": "Template-Tesis",
             "SHOW": false
         },
         "4": {
             "IMAGE": "http://latex.ppizarror.com/badges/apunte.svg",
-            "HREF": "https://github.com/Template-Latex/Template-Apunte/",
+            "HREF": "http://latex.ppizarror.com/stats/?template=Apunte",
             "ALT": "Template-Apunte",
             "SHOW": false
         },
         "5": {
             "IMAGE": "http://latex.ppizarror.com/badges/tareas.svg",
-            "HREF": "https://github.com/Template-Latex/Template-Tareas/",
+            "HREF": "http://latex.ppizarror.com/stats/?template=Tareas",
             "ALT": "Template-Tareas",
             "SHOW": false
         },
@@ -65,7 +65,7 @@
         },
         "8": {
             "IMAGE": "http://latex.ppizarror.com/badges/pauta.svg",
-            "HREF": "https://github.com/Template-Latex/Template-Pautas/",
+            "HREF": "http://latex.ppizarror.com/stats/?template=Pautas",
             "ALT": "Template-Pautas",
             "SHOW": false
         },
