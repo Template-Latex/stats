@@ -27,7 +27,7 @@ Licence:
 var downloadPartChartType = 'style1'; // Tipo de gráfico de descargas ultimas 30 (type1, type2)
 var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar, line)
 var plotLineWidth = 2; // Ancho de línea en gráficos
-var plotTitleFontSize = 13; // Tamaño fuente de títulos en gráficos
+var plotTitleFontSize = 13.5; // Tamaño fuente de títulos en gráficos
 var plotTitleFontStyle = 'bold'; // Tipo de fuente en título de gráficos
 var plotXaxisID = true; // Indica si plotea por id o versión en el eje x
 var processBarAnimationStyle = 1; // Animación del círculo de progreso (1, 2)
@@ -38,6 +38,7 @@ var processBarStrokeWidth = 10; // Ancho del círculo de progreso
 var pxScrollDownToFixTable = 90; // Cuántos píxeles scrollear para fixear tabla
 var pxScrollToShowButton = 600; // Cuantos píxeles scrollear para mostrar botón subir
 var showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
+var tableDataNameCols = ['ID', 'VERSIÓN', 'TCMP', 'FECHA', 'LINEAS', 'HASH']; // Nombre columna tabla
 var tableHighReg = 50; // Registros altos a mostrar en tabla
 var tableMaxReg = 100; // Registros máximos a mostrar en tabla
 var tableMedReg = 30; // Registros medios a mostrar en tabla

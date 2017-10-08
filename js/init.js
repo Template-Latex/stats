@@ -56,12 +56,12 @@ $(document).ready(function($) {
         }
 
         // Añade evento change en selector
-        $("#mainSelector").change(function() {
-            loadTemplate($("#mainSelector").val());
+        $('#mainSelector').change(function() {
+            loadTemplate($('#mainSelector').val());
         });
 
         // Desactiva primera opción en el selector
-        $("#mainSelector option[value='none']").attr('disabled', 'disabled');
+        $('#mainSelector option[value=\'none\']').attr('disabled', 'disabled');
 
     } catch (e) {
         throwErrorID(errorID.errorretrievetemplatelist, e);
@@ -74,7 +74,7 @@ $(document).ready(function($) {
         found = false;
         for (var i = 0; i < Object.keys(stat).length; i++) {
             if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].available) {
-                $("#mainSelector").val(Object.keys(stat)[i]);
+                $('#mainSelector').val(Object.keys(stat)[i]);
                 setTimeout(function() {
                     loadTemplate(Object.keys(stat)[i]);
                 }, timeProcessOnGETurl);
