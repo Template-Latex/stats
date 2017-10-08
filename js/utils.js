@@ -636,17 +636,19 @@ function loadTemplate(templateid) {
             } finally {}
 
             // Obtiene descargas de la versión
-            downloads_link_compact = [];
-            downloads_link_normal = [];
-            downloads_total = [];
-            lastday_released = [];
+            var downloads_link_compact = [];
+            var downloads_link_normal = [];
+            var downloads_total = [];
+            var globver_downloads = [];
+            var globver_releases = [];
+            var lastday_released = [];
             var lastday_released_str = [];
-            lastdownloads_compact_size = [];
-            lastdownloads_normal_size = [];
-            lastdownloads_total = [];
-            lastversion_releases = [];
-            sum_compactdownloads = 0;
-            sum_normaldownloads = 0;
+            var lastdownloads_compact_size = [];
+            var lastdownloads_normal_size = [];
+            var lastdownloads_total = [];
+            var lastversion_releases = [];
+            var sum_compactdownloads = 0;
+            var sum_normaldownloads = 0;
             var version_releases = [];
             try {
                 $.getJSON(st.json, function(json) {
@@ -674,11 +676,30 @@ function loadTemplate(templateid) {
                         throwErrorID(errorID.retrievedownloadcounter, e);
                         return;
                     } finally {}
-
                     prev_downloads.reverse();
                     for (var i = 0; i < prev_downloads.length; i++) {
                         version_releases.unshift(prev_downloads[i][1]);
                         downloads_total.unshift(prev_downloads[i][0]);
+                    }
+
+                    // Genera descargas por versión global
+                    j = -1;
+                    lgv = '';
+                    for (var i = 0; i < version_releases.length; i++) {
+                        gv = version_releases[i].substring(0, 2);
+                        if (gv[1] == '.') {
+                            gv = gv[0];
+                        } else if (gv[0] == '<') {
+                            gv = gv[1];
+                        }
+                        if (lgv != gv) {
+                            globver_releases.push(gv);
+                            globver_downloads.push(downloads_total[i]);
+                            j += 1;
+                        } else {
+                            globver_downloads[j] += downloads_total[i];
+                        }
+                        lgv = gv;
                     }
 
                     // Genera descargas acumulado
@@ -932,6 +953,64 @@ function loadTemplate(templateid) {
                                         responsive: true
                                     }
                                 });
+                                if(globver_releases.length > 1) {
+                                    new Chart($('#plot-gloverdownloads'), {
+                                        type: "line",
+                                        data: {
+                                            labels: globver_releases,
+                                            datasets: [{
+                                                data: globver_downloads,
+                                                label: "Descargas por versión global",
+                                                borderColor: "#8f7c31",
+                                                backgroundColor: "#8f7c31",
+                                                fill: false,
+                                                borderWidth: plotLineWidth,
+                                                radius: 2,
+                                                pointStyle: "circle"
+                                            }]
+                                        },
+                                        options: {
+                                            title: {
+                                                display: true,
+                                                text: "Descargas totales por versión global",
+                                                fontSize: plotTitleFontSize,
+                                                fontStyle: plotTitleFontStyle
+                                            },
+                                            scales: {
+                                                yAxes: [{
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: "Descargas totales"
+                                                    },
+                                                    ticks: {
+                                                        min: 0
+                                                    }
+                                                }],
+                                                xAxes: [{
+                                                    scaleLabel: {
+                                                        display: true,
+                                                        labelString: "Número de versión global"
+                                                    }
+                                                }]
+                                            },
+                                            legend: {
+                                                display: false
+                                            },
+                                            tooltips: {
+                                                mode: "index",
+                                                intersect: false,
+                                                callbacks: {
+                                                    title: function(tooltipItem, data) {
+                                                        return String.format('Versión {0}', tooltipItem[0].xLabel);
+                                                    }
+                                                }
+                                            },
+                                            responsive: true
+                                        }
+                                    });
+                                } else {
+                                    $('#plot-gloverdownloads').remove();
+                                }
                                 switch (downloadPartChartType) {
                                     case 'style1':
                                         new Chart($('#plot-partdownloads'), {
@@ -1141,11 +1220,12 @@ function loadTemplate(templateid) {
                                         return;
                                 }
                             } else {
-                                $('#plot-downloadsperday').remove();
                                 $('#plot-acumdownloads').remove();
+                                $('#plot-downloadsperday').remove();
+                                $('#plot-gloverdownloads').remove();
+                                $('#plot-partdownloads').remove();
                                 $('#plot-pielastdays').remove();
                                 $('#plot-totaldownloads').remove();
-                                $('#plot-partdownloads').remove();
                             }
                             if ((downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]) > 0) {
                                 new Chart($('#plot-pielastversion'), {
@@ -1296,14 +1376,15 @@ function loadTemplate(templateid) {
                                 });
                             }
                         } else {
-                            $('#plot-totaldownloads').remove();
-                            $('#plot-partdownloads').remove();
-                            $('#plot-downloadsperday').remove();
-                            $('#plot-pielastdays').remove();
                             $('#plot-acumdownloads').remove();
-                            $('#plot-sizeversion').remove();
+                            $('#plot-downloadsperday').remove();
+                            $('#plot-gloverdownloads').remove();
+                            $('#plot-partdownloads').remove();
                             $('#plot-piedownloads').remove();
+                            $('#plot-pielastdays').remove();
                             $('#plot-pielastversion').remove();
+                            $('#plot-sizeversion').remove();
+                            $('#plot-totaldownloads').remove();
                         }
                     } catch (e) {
                         throwErrorID(errorID.downloadgraph, e);
@@ -1339,7 +1420,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
