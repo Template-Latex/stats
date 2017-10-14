@@ -977,7 +977,7 @@ function loadTemplate(templateid) {
                                         tooltips: {
                                             enabled: true,
                                             mode: 'index',
-                                            intersect: plotIntersectToShowLegend,
+                                            intersect: true,
                                             callbacks: {
                                                 label: function(tooltipItem, data) {
                                                     var allData = data.datasets[tooltipItem.datasetIndex].data;
