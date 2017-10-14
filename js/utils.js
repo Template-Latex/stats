@@ -249,7 +249,7 @@ function loadTemplate(templateid) {
     }
 
     // Se carga archivo de estadísticas
-    jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
+    var jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
         try {
             data = data.split('\n');
 
@@ -666,8 +666,9 @@ function loadTemplate(templateid) {
             var sum_normaldownloads = 0;
             var var_downloads_releases = [];
             var version_releases = [];
-            try {
-                $.getJSON(st.json, function(json) {
+
+            var jsonQuery2 = $.getJSON(st.json, function(json) {
+                try {
                     for (i = json.length - 1; i >= 0; i--) {
                         try {
                             downloads_link_compact.push(json[i].assets[0].download_count);
@@ -1500,15 +1501,21 @@ function loadTemplate(templateid) {
                         });
                         console.log('Carga exitosa');
                     }, timeShowContentOnLoad);
-                });
-            } catch (e) {
-                throwErrorID(errorID.getdownloads, e);
-                return;
-            } finally {}
+                } catch (e) {
+                    throwErrorID(errorID.getdownloads, e);
+                    return;
+                } finally {}
+            });
+            jsonQuery2.fail(function() {
+                throwErrorID(errorID.erroraccessjsonreleases);
+            });
         } catch (e) {
             throwErrorID(errorID.criticaltemplateloading, e);
             return;
         } finally {}
+    });
+    jsonQuery1.fail(function() {
+        throwErrorID(errorID.erroraccessfile);
     });
 }
 

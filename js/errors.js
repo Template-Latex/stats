@@ -95,6 +95,16 @@ var errorID = {
         "msg": "Error al obtener lista de descargas anteriores",
         "code": 14,
         "moreinfo": "Ocurrió un error al acceder a la función <i>getDownloadCounter</i> de Template-Informe, probablemente el tag del Template no existe o no fue definido correctamente"
+    },
+    "erroraccessfile": {
+        "msg": "Error al obtener el archivo de compilaciones",
+        "code": 15,
+        "moreinfo": "Ocurrió un error al acceder al archivo de compilaciones, probable error de servidor"
+    },
+    "erroraccessjsonreleases": {
+        "msg": "Error al acceder al archivo JSON de releases",
+        "code": 16,
+        "moreinfo": "Ocurrió un error al acceder al archivo JSON de releases de Github Stats, probable error de servidor"
     }
 }
 
