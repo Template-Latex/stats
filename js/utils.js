@@ -384,6 +384,12 @@ function loadTemplate(templateid) {
                             },
                             legend: {
                                 display: false
+                            },
+                            responsive: true,
+                            tooltips: {
+                                enabled: true,
+                                mode: 'index',
+                                intersect: plotIntersectToShowLegend
                             }
                         }
                     });
@@ -433,8 +439,9 @@ function loadTemplate(templateid) {
                                 fontStyle: plotTitleFontStyle
                             },
                             tooltips: {
+                                enabled: true,
                                 mode: 'index',
-                                intersect: false,
+                                intersect: plotIntersectToShowLegend,
                                 callbacks: {
                                     title: function(tooltipItem, data) {
                                         elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
@@ -507,8 +514,9 @@ function loadTemplate(templateid) {
                             },
                             responsive: true,
                             tooltips: {
+                                enabled: true,
                                 mode: 'index',
-                                intersect: false,
+                                intersect: plotIntersectToShowLegend,
                                 callbacks: {
                                     title: function(tooltipItem, data) {
                                         elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
@@ -565,8 +573,9 @@ function loadTemplate(templateid) {
                                 fontStyle: plotTitleFontStyle
                             },
                             tooltips: {
+                                enabled: true,
                                 mode: 'index',
-                                intersect: false
+                                intersect: plotIntersectToShowLegend,
                             },
                             responsive: true,
                             scales: {
@@ -626,6 +635,12 @@ function loadTemplate(templateid) {
                             },
                             legend: {
                                 display: false
+                            },
+                            responsive: true,
+                            tooltips: {
+                                enabled: true,
+                                mode: 'index',
+                                intersect: plotIntersectToShowLegend,
                             }
                         }
                     });
@@ -680,13 +695,22 @@ function loadTemplate(templateid) {
                     } finally {}
                     prev_downloads.reverse();
                     for (var i = 0; i < prev_downloads.length; i++) {
-                        version_releases.unshift(prev_downloads[i][1]);
-                        downloads_total.unshift(prev_downloads[i][0]);
+                        vindx = version_releases.indexOf(prev_downloads[i][1]);
+                        if (vindx == -1) {
+                            version_releases.unshift(prev_downloads[i][1]);
+                            downloads_total.unshift(prev_downloads[i][0]);
+                        } else {
+                            downloads_total[vindx] += prev_downloads[i][0];
+                        }
                     }
 
                     // Se normaliza la variación de descargas
                     for (var i = 0; i < var_downloads_releases.length; i++) {
-                        var_downloads_releases[i] = roundNumber(var_downloads_releases[i] / lastdownloads_total[i], 3);
+                        if (lastdownloads_total[i] != 0) {
+                            var_downloads_releases[i] = roundNumber(var_downloads_releases[i] / lastdownloads_total[i], 3);
+                        } else {
+                            var_downloads_releases[i] = roundNumber(0, 3);
+                        }
                     }
 
                     // Genera descargas por versión global
@@ -785,6 +809,7 @@ function loadTemplate(templateid) {
                                         tooltips: {
                                             enabled: true,
                                             mode: 'index',
+                                            intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 title: function(tooltipItem, data) {
                                                     elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
@@ -859,6 +884,7 @@ function loadTemplate(templateid) {
                                         tooltips: {
                                             enabled: true,
                                             mode: 'index',
+                                            intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 title: function(tooltipItem, data) {
                                                     elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
@@ -912,16 +938,17 @@ function loadTemplate(templateid) {
                                         legend: {
                                             display: false
                                         },
+                                        responsive: true,
                                         tooltips: {
+                                            enabled: true,
                                             mode: 'index',
-                                            intersect: false,
+                                            intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 title: function(tooltipItem, data) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
-                                        },
-                                        responsive: true
+                                        }
                                     }
                                 });
                                 new Chart($('#plot-pielastdays'), {
@@ -948,6 +975,9 @@ function loadTemplate(templateid) {
                                         },
                                         showAllTooltips: false,
                                         tooltips: {
+                                            enabled: true,
+                                            mode: 'index',
+                                            intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 label: function(tooltipItem, data) {
                                                     var allData = data.datasets[tooltipItem.datasetIndex].data;
@@ -1006,16 +1036,17 @@ function loadTemplate(templateid) {
                                         legend: {
                                             display: false
                                         },
+                                        responsive: true,
                                         tooltips: {
+                                            enabled: true,
                                             mode: 'index',
-                                            intersect: false,
+                                            intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 title: function(tooltipItem, data) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
-                                        },
-                                        responsive: true
+                                        }
                                     }
                                 });
                                 if (globver_releases.length > 1) {
@@ -1058,16 +1089,17 @@ function loadTemplate(templateid) {
                                             legend: {
                                                 display: false
                                             },
+                                            responsive: true,
                                             tooltips: {
+                                                enabled: true,
                                                 mode: 'index',
-                                                intersect: false,
+                                                intersect: plotIntersectToShowLegend,
                                                 callbacks: {
                                                     title: function(tooltipItem, data) {
                                                         return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                     }
                                                 }
-                                            },
-                                            responsive: true
+                                            }
                                         }
                                     });
                                 } else {
@@ -1147,9 +1179,11 @@ function loadTemplate(templateid) {
                                                 legend: {
                                                     display: true
                                                 },
+                                                responsive: true,
                                                 tooltips: {
+                                                    enabled: true,
                                                     mode: 'index',
-                                                    intersect: true,
+                                                    intersect: plotIntersectToShowLegend,
                                                     callbacks: {
                                                         title: function(tooltipItem, data) {
                                                             elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
@@ -1160,8 +1194,7 @@ function loadTemplate(templateid) {
                                                             }
                                                         }
                                                     }
-                                                },
-                                                responsive: true
+                                                }
                                             }
                                         });
                                         break;
@@ -1259,9 +1292,11 @@ function loadTemplate(templateid) {
                                                 legend: {
                                                     display: true
                                                 },
+                                                responsive: true,
                                                 tooltips: {
+                                                    enabled: true,
                                                     mode: 'index',
-                                                    intersect: false,
+                                                    intersect: plotIntersectToShowLegend,
                                                     callbacks: {
                                                         title: function(tooltipItem, data) {
                                                             elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
@@ -1272,8 +1307,7 @@ function loadTemplate(templateid) {
                                                             }
                                                         }
                                                     }
-                                                },
-                                                responsive: true
+                                                }
                                             }
                                         });
                                         break;
@@ -1384,9 +1418,11 @@ function loadTemplate(templateid) {
                                     legend: {
                                         display: true
                                     },
+                                    responsive: true,
                                     tooltips: {
+                                        enabled: true,
                                         mode: 'index',
-                                        intersect: true,
+                                        intersect: plotIntersectToShowLegend,
                                         callbacks: {
                                             label: function(tooltipItem, data) {
                                                 var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
@@ -1403,8 +1439,7 @@ function loadTemplate(templateid) {
                                                 }
                                             }
                                         }
-                                    },
-                                    responsive: true
+                                    }
                                 }
                             });
                             // Genera gráfico torta
@@ -1490,5 +1525,10 @@ function writeGraphCanvases() {
 // Obtiene la lista de descargas y versiones de un id
 function getDownloadCounter(templateid) {
     updateDownloadCounter(0, templateid);
+    for (var i = 0; i < download_list_counter.length; i++) {
+        if (Array.isArray(download_list_counter[i][0])) {
+            download_list_counter[i][0] = download_list_counter[i][0][0] + download_list_counter[i][0][1];
+        }
+    }
     return download_list_counter;
 }
