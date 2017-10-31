@@ -682,7 +682,7 @@ function loadTemplate(templateid) {
                             lastversion_releases.push(json[i].tag_name);
                             sum_compactdownloads += json[i].assets[0].download_count;
                             sum_normaldownloads += json[i].assets[1].download_count;
-                            var_downloads_releases.push(json[i].assets[1].download_count - json[i].assets[0].download_count);
+                            var_downloads_releases.push(json[i].assets[1].download_count);
                             version_releases.push(json[i].tag_name);
                         } catch (err) {}
                     }
@@ -708,9 +708,9 @@ function loadTemplate(templateid) {
                     // Se normaliza la variación de descargas
                     for (var i = 0; i < var_downloads_releases.length; i++) {
                         if (lastdownloads_total[i] != 0) {
-                            var_downloads_releases[i] = roundNumber(var_downloads_releases[i] / lastdownloads_total[i], 3);
+                            var_downloads_releases[i] = roundNumber(100 * var_downloads_releases[i] / lastdownloads_total[i], downloadVariationRoundNumber);
                         } else {
-                            var_downloads_releases[i] = roundNumber(0, 3);
+                            var_downloads_releases[i] = roundNumber(0, downloadVariationRoundNumber);
                         }
                     }
 
@@ -771,7 +771,7 @@ function loadTemplate(templateid) {
                                         labels: lastversion_releases,
                                         datasets: [{
                                             data: var_downloads_releases,
-                                            label: 'Variación distribución descargas por modo',
+                                            label: 'Modo normal',
                                             borderColor: '#6d26bb',
                                             backgroundColor: '#6d26bb',
                                             fill: false,
@@ -790,10 +790,10 @@ function loadTemplate(templateid) {
                                             yAxes: [{
                                                 scaleLabel: {
                                                     display: true,
-                                                    labelString: 'Variación normalizada'
+                                                    labelString: 'Porcentaje descarga (%)'
                                                 },
                                                 ticks: {
-                                                    max: jStat.max(var_downloads_releases) * 1.1
+                                                    max: 100
                                                 }
                                             }],
                                             xAxes: [{

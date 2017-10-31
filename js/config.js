@@ -24,14 +24,15 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var downloadPartChartType = 'style1'; // Tipo de gráfico de descargas ultimas 30 (type1, type2)
-var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar, line)
+var downloadPartChartType = 'style1'; // Tipo de gráfico de descargas ultimas 30 (style1,style2)
+var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar,line)
+var downloadVariationRoundNumber = 2; // Cantidad de decimales a redondear gráfico variación descargas
 var plotIntersectToShowLegend = false; // Indica si se debe intersectar datos en gráfico para mostrar tooltips
 var plotLineWidth = 2; // Ancho de línea en gráficos
 var plotTitleFontSize = 13.5; // Tamaño fuente de títulos en gráficos
 var plotTitleFontStyle = 'bold'; // Tipo de fuente en título de gráficos
 var plotXaxisID = true; // Indica si plotea por id o versión en el eje x
-var processBarAnimationStyle = 1; // Animación del círculo de progreso (1, 2)
+var processBarAnimationStyle = 1; // Animación del círculo de progreso (1,2)
 var processBarColor = '#3598DB'; // Color del círculo de progreso
 var processBarLColor = '#93bad5'; // Color del círculo de progreso + claro
 var processBarSetOpacity = 0.5; // Opacidad en la que se fija la barra de progreso de carga
