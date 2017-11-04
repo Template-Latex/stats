@@ -1024,7 +1024,8 @@ function loadTemplate(templateid) {
                                                     labelString: 'Descargas de cada versión'
                                                 },
                                                 ticks: {
-                                                    min: 0
+                                                    min: 0,
+                                                    max: roundNumber(jStat.max(downloads_total) * 0.12, 0) * 10
                                                 }
                                             }],
                                             xAxes: [{
