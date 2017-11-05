@@ -701,7 +701,7 @@ function loadTemplate(templateid) {
                             version_releases.unshift(prev_downloads[i][1]);
                             downloads_total.unshift(prev_downloads[i][0]);
                         } else {
-                            downloads_total[vindx] += prev_downloads[i][0];
+                            // downloads_total[vindx] += prev_downloads[i][0];
                         }
                     }
 
