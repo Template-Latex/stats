@@ -105,6 +105,11 @@ var errorID = {
         "msg": "Error al acceder al archivo JSON de releases",
         "code": 16,
         "moreinfo": "Ocurrió un error al acceder al archivo JSON de releases de Github Stats, probable error de servidor"
+    },
+    "erroridnormalsingle": {
+        "msg": "No se encontró los archivos compacto y normal para Template-Informe",
+        "code": 17,
+        "moreinfo": "Ocurrió un error al obtner los id de los archivos compacto y normal"
     }
 }
 

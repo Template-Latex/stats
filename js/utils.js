@@ -669,22 +669,144 @@ function loadTemplate(templateid) {
 
             var jsonQuery2 = $.getJSON(st.json, function(json) {
                 try {
-                    for (i = json.length - 1; i >= 0; i--) {
-                        try {
-                            downloads_link_compact.push(json[i].assets[0].download_count);
-                            downloads_link_normal.push(json[i].assets[1].download_count);
-                            downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                            lastday_released_str.push(json[i].published_at.substring(0, 10));
-                            lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                            lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
-                            lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
-                            lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                            lastversion_releases.push(json[i].tag_name);
-                            sum_compactdownloads += json[i].assets[0].download_count;
-                            sum_normaldownloads += json[i].assets[1].download_count;
-                            var_downloads_releases.push(json[i].assets[1].download_count);
-                            version_releases.push(json[i].tag_name);
-                        } catch (err) {}
+
+                    // Exclusivo para Template-Informe
+                    if (templateid == 'informe') {
+                        // Se busca el id de archivo compacto y normal
+                        var id_compact = -1;
+                        var id_normal = -1;
+                        lastrel = json[0].assets;
+                        for (var i = 0; i < lastrel.length; i++) {
+                            if (lastrel[i].name == 'Template-Informe.zip') {
+                                id_normal = i;
+                            }
+                            if (lastrel[i].name == 'Template-Informe-Single.zip') {
+                                id_compact = i;
+                            }
+                        }
+                        if (id_compact == -1 || id_normal == -1) {
+                            throwErrorID(errorID.erroridnormalsingle);
+                            return;
+                        }
+
+                        // Se crea lista de particiones para cada departamento
+                        var dptodownloads_normal = [];
+                        var dptodownloads_single = [];
+                        var dptodownloads = []
+                        var dptodownloads_normal_total = [];
+                        var dptodownloads_single_total = [];
+                        var dptodownloads_versions = [];
+                        var dptos = [];
+                        for (var i = 0; i < lastrel.length; i++) {
+                            dpto = lastrel[i].name.split('-');
+                            if (dpto.length == 4) {
+                                dpto = dpto[2];
+                                if (dptos.indexOf(dpto) == -1) {
+                                    dptos.push(dpto);
+                                    dptodownloads_normal.push([]);
+                                    dptodownloads_single.push([]);
+                                    dptodownloads.push(0);
+                                    dptodownloads_normal_total.push(0);
+                                    dptodownloads_single_total.push(0);
+                                }
+                            }
+                        }
+                        var adwl;
+                        var dptototalvers = 0;
+                        for (i = json.length - 1; i >= 0; i--) {
+                            if (json[i].assets.length <= 2) {
+                                try {
+                                    downloads_link_compact.push(json[i].assets[0].download_count);
+                                    downloads_link_normal.push(json[i].assets[1].download_count);
+                                    downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                    lastday_released_str.push(json[i].published_at.substring(0, 10));
+                                    lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
+                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
+                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
+                                    lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                    lastversion_releases.push(json[i].tag_name);
+                                    sum_compactdownloads += json[i].assets[0].download_count;
+                                    sum_normaldownloads += json[i].assets[1].download_count;
+                                    var_downloads_releases.push(json[i].assets[1].download_count);
+                                    version_releases.push(json[i].tag_name);
+                                } catch (err) {}
+                            } else {
+                                dptototalvers += 1;
+                                adwl = json[i].assets;
+                                lastday_released_str.push(json[i].published_at.substring(0, 10));
+                                lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
+                                lastdownloads_compact_size.push(roundNumber(json[i].assets[id_compact].size / 1000, 2));
+                                lastdownloads_normal_size.push(roundNumber(json[i].assets[id_normal].size / 1000, 2));
+                                vdownload_normal = 0;
+                                vdownload_single = 0;
+                                isdpto = false;
+                                for (j = 0; j < adwl.length; j++) {
+                                    vrname = json[i].assets[j].name;
+                                    dpto = json[i].assets[j].name.split('-');
+                                    if (dpto.length == 4) {
+                                        dpto = dpto[2];
+                                        dptoindex = dptos.indexOf(dpto);
+                                    } else if (dpto.length == 3) {
+                                        dpto = dpto[2].replace('.zip', '');
+                                    } else {
+                                        dptoindex = -1;
+                                    }
+                                    if (dptoindex != -1) {
+                                        isdpto = true;
+                                    } else {
+                                        isdpto = false;
+                                    }
+                                    ddl = parseInt(json[i].assets[j].download_count);
+                                    if (vrname.includes('Single')) {
+                                        vdownload_single += ddl;
+                                        if (isdpto) {
+                                            dptodownloads_single[dptoindex].push(ddl);
+                                            dptodownloads_single_total[dptoindex] += ddl;
+                                        }
+                                    } else {
+                                        vdownload_normal += ddl;
+                                        if (isdpto) {
+                                            dptodownloads_normal[dptoindex].push(ddl);
+                                            dptodownloads_normal_total[dptoindex] += ddl;
+                                        }
+                                    }
+                                    if (isdpto) {
+                                        dptodownloads[dptoindex] += ddl;
+                                    }
+                                }
+                                downloads_link_compact.push(vdownload_normal);
+                                downloads_link_normal.push(vdownload_single);
+                                downloads_total.push(vdownload_normal + vdownload_single);
+                                lastdownloads_total.push(vdownload_normal + vdownload_single);
+                                lastversion_releases.push(json[i].tag_name);
+                                dptodownloads_versions.push(json[i].tag_name);
+                                sum_compactdownloads += vdownload_single;
+                                sum_normaldownloads += vdownload_normal;
+                                var_downloads_releases.push(vdownload_normal);
+                                version_releases.push(json[i].tag_name);
+                            }
+                        }
+                    } else {
+                        for (i = json.length - 1; i >= 0; i--) {
+                            try {
+                                downloads_link_compact.push(json[i].assets[0].download_count);
+                                downloads_link_normal.push(json[i].assets[1].download_count);
+                                downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                lastday_released_str.push(json[i].published_at.substring(0, 10));
+                                lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
+                                lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
+                                lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
+                                lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                lastversion_releases.push(json[i].tag_name);
+                                sum_compactdownloads += json[i].assets[0].download_count;
+                                sum_normaldownloads += json[i].assets[1].download_count;
+                                var_downloads_releases.push(json[i].assets[1].download_count);
+                                version_releases.push(json[i].tag_name);
+                            } catch (err) {}
+                        }
+                        // Se borran plots
+                        $('#plot-piedptototal').remove();
+                        $('#plot-piedptolast').remove();
                     }
 
                     // Obtiene descargas anteriores
@@ -764,6 +886,113 @@ function loadTemplate(templateid) {
                     // Genera el gráfico de descargas
                     try {
                         if (json.length >= 1) {
+                            if (templateid == 'informe') {
+                                dpto_colors = [];
+                                nonzero_dptos = [];
+                                nonzero_dptos_downloads = [];
+                                sumdptodownloads = 0;
+                                lastverldptos = dptodownloads_single[0].length - 1;
+                                lastverdptosdownloads = [];
+                                lastdpdownloads = 0;
+                                for (var i = 0; i < dptos.length; i++) {
+                                    if (dptodownloads[i] > 0) {
+                                        nonzero_dptos.push(dptos[i].toUpperCase());
+                                        nonzero_dptos_downloads.push(dptodownloads[i]);
+                                        sumdptodownloads += dptodownloads[i];
+                                        lastverdptosdownloads.push(dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos]);
+                                        lastdpdownloads += dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos];
+                                    }
+                                };
+                                for (var i = 0; i < nonzero_dptos.length; i++) {
+                                    dpto_colors.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+                                };
+                                new Chart($('#plot-piedptolast'), {
+                                    type: 'pie',
+                                    data: {
+                                        labels: nonzero_dptos,
+                                        datasets: [{
+                                            data: lastverdptosdownloads,
+                                            label: 'N° descargas de cada versión',
+                                            borderColor: dpto_colors,
+                                            backgroundColor: dpto_colors
+                                        }]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: String.format('Distribución descargas departamentos últimas última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
+                                        },
+                                        legend: {
+                                            display: true,
+                                            position: 'right'
+                                        },
+                                        showAllTooltips: false,
+                                        tooltips: {
+                                            enabled: true,
+                                            mode: 'index',
+                                            intersect: true,
+                                            callbacks: {
+                                                label: function(tooltipItem, data) {
+                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                                    var tooltipLabel = data.labels[tooltipItem.index];
+                                                    var tooltipData = allData[tooltipItem.index];
+                                                    var total = 0;
+                                                    for (var i in allData) {
+                                                        total += parseInt(allData[i]);
+                                                    }
+                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                                new Chart($('#plot-piedptototal'), {
+                                    type: 'pie',
+                                    data: {
+                                        labels: nonzero_dptos,
+                                        datasets: [{
+                                            data: nonzero_dptos_downloads,
+                                            label: 'N° descargas de cada versión',
+                                            borderColor: dpto_colors,
+                                            backgroundColor: dpto_colors
+                                        }]
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: String.format('Distribución descargas departamentos últimas {1} versiones ({0} descargas)', sumdptodownloads, dptototalvers),
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
+                                        },
+                                        legend: {
+                                            display: true,
+                                            position: 'right'
+                                        },
+                                        showAllTooltips: false,
+                                        tooltips: {
+                                            enabled: true,
+                                            mode: 'index',
+                                            intersect: true,
+                                            callbacks: {
+                                                label: function(tooltipItem, data) {
+                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                                    var tooltipLabel = data.labels[tooltipItem.index];
+                                                    var tooltipData = allData[tooltipItem.index];
+                                                    var total = 0;
+                                                    for (var i in allData) {
+                                                        total += parseInt(allData[i]);
+                                                    }
+                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
                             if (json.length > 1) {
                                 new Chart($('#plot-vartypedownload'), {
                                     type: 'line',
@@ -1527,7 +1756,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
