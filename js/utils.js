@@ -784,8 +784,8 @@ function loadTemplate(templateid) {
                                         dptodownloads[dptoindex] += ddl;
                                     }
                                 }
-                                downloads_link_compact.push(vdownload_normal);
-                                downloads_link_normal.push(vdownload_single);
+                                downloads_link_compact.push(vdownload_single);
+                                downloads_link_normal.push(vdownload_normal);
                                 downloads_total.push(vdownload_normal + vdownload_single);
                                 lastdownloads_total.push(vdownload_normal + vdownload_single);
                                 lastversion_releases.push(json[i].tag_name);
@@ -926,7 +926,11 @@ function loadTemplate(templateid) {
                                             label: dptos[i].toUpperCase(),
                                             backgroundColor: dpto_color,
                                             borderColor: dpto_color,
-                                            data: dpto_dataset_list
+                                            data: dpto_dataset_list,
+                                            fill: false,
+                                            radius: 1,
+                                            tension: 0.3,
+                                            borderWidth: plotLineWidth
                                         });
                                     }
                                 };
@@ -988,49 +992,53 @@ function loadTemplate(templateid) {
                                         }
                                     }
                                 });
-                                new Chart($('#plot-piedptolast'), {
-                                    type: 'pie',
-                                    data: {
-                                        labels: nonzero_dptos,
-                                        datasets: [{
-                                            data: lastverdptosdownloads,
-                                            label: 'N° descargas de cada versión',
-                                            borderColor: dpto_colors,
-                                            backgroundColor: dpto_colors
-                                        }]
-                                    },
-                                    options: {
-                                        title: {
-                                            display: true,
-                                            text: String.format('Distribución descargas departamentos última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
-                                            fontSize: plotTitleFontSize,
-                                            fontStyle: plotTitleFontStyle
+                                if (lastdpdownloads > 0) {
+                                    new Chart($('#plot-piedptolast'), {
+                                        type: 'pie',
+                                        data: {
+                                            labels: nonzero_dptos,
+                                            datasets: [{
+                                                data: lastverdptosdownloads,
+                                                label: 'N° descargas de cada versión',
+                                                borderColor: dpto_colors,
+                                                backgroundColor: dpto_colors
+                                            }]
                                         },
-                                        legend: {
-                                            display: true,
-                                            position: 'right'
-                                        },
-                                        showAllTooltips: false,
-                                        tooltips: {
-                                            enabled: true,
-                                            mode: 'index',
-                                            intersect: true,
-                                            callbacks: {
-                                                label: function(tooltipItem, data) {
-                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                    var tooltipLabel = data.labels[tooltipItem.index];
-                                                    var tooltipData = allData[tooltipItem.index];
-                                                    var total = 0;
-                                                    for (var i in allData) {
-                                                        total += parseInt(allData[i]);
+                                        options: {
+                                            title: {
+                                                display: true,
+                                                text: String.format('Distribución descargas departamentos última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
+                                                fontSize: plotTitleFontSize,
+                                                fontStyle: plotTitleFontStyle
+                                            },
+                                            legend: {
+                                                display: true,
+                                                position: 'right'
+                                            },
+                                            showAllTooltips: false,
+                                            tooltips: {
+                                                enabled: true,
+                                                mode: 'index',
+                                                intersect: true,
+                                                callbacks: {
+                                                    label: function(tooltipItem, data) {
+                                                        var allData = data.datasets[tooltipItem.datasetIndex].data;
+                                                        var tooltipLabel = data.labels[tooltipItem.index];
+                                                        var tooltipData = allData[tooltipItem.index];
+                                                        var total = 0;
+                                                        for (var i in allData) {
+                                                            total += parseInt(allData[i]);
+                                                        }
+                                                        var tooltipPercentage = Math.round((tooltipData / total) * 100);
+                                                        return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                                                     }
-                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                                                 }
                                             }
                                         }
-                                    }
-                                });
+                                    });
+                                } else {
+                                    $('#plot-piedptolast').remove();
+                                }
                                 new Chart($('#plot-piedptototal'), {
                                     type: 'pie',
                                     data: {
