@@ -66,6 +66,11 @@ function roundNumber(num, scale) {
     }
 }
 
+// Retorna el máximo de una lista
+function getMaxOfArray(numArray) {
+    return Math.max.apply(null, numArray);
+}
+
 // Crea un loadingbar
 function loadingBarTrigger() {
     $('#progressLoading').html(' ');
@@ -672,6 +677,7 @@ function loadTemplate(templateid) {
 
                     // Exclusivo para Template-Informe
                     if (templateid == 'informe') {
+
                         // Se busca el id de archivo compacto y normal
                         var id_compact = -1;
                         var id_normal = -1;
@@ -713,8 +719,11 @@ function loadTemplate(templateid) {
                         }
                         var adwl;
                         var dptototalvers = 0;
+
+                        // Se cargan datos del json de descargas
                         for (i = json.length - 1; i >= 0; i--) {
                             if (json[i].assets.length <= 2) {
+                                // Versión normal sin departamentos
                                 try {
                                     downloads_link_compact.push(json[i].assets[0].download_count);
                                     downloads_link_normal.push(json[i].assets[1].download_count);
@@ -731,6 +740,7 @@ function loadTemplate(templateid) {
                                     version_releases.push(json[i].tag_name);
                                 } catch (err) {}
                             } else {
+                                // Versión con departamentos
                                 dptototalvers += 1;
                                 adwl = json[i].assets;
                                 lastday_released_str.push(json[i].published_at.substring(0, 10));
@@ -804,9 +814,10 @@ function loadTemplate(templateid) {
                                 version_releases.push(json[i].tag_name);
                             } catch (err) {}
                         }
-                        // Se borran plots
+                        // Se borran plots de departamentos
                         $('#plot-piedptototal').remove();
                         $('#plot-piedptolast').remove();
+                        $('#plot-dptodownloadlines').remove();
                     }
 
                     // Obtiene descargas anteriores
@@ -887,13 +898,15 @@ function loadTemplate(templateid) {
                     try {
                         if (json.length >= 1) {
                             if (templateid == 'informe') {
-                                dpto_colors = [];
-                                nonzero_dptos = [];
+                                dpto_colors = []; // Colores de los departamentos (random)
+                                nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
                                 nonzero_dptos_downloads = [];
-                                sumdptodownloads = 0;
+                                sumdptodownloads = 0; // Suma total de descargas de departamentos
                                 lastverldptos = dptodownloads_single[0].length - 1;
                                 lastverdptosdownloads = [];
-                                lastdpdownloads = 0;
+                                lastdpdownloads = 0; // Suma total descargas de departamentos última versión
+                                nonzero_dptos_datasets = [];
+                                max_downloads_dptos_perv = 0;
                                 for (var i = 0; i < dptos.length; i++) {
                                     if (dptodownloads[i] > 0) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
@@ -901,11 +914,80 @@ function loadTemplate(templateid) {
                                         sumdptodownloads += dptodownloads[i];
                                         lastverdptosdownloads.push(dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos]);
                                         lastdpdownloads += dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos];
+                                        dpto_color = '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+                                        dpto_colors.push(dpto_color);
+                                        dpto_dataset_list = []; // Dataset para el i-departamento elegido
+                                        // Se obtienen las descargas del departamento para cada una de las versiones
+                                        for (k = 0; k < dptototalvers; k++) {
+                                            dpto_dataset_list.push(dptodownloads_single[i][k] + dptodownloads_normal[i][k]);
+                                        }
+                                        max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
+                                        nonzero_dptos_datasets.push({
+                                            label: dptos[i].toUpperCase(),
+                                            backgroundColor: dpto_color,
+                                            borderColor: dpto_color,
+                                            data: dpto_dataset_list
+                                        });
                                     }
                                 };
-                                for (var i = 0; i < nonzero_dptos.length; i++) {
-                                    dpto_colors.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
-                                };
+                                max_downloads_dptos_perv = roundNumber(max_downloads_dptos_perv * 1.2, 0); // Se actualiza el máximo a un valor superior
+                                new Chart($('#plot-dptodownloadlines'), {
+                                    type: 'line',
+                                    data: {
+                                        labels: dptodownloads_versions,
+                                        datasets: nonzero_dptos_datasets
+                                    },
+                                    options: {
+                                        title: {
+                                            display: true,
+                                            text: String.format('Descargas por departamento últimas {0} versiones', dptototalvers),
+                                            fontSize: plotTitleFontSize,
+                                            fontStyle: plotTitleFontStyle
+                                        },
+                                        scales: {
+                                            yAxes: [{
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: 'Número de descargas'
+                                                },
+                                                ticks: {
+                                                    beginAtZero: true,
+                                                    callback: function(value) {
+                                                        if (value % 1 === 0) {
+                                                            return value;
+                                                        }
+                                                    },
+                                                    max: max_downloads_dptos_perv
+                                                }
+                                            }],
+                                            xAxes: [{
+                                                scaleLabel: {
+                                                    display: true,
+                                                    labelString: 'Número de versión'
+                                                }
+                                            }]
+                                        },
+                                        legend: {
+                                            display: false
+                                        },
+                                        responsive: true,
+                                        tooltips: {
+                                            enabled: true,
+                                            mode: 'index',
+                                            intersect: plotIntersectToShowLegend,
+                                            callbacks: {
+                                                title: function(tooltipItem, data) {
+                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex != -1) {
+                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                    } else {
+                                                        return tooltipItem[0].xLabel;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
                                 new Chart($('#plot-piedptolast'), {
                                     type: 'pie',
                                     data: {
@@ -920,7 +1002,7 @@ function loadTemplate(templateid) {
                                     options: {
                                         title: {
                                             display: true,
-                                            text: String.format('Distribución descargas departamentos últimas última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
+                                            text: String.format('Distribución descargas departamentos última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -1756,7 +1838,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
