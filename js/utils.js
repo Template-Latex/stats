@@ -907,15 +907,23 @@ function loadTemplate(templateid) {
                                 lastdpdownloads = 0; // Suma total descargas de departamentos última versión
                                 nonzero_dptos_datasets = [];
                                 max_downloads_dptos_perv = 0;
+                                lastverdptos_dpt = [];
+                                lastverdptos_colors = [];
+                                lastverdptos_sum = 0;
                                 for (var i = 0; i < dptos.length; i++) {
                                     if (dptodownloads[i] > 0) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
                                         nonzero_dptos_downloads.push(dptodownloads[i]);
                                         sumdptodownloads += dptodownloads[i];
-                                        lastverdptosdownloads.push(dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos]);
-                                        lastdpdownloads += dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos];
+                                        lastverdptos_sum = dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos];
                                         dpto_color = '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
                                         dpto_colors.push(dpto_color);
+                                        if (lastverdptos_sum > 0) {
+                                            lastdpdownloads += lastverdptos_sum;
+                                            lastverdptosdownloads.push(lastverdptos_sum);
+                                            lastverdptos_dpt.push(dptos[i].toUpperCase());
+                                            lastverdptos_colors.push(dpto_color);
+                                        }
                                         dpto_dataset_list = []; // Dataset para el i-departamento elegido
                                         // Se obtienen las descargas del departamento para cada una de las versiones
                                         for (k = 0; k < dptototalvers; k++) {
@@ -996,12 +1004,12 @@ function loadTemplate(templateid) {
                                     new Chart($('#plot-piedptolast'), {
                                         type: 'pie',
                                         data: {
-                                            labels: nonzero_dptos,
+                                            labels: lastverdptos_dpt,
                                             datasets: [{
                                                 data: lastverdptosdownloads,
                                                 label: 'N° descargas de cada versión',
-                                                borderColor: dpto_colors,
-                                                backgroundColor: dpto_colors
+                                                borderColor: lastverdptos_colors,
+                                                backgroundColor: lastverdptos_colors
                                             }]
                                         },
                                         options: {
