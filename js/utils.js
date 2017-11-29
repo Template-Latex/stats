@@ -755,12 +755,12 @@ function loadTemplate(templateid) {
                                     dpto = json[i].assets[j].name.split('-');
                                     if (dpto.length == 4) {
                                         dpto = dpto[2];
-                                        dptoindex = dptos.indexOf(dpto);
                                     } else if (dpto.length == 3) {
                                         dpto = dpto[2].replace('.zip', '');
                                     } else {
-                                        dptoindex = -1;
+                                        dpto = '';
                                     }
+                                    dptoindex = dptos.indexOf(dpto);
                                     if (dptoindex != -1) {
                                         isdpto = true;
                                     } else {
@@ -930,6 +930,11 @@ function loadTemplate(templateid) {
                                             dpto_dataset_list.push(dptodownloads_single[i][k] + dptodownloads_normal[i][k]);
                                         }
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
+                                        if (dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) != -1) {
+                                            hiddendpto = false;
+                                        } else {
+                                            hiddendpto = true;
+                                        }
                                         nonzero_dptos_datasets.push({
                                             label: dptos[i].toUpperCase(),
                                             backgroundColor: dpto_color,
@@ -938,7 +943,8 @@ function loadTemplate(templateid) {
                                             fill: false,
                                             radius: 1,
                                             tension: 0.3,
-                                            borderWidth: plotLineWidth
+                                            borderWidth: plotLineWidth,
+                                            hidden: hiddendpto
                                         });
                                     }
                                 };

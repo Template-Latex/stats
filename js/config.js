@@ -27,6 +27,7 @@ Licence:
 var downloadPartChartType = 'style1'; // Tipo de gráfico de descargas ultimas 30 (style1,style2)
 var downloadTotalChartType = 'bar'; // Tipo de gráfico de descargas totales (bar,line)
 var downloadVariationRoundNumber = 2; // Cantidad de decimales a redondear gráfico variación descargas
+var dptosDisplayDefaultLinePlot = ['DIC', 'DIE', 'DCC']; // Departamentos que grafica por defecto
 var plotIntersectToShowLegend = false; // Indica si se debe intersectar datos en gráfico para mostrar tooltips
 var plotLineWidth = 2; // Ancho de línea en gráficos
 var plotTitleFontSize = 13.5; // Tamaño fuente de títulos en gráficos
