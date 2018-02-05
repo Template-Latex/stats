@@ -88,7 +88,6 @@ $(document).ready(function($) {
         }
     }
 
-
     // Se fija tabla al hacer scroll
     var lockScrollUpClass = false;
     var lockScrollDownClass = false;
