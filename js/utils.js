@@ -4,7 +4,7 @@ TEMPLATE-LATEX STATS
 Author: Pablo Pizarro R. @ ppizarror.com
 Licence:
     The MIT License (MIT)
-    Copyright 2017,2018 Pablo Pizarro R.
+    Copyright 2017-2018 Pablo Pizarro R.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -24,15 +24,16 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+import * as ProgressBar from "./progressbar";
+
 var loadingBarAnimation; // Animación de la barra de carga
-var staticUrl = location.protocol + '//' + location.host + location.pathname; // Ubicación del archivo web
 
 // Añade format a los strings
 if (!String.format) {
-    String.format = function(format) {
+    String.format = function (format) {
         var args = Array.prototype.slice.call(arguments, 1);
-        return format.replace(/{(\d+)}/g, function(match, number) {
-            return typeof args[number] != 'undefined' ?
+        return format.replace(/{(\d+)}/g, function (match, number) {
+            return typeof args[number] !== 'undefined' ?
                 args[number] :
                 match;
         });
@@ -40,22 +41,23 @@ if (!String.format) {
 }
 
 // Obtiene parámetros de la url
-$.urlParam = function(name) {
+$.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
         return null;
     } else {
         return decodeURI(results[1]) || 0;
     }
-}
+};
 
 // Redondea un número
 function roundNumber(num, scale) {
     if (!('' + num).includes('e')) {
+        // noinspection JSCheckFunctionSignatures
         return +(Math.round(num + 'e+' + scale) + 'e-' + scale);
     } else {
         var arr = ('' + num).split('e');
-        var sig = ''
+        var sig = '';
         if (+arr[1] + scale > 0) {
             sig = '+';
         }
@@ -98,19 +100,19 @@ function loadingBarTrigger() {
 
             circle.set(0.05);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 circle.animate(0.3);
             }, 1000);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 circle.animate(0.4);
             }, 3500);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 circle.animate(0.8);
             }, 5500);
 
-            setTimeout(function() {
+            setTimeout(function () {
                 circle.animate(1);
             }, 8000);
             break;
@@ -165,11 +167,11 @@ function changeUrlParam(param, value) {
 // Agrega plugins a Chart.js
 function initializeChartjsPlugins() {
     Chart.pluginService.register({
-        beforeRender: function(chart) {
+        beforeRender: function (chart) {
             if (chart.config.options.showAllTooltips) {
                 chart.pluginTooltips = [];
-                chart.config.data.datasets.forEach(function(dataset, i) {
-                    chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+                chart.config.data.datasets.forEach(function (dataset, i) {
+                    chart.getDatasetMeta(i).data.forEach(function (sector, j) {
                         chart.pluginTooltips.push(new Chart.Tooltip({
                             _chart: chart.chart,
                             _chartInstance: chart,
@@ -182,7 +184,7 @@ function initializeChartjsPlugins() {
                 chart.options.tooltips.enabled = false;
             }
         },
-        afterDraw: function(chart, easing) {
+        afterDraw: function (chart, easing) {
             if (chart.config.options.showAllTooltips) {
                 if (!chart.allTooltipsOnce) {
                     if (easing !== 1)
@@ -190,7 +192,7 @@ function initializeChartjsPlugins() {
                     chart.allTooltipsOnce = true;
                 }
                 chart.options.tooltips.enabled = true;
-                Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+                Chart.helpers.each(chart.pluginTooltips, function (tooltip) {
                     tooltip.initialize();
                     tooltip.update();
                     tooltip.pivot();
@@ -215,7 +217,8 @@ function loadTemplate(templateid) {
     } catch (e) {
         throwErrorID(errorID.badtemplateid);
         return;
-    } finally {}
+    } finally {
+    }
 
     // Muestra barra progreso y nombre template
     try {
@@ -223,13 +226,14 @@ function loadTemplate(templateid) {
         $(document).prop('title', 'Stats - ' + st.header);
         $('#progressLoading').fadeTo('slow', processBarSetOpacity);
         loadingBarTrigger();
-        loadingBarAnimation = setInterval(function() {
+        loadingBarAnimation = setInterval(function () {
             loadingBarTrigger();
         }, timeDurationProcessBar + 50);
     } catch (e) {
         throwErrorID(errorID.loadingbarsetup);
         return;
-    } finally {}
+    } finally {
+    }
 
     // Actualiza url
     changeUrlParam('template', st.tag);
@@ -250,11 +254,12 @@ function loadTemplate(templateid) {
         } catch (e) {
             throwErrorID(errorID.deletetable, e);
             return;
-        } finally {}
+        } finally {
+        }
     }
 
     // Se carga archivo de estadísticas
-    var jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, st.data), function(data) {
+    var jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, st.data), function (data) {
         try {
             data = data.split('\n');
 
@@ -270,7 +275,7 @@ function loadTemplate(templateid) {
                     a = [];
                     line = data[i].split(' ');
                     for (var j = 0; j < line.length; j++) {
-                        if (line[j] != '') {
+                        if (line[j] !== '') {
                             a.push(line[j]);
                         }
                     }
@@ -284,7 +289,8 @@ function loadTemplate(templateid) {
             } catch (e) {
                 throwErrorID(errorID.parsedata, e);
                 return;
-            } finally {}
+            } finally {
+            }
 
             // Se genera la tabla
             try {
@@ -312,7 +318,8 @@ function loadTemplate(templateid) {
             } catch (e) {
                 throwErrorID(errorID.generatetable, e);
                 return;
-            } finally {}
+            } finally {
+            }
             hasLoaded = true;
 
             // Estadística tiempos de compilación
@@ -329,7 +336,8 @@ function loadTemplate(templateid) {
             } catch (e) {
                 throwErrorID(errorID.calcctimemean, e);
                 return;
-            } finally {}
+            } finally {
+            }
 
             // Estadística versiones por día
             try {
@@ -337,7 +345,7 @@ function loadTemplate(templateid) {
                 day_activity_counter = [];
                 for (var i = 0; i < loadedData.length; i++) {
                     k = jQuery.inArray(loadedData[i][3], day_activity);
-                    if (k == -1) {
+                    if (k === -1) {
                         day_activity.push(loadedData[i][3]);
                         day_activity_counter.push(1);
                     } else {
@@ -347,7 +355,8 @@ function loadTemplate(templateid) {
             } catch (e) {
                 throwErrorID(errorID.errorcreatedayactivitystat, e);
                 return;
-            } finally {}
+            } finally {
+            }
 
             // Plotea las estadísticas
             try {
@@ -407,14 +416,14 @@ function loadTemplate(templateid) {
                         data: {
                             labels: plot_id,
                             datasets: [{
-                                    data: plot_ctime,
-                                    label: 'Tiempo de compilación (s)',
-                                    borderColor: '#8436d7',
-                                    backgroundColor: '#8436d7',
-                                    fill: false,
-                                    borderWidth: plotLineWidth,
-                                    radius: 1
-                                },
+                                data: plot_ctime,
+                                label: 'Tiempo de compilación (s)',
+                                borderColor: '#8436d7',
+                                backgroundColor: '#8436d7',
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 1
+                            },
                                 {
                                     data: plot_mean_ctime,
                                     label: 'Promedio (s)',
@@ -448,9 +457,9 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function(tooltipItem, data) {
+                                    title: function (tooltipItem, data) {
                                         elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
-                                        if (elemindex != -1) {
+                                        if (elemindex !== -1) {
                                             return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
                                         } else {
                                             return tooltipItem[0].xLabel;
@@ -523,9 +532,9 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function(tooltipItem, data) {
+                                    title: function (tooltipItem, data) {
                                         elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
-                                        if (elemindex != -1) {
+                                        if (elemindex !== -1) {
                                             return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
                                         } else {
                                             return tooltipItem[0].xLabel;
@@ -541,14 +550,14 @@ function loadTemplate(templateid) {
                         data: {
                             labels: plot_ver,
                             datasets: [{
-                                    data: plot_ctime,
-                                    label: 'Tiempo de compilación (s)',
-                                    borderColor: '#8436d7',
-                                    backgroundColor: '#8436d7',
-                                    fill: false,
-                                    borderWidth: plotLineWidth,
-                                    radius: 1
-                                },
+                                data: plot_ctime,
+                                label: 'Tiempo de compilación (s)',
+                                borderColor: '#8436d7',
+                                backgroundColor: '#8436d7',
+                                fill: false,
+                                borderWidth: plotLineWidth,
+                                radius: 1
+                            },
                                 {
                                     data: plot_mean_ctime,
                                     label: 'Promedio (s)',
@@ -653,7 +662,8 @@ function loadTemplate(templateid) {
             } catch (e) {
                 throwErrorID(errorID.genplots, e);
                 return;
-            } finally {}
+            } finally {
+            }
 
             // Obtiene descargas de la versión
             var downloads_link_compact = [];
@@ -672,25 +682,25 @@ function loadTemplate(templateid) {
             var var_downloads_releases = [];
             var version_releases = [];
 
-            var jsonQuery2 = $.getJSON(st.json, function(json) {
+            var jsonQuery2 = $.getJSON(st.json, function (json) {
                 try {
 
                     // Exclusivo para Template-Informe
-                    if (templateid == 'informe') {
+                    if (templateid === 'informe') {
 
                         // Se busca el id de archivo compacto y normal
                         var id_compact = -1;
                         var id_normal = -1;
                         lastrel = json[0].assets;
                         for (var i = 0; i < lastrel.length; i++) {
-                            if (lastrel[i].name == 'Template-Informe.zip') {
+                            if (lastrel[i].name === 'Template-Informe.zip') {
                                 id_normal = i;
                             }
-                            if (lastrel[i].name == 'Template-Informe-Single.zip') {
+                            if (lastrel[i].name === 'Template-Informe-Single.zip') {
                                 id_compact = i;
                             }
                         }
-                        if (id_compact == -1 || id_normal == -1) {
+                        if (id_compact === -1 || id_normal === -1) {
                             throwErrorID(errorID.erroridnormalsingle);
                             return;
                         }
@@ -698,16 +708,16 @@ function loadTemplate(templateid) {
                         // Se crea lista de particiones para cada departamento
                         var dptodownloads_normal = [];
                         var dptodownloads_single = [];
-                        var dptodownloads = []
+                        var dptodownloads = [];
                         var dptodownloads_normal_total = [];
                         var dptodownloads_single_total = [];
                         var dptodownloads_versions = [];
                         var dptos = [];
                         for (var i = 0; i < lastrel.length; i++) {
                             dpto = lastrel[i].name.split('-');
-                            if (dpto.length == 4) {
+                            if (dpto.length === 4) {
                                 dpto = dpto[2];
-                                if (dptos.indexOf(dpto) == -1) {
+                                if (dptos.indexOf(dpto) === -1) {
                                     dptos.push(dpto);
                                     dptodownloads_normal.push([]);
                                     dptodownloads_single.push([]);
@@ -738,7 +748,8 @@ function loadTemplate(templateid) {
                                     sum_normaldownloads += json[i].assets[1].download_count;
                                     var_downloads_releases.push(json[i].assets[1].download_count);
                                     version_releases.push(json[i].tag_name);
-                                } catch (err) {}
+                                } catch (err) {
+                                }
                             } else {
                                 // Versión con departamentos
                                 dptototalvers += 1;
@@ -747,25 +758,22 @@ function loadTemplate(templateid) {
                                 lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
                                 lastdownloads_compact_size.push(roundNumber(json[i].assets[id_compact].size / 1000, 2));
                                 lastdownloads_normal_size.push(roundNumber(json[i].assets[id_normal].size / 1000, 2));
-                                vdownload_normal = 0;
-                                vdownload_single = 0;
-                                isdpto = false;
+                                var vdownload_normal = 0;
+                                var vdownload_single = 0;
+                                var isdpto = false;
+                                var vrname, dpto, dptoindex, ddl;
                                 for (j = 0; j < adwl.length; j++) {
                                     vrname = json[i].assets[j].name;
                                     dpto = json[i].assets[j].name.split('-');
-                                    if (dpto.length == 4) {
+                                    if (dpto.length === 4) {
                                         dpto = dpto[2];
-                                    } else if (dpto.length == 3) {
+                                    } else if (dpto.length === 3) {
                                         dpto = dpto[2].replace('.zip', '');
                                     } else {
                                         dpto = '';
                                     }
                                     dptoindex = dptos.indexOf(dpto);
-                                    if (dptoindex != -1) {
-                                        isdpto = true;
-                                    } else {
-                                        isdpto = false;
-                                    }
+                                    isdpto = dptoindex !== -1;
                                     ddl = parseInt(json[i].assets[j].download_count);
                                     if (vrname.includes('Single')) {
                                         vdownload_single += ddl;
@@ -812,7 +820,8 @@ function loadTemplate(templateid) {
                                 sum_normaldownloads += json[i].assets[1].download_count;
                                 var_downloads_releases.push(json[i].assets[1].download_count);
                                 version_releases.push(json[i].tag_name);
-                            } catch (err) {}
+                            } catch (err) {
+                            }
                         }
                         // Se borran plots de departamentos
                         $('#plot-piedptototal').remove();
@@ -822,15 +831,16 @@ function loadTemplate(templateid) {
 
                     // Obtiene descargas anteriores
                     try {
-                        prev_downloads = getDownloadCounter(st.name);
+                        var prev_downloads = getDownloadCounter(st.name);
                     } catch (e) {
                         throwErrorID(errorID.retrievedownloadcounter, e);
                         return;
-                    } finally {}
+                    } finally {
+                    }
                     prev_downloads.reverse();
-                    for (var i = 0; i < prev_downloads.length; i++) {
-                        vindx = version_releases.indexOf(prev_downloads[i][1]);
-                        if (vindx == -1) {
+                    for (i = 0; i < prev_downloads.length; i++) {
+                        let vindx = version_releases.indexOf(prev_downloads[i][1]);
+                        if (vindx === -1) {
                             version_releases.unshift(prev_downloads[i][1]);
                             downloads_total.unshift(prev_downloads[i][0]);
                         } else {
@@ -839,8 +849,8 @@ function loadTemplate(templateid) {
                     }
 
                     // Se normaliza la variación de descargas
-                    for (var i = 0; i < var_downloads_releases.length; i++) {
-                        if (lastdownloads_total[i] != 0) {
+                    for (i = 0; i < var_downloads_releases.length; i++) {
+                        if (lastdownloads_total[i] !== 0) {
                             var_downloads_releases[i] = roundNumber(100 * var_downloads_releases[i] / lastdownloads_total[i], downloadVariationRoundNumber);
                         } else {
                             var_downloads_releases[i] = roundNumber(0, downloadVariationRoundNumber);
@@ -849,15 +859,15 @@ function loadTemplate(templateid) {
 
                     // Genera descargas por versión global
                     j = -1;
-                    lgv = '';
-                    for (var i = 0; i < version_releases.length; i++) {
+                    var lgv = '', gv;
+                    for (i = 0; i < version_releases.length; i++) {
                         gv = version_releases[i].substring(0, 2);
-                        if (gv[1] == '.') {
+                        if (gv[1] === '.') {
                             gv = gv[0];
-                        } else if (gv[0] == '<') {
+                        } else if (gv[0] === '<') {
                             gv = gv[1];
                         }
-                        if (lgv != gv) {
+                        if (lgv !== gv) {
                             globver_releases.push(gv);
                             globver_downloads.push(downloads_total[i]);
                             j += 1;
@@ -868,49 +878,51 @@ function loadTemplate(templateid) {
                     }
 
                     // Genera descargas acumulado
-                    acum_downloads = [downloads_total[0]];
-                    for (var i = 1; i < downloads_total.length; i++) {
+                    var acum_downloads = [downloads_total[0]];
+                    for (i = 1; i < downloads_total.length; i++) {
                         acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                     }
-                    sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
+                    var sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
 
                     // Calcula días de cada versión disponibles
-                    lastday_total = [];
-                    for (var i = 0; i < lastday_released.length - 1; i++) {
+                    var lastday_total = [];
+                    for (i = 0; i < lastday_released.length - 1; i++) {
                         lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
                     }
                     lastday_total.push(Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1));
 
                     // Descargas por día
-                    downloads_compact_per_day = [];
-                    downloads_normal_per_day = [];
-                    downloads_per_day = [];
-                    for (var i = 0; i < lastday_total.length; i++) {
+                    var downloads_compact_per_day = [];
+                    var downloads_normal_per_day = [];
+                    var downloads_per_day = [];
+                    for (i = 0; i < lastday_total.length; i++) {
                         downloads_compact_per_day.push(roundNumber(downloads_link_compact[i] / lastday_total[i], 2));
                         downloads_normal_per_day.push(roundNumber(downloads_link_normal[i] / lastday_total[i], 2));
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
                     }
 
                     // Número de versión correcto en últimas n-versiones
-                    last_n_version = Math.min(30, json.length);
+                    var last_n_version = Math.min(30, json.length);
 
                     // Genera el gráfico de descargas
                     try {
                         if (json.length >= 1) {
-                            if (templateid == 'informe') {
-                                dpto_colors = []; // Colores de los departamentos (random)
-                                nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
-                                nonzero_dptos_downloads = [];
-                                sumdptodownloads = 0; // Suma total de descargas de departamentos
-                                lastverldptos = dptodownloads_single[0].length - 1;
-                                lastverdptosdownloads = [];
-                                lastdpdownloads = 0; // Suma total descargas de departamentos última versión
-                                nonzero_dptos_datasets = [];
-                                max_downloads_dptos_perv = 0;
-                                lastverdptos_dpt = [];
-                                lastverdptos_colors = [];
-                                lastverdptos_sum = 0;
-                                for (var i = 0; i < dptos.length; i++) {
+                            if (templateid === 'informe') {
+                                var dpto_colors = []; // Colores de los departamentos (random)
+                                var nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
+                                var nonzero_dptos_downloads = [];
+                                var sumdptodownloads = 0; // Suma total de descargas de departamentos
+                                var lastverldptos = dptodownloads_single[0].length - 1;
+                                var lastverdptosdownloads = [];
+                                var lastdpdownloads = 0; // Suma total descargas de departamentos última versión
+                                var nonzero_dptos_datasets = [];
+                                var max_downloads_dptos_perv = 0;
+                                var lastverdptos_dpt = [];
+                                var lastverdptos_colors = [];
+                                var lastverdptos_sum = 0;
+                                var dpto_color;
+                                var dpto_dataset_list;
+                                for (i = 0; i < dptos.length; i++) {
                                     if (dptodownloads[i] > 0) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
                                         nonzero_dptos_downloads.push(dptodownloads[i]);
@@ -925,16 +937,13 @@ function loadTemplate(templateid) {
                                             lastverdptos_colors.push(dpto_color);
                                         }
                                         dpto_dataset_list = []; // Dataset para el i-departamento elegido
+
                                         // Se obtienen las descargas del departamento para cada una de las versiones
-                                        for (k = 0; k < dptototalvers; k++) {
+                                        for (let k = 0; k < dptototalvers; k++) {
                                             dpto_dataset_list.push(dptodownloads_single[i][k] + dptodownloads_normal[i][k]);
                                         }
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
-                                        if (dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) != -1) {
-                                            hiddendpto = false;
-                                        } else {
-                                            hiddendpto = true;
-                                        }
+                                        var hiddendpto = dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) === -1;
                                         nonzero_dptos_datasets.push({
                                             label: dptos[i].toUpperCase(),
                                             backgroundColor: dpto_color,
@@ -947,7 +956,7 @@ function loadTemplate(templateid) {
                                             hidden: hiddendpto
                                         });
                                     }
-                                };
+                                }
                                 max_downloads_dptos_perv = roundNumber(max_downloads_dptos_perv * 1.2, 0); // Se actualiza el máximo a un valor superior
                                 new Chart($('#plot-dptodownloadlines'), {
                                     type: 'line',
@@ -970,7 +979,7 @@ function loadTemplate(templateid) {
                                                 },
                                                 ticks: {
                                                     beginAtZero: true,
-                                                    callback: function(value) {
+                                                    callback: function (value) {
                                                         if (value % 1 === 0) {
                                                             return value;
                                                         }
@@ -993,9 +1002,9 @@ function loadTemplate(templateid) {
                                             enabled: true,
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function(tooltipItem, data) {
-                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex != -1) {
+                                                title: function (tooltipItem) {
+                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex !== -1) {
                                                         return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                     } else {
                                                         return tooltipItem[0].xLabel;
@@ -1034,7 +1043,7 @@ function loadTemplate(templateid) {
                                                 mode: 'index',
                                                 intersect: true,
                                                 callbacks: {
-                                                    label: function(tooltipItem, data) {
+                                                    label: function (tooltipItem, data) {
                                                         var allData = data.datasets[tooltipItem.datasetIndex].data;
                                                         var tooltipLabel = data.labels[tooltipItem.index];
                                                         var tooltipData = allData[tooltipItem.index];
@@ -1080,7 +1089,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: true,
                                             callbacks: {
-                                                label: function(tooltipItem, data) {
+                                                label: function (tooltipItem, data) {
                                                     var allData = data.datasets[tooltipItem.datasetIndex].data;
                                                     var tooltipLabel = data.labels[tooltipItem.index];
                                                     var tooltipData = allData[tooltipItem.index];
@@ -1144,9 +1153,9 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function(tooltipItem, data) {
-                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex != -1) {
+                                                title: function (tooltipItem) {
+                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex !== -1) {
                                                         return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                     } else {
                                                         return tooltipItem[0].xLabel;
@@ -1161,14 +1170,14 @@ function loadTemplate(templateid) {
                                     data: {
                                         labels: lastversion_releases,
                                         datasets: [{
-                                                data: downloads_per_day,
-                                                label: 'Total descargas por día',
-                                                borderColor: '#2b2b2b',
-                                                backgroundColor: '#2b2b2b',
-                                                fill: false,
-                                                radius: 1,
-                                                borderWidth: plotLineWidth
-                                            },
+                                            data: downloads_per_day,
+                                            label: 'Total descargas por día',
+                                            borderColor: '#2b2b2b',
+                                            backgroundColor: '#2b2b2b',
+                                            fill: false,
+                                            radius: 1,
+                                            borderWidth: plotLineWidth
+                                        },
                                             {
                                                 data: downloads_normal_per_day,
                                                 label: 'Modo normal',
@@ -1219,9 +1228,9 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function(tooltipItem, data) {
-                                                    elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex != -1) {
+                                                title: function (tooltipItem) {
+                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if (elemindex !== -1) {
                                                         return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                     } else {
                                                         return tooltipItem[0].xLabel;
@@ -1277,7 +1286,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function(tooltipItem, data) {
+                                                title: function (tooltipItem, data) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
@@ -1312,7 +1321,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: true,
                                             callbacks: {
-                                                label: function(tooltipItem, data) {
+                                                label: function (tooltipItem, data) {
                                                     var allData = data.datasets[tooltipItem.datasetIndex].data;
                                                     var tooltipLabel = data.labels[tooltipItem.index];
                                                     var tooltipData = allData[tooltipItem.index];
@@ -1328,7 +1337,7 @@ function loadTemplate(templateid) {
                                     }
                                 });
                                 new Chart($('#plot-totaldownloads'), {
-                                    type: downloadTotalChartType,
+                                    type: 'line',
                                     data: {
                                         labels: version_releases,
                                         datasets: [{
@@ -1376,7 +1385,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function(tooltipItem, data) {
+                                                title: function (tooltipItem, data) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
@@ -1429,7 +1438,7 @@ function loadTemplate(templateid) {
                                                 mode: 'index',
                                                 intersect: plotIntersectToShowLegend,
                                                 callbacks: {
-                                                    title: function(tooltipItem, data) {
+                                                    title: function (tooltipItem) {
                                                         return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                     }
                                                 }
@@ -1446,17 +1455,17 @@ function loadTemplate(templateid) {
                                             data: {
                                                 labels: lastversion_releases,
                                                 datasets: [{
-                                                        data: lastday_total,
-                                                        label: 'Días activo',
-                                                        borderColor: '#530071',
-                                                        backgroundColor: '#530071',
-                                                        fill: false,
-                                                        borderWidth: plotLineWidth,
-                                                        radius: 1,
-                                                        pointStyle: 'circle',
-                                                        yAxisID: 'y-axis-2',
-                                                        type: 'line'
-                                                    },
+                                                    data: lastday_total,
+                                                    label: 'Días activo',
+                                                    borderColor: '#530071',
+                                                    backgroundColor: '#530071',
+                                                    fill: false,
+                                                    borderWidth: plotLineWidth,
+                                                    radius: 1,
+                                                    pointStyle: 'circle',
+                                                    yAxisID: 'y-axis-2',
+                                                    type: 'line'
+                                                },
                                                     {
                                                         data: downloads_link_normal,
                                                         label: 'Descargas normal',
@@ -1519,9 +1528,9 @@ function loadTemplate(templateid) {
                                                     mode: 'index',
                                                     intersect: plotIntersectToShowLegend,
                                                     callbacks: {
-                                                        title: function(tooltipItem, data) {
-                                                            elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                            if (elemindex != -1) {
+                                                        title: function (tooltipItem) {
+                                                            let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                            if (elemindex !== -1) {
                                                                 return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                             } else {
                                                                 return tooltipItem[0].xLabel;
@@ -1538,17 +1547,17 @@ function loadTemplate(templateid) {
                                             data: {
                                                 labels: lastversion_releases,
                                                 datasets: [{
-                                                        data: downloads_link_normal,
-                                                        label: 'Versión normal',
-                                                        borderColor: '#057375',
-                                                        backgroundColor: '#057375',
-                                                        fill: false,
-                                                        borderWidth: plotLineWidth,
-                                                        radius: 2,
-                                                        pointStyle: 'circle',
-                                                        tension: 0,
-                                                        yAxisID: 'y-axis-1'
-                                                    },
+                                                    data: downloads_link_normal,
+                                                    label: 'Versión normal',
+                                                    borderColor: '#057375',
+                                                    backgroundColor: '#057375',
+                                                    fill: false,
+                                                    borderWidth: plotLineWidth,
+                                                    radius: 2,
+                                                    pointStyle: 'circle',
+                                                    tension: 0,
+                                                    yAxisID: 'y-axis-1'
+                                                },
                                                     {
                                                         data: downloads_link_compact,
                                                         label: 'Versión compacta',
@@ -1632,9 +1641,9 @@ function loadTemplate(templateid) {
                                                     mode: 'index',
                                                     intersect: plotIntersectToShowLegend,
                                                     callbacks: {
-                                                        title: function(tooltipItem, data) {
+                                                        title: function (tooltipItem, data) {
                                                             elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                            if (elemindex != -1) {
+                                                            if (elemindex !== -1) {
                                                                 return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                             } else {
                                                                 return tooltipItem[0].xLabel;
@@ -1684,7 +1693,7 @@ function loadTemplate(templateid) {
                                         showAllTooltips: false,
                                         tooltips: {
                                             callbacks: {
-                                                label: function(tooltipItem, data) {
+                                                label: function (tooltipItem, data) {
                                                     var allData = data.datasets[tooltipItem.datasetIndex].data;
                                                     var tooltipLabel = data.labels[tooltipItem.index];
                                                     var tooltipData = allData[tooltipItem.index];
@@ -1707,15 +1716,15 @@ function loadTemplate(templateid) {
                                 data: {
                                     labels: lastversion_releases,
                                     datasets: [{
-                                            data: lastdownloads_normal_size,
-                                            label: 'Versión normal',
-                                            borderColor: '#ff8f2e',
-                                            backgroundColor: '#ff8f2e',
-                                            fill: false,
-                                            borderWidth: plotLineWidth,
-                                            radius: 2,
-                                            pointStyle: 'circle'
-                                        },
+                                        data: lastdownloads_normal_size,
+                                        label: 'Versión normal',
+                                        borderColor: '#ff8f2e',
+                                        backgroundColor: '#ff8f2e',
+                                        fill: false,
+                                        borderWidth: plotLineWidth,
+                                        radius: 2,
+                                        pointStyle: 'circle'
+                                    },
                                         {
                                             data: lastdownloads_compact_size,
                                             label: 'Versión compacta',
@@ -1758,15 +1767,15 @@ function loadTemplate(templateid) {
                                         mode: 'index',
                                         intersect: plotIntersectToShowLegend,
                                         callbacks: {
-                                            label: function(tooltipItem, data) {
+                                            label: function (tooltipItem, data) {
                                                 var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                                                 value = value.toString();
                                                 value = value.replace('.', ',');
                                                 return String.format('{0}: {1} KB', data.datasets[tooltipItem.datasetIndex].label, value);
                                             },
-                                            title: function(tooltipItem, data) {
-                                                elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                if (elemindex != -1) {
+                                            title: function (tooltipItem) {
+                                                let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                if (elemindex !== -1) {
                                                     return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                 } else {
                                                     return tooltipItem[0].xLabel;
@@ -1782,7 +1791,8 @@ function loadTemplate(templateid) {
                                 total_downloads_colors_pie = [];
                                 for (var i = 0; i < downloads_total.length; i++) {
                                     total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
-                                };
+                                }
+                                ;
                                 new Chart($('#plot-piedownloads'), {
                                     type: 'pie',
                                     data: {
@@ -1822,11 +1832,12 @@ function loadTemplate(templateid) {
                     } catch (e) {
                         throwErrorID(errorID.downloadgraph, e);
                         return;
-                    } finally {}
+                    } finally {
+                    }
 
                     // Muestra el contenido final con efecto
-                    setTimeout(function() {
-                        $('#mainContent').fadeIn('slow', function() {
+                    setTimeout(function () {
+                        $('#mainContent').fadeIn('slow', function () {
                             $('#footer').css('display', 'inline-block');
                             clearInterval(loadingBarAnimation);
                             $('#progressLoading').html('');
@@ -1836,18 +1847,18 @@ function loadTemplate(templateid) {
                     }, timeShowContentOnLoad);
                 } catch (e) {
                     throwErrorID(errorID.getdownloads, e);
-                    return;
-                } finally {}
+                } finally {
+                }
             });
-            jsonQuery2.fail(function() {
+            jsonQuery2.fail(function () {
                 throwErrorID(errorID.erroraccessjsonreleases);
             });
         } catch (e) {
             throwErrorID(errorID.criticaltemplateloading, e);
-            return;
-        } finally {}
+        } finally {
+        }
     });
-    jsonQuery1.fail(function() {
+    jsonQuery1.fail(function () {
         throwErrorID(errorID.erroraccessfile);
     });
 }

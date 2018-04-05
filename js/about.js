@@ -4,7 +4,7 @@ TEMPLATE-LATEX STATS
 Author: Pablo Pizarro R. @ ppizarror.com
 Licence:
     The MIT License (MIT)
-    Copyright 2017,2018 Pablo Pizarro R.
+    Copyright 2017-2018 Pablo Pizarro R.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -24,10 +24,10 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-// About
+// noinspection ES6ConvertVarToLetConst
 var aboutinfo = {
-    "version": "0.84",
-    "date": "05/12/2018",
+    "version": "0.85",
+    "date": "05/04/2018",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -49,5 +49,6 @@ function printAboutInfo() {
 
 // Muestra el footer
 function generateFooter() {
+    // noinspection HtmlUnknownTarget
     $('#footer').html(String.format('<a href="{5}"><img src="res/github.png" /> {0}</a> v{1} ({2}) | Autor: <a href="{4}" title="{6}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource, aboutinfo.author.name));
 }

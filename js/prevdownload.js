@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright 2017,2018 Pablo Pizarro R.
+Copyright 2017-2018 Pablo Pizarro R.
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),
@@ -23,9 +23,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // Actualizador de descargas
 function updateDownloadCounter(downloads, source) {
+    let download_list_counter;
     switch (source) {
+        /**
+         * Ajuste por json de Template-Informe
+         * https://api.github.com/repos/Template-Latex/Template-Informe/releases
+         */
         case 'Template-Informe':
-            // Ajuste por json de Template-Informe https://api.github.com/repos/Template-Latex/Template-Informe/releases
             download_list_counter = [
                 [129, '<1.8.5'],
                 [60, '1.9.6'],
@@ -134,7 +138,9 @@ function updateDownloadCounter(downloads, source) {
             download_list_counter = [];
             break;
     }
-    for (i = 0; i < download_list_counter.length; i++) {
+
+    let tdownld;
+    for (let i = 0; i < download_list_counter.length; i++) {
         tdownld = download_list_counter[i][0];
         if (Array.isArray(tdownld)) {
             downloads += (tdownld[0] + tdownld[1]);

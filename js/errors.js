@@ -4,7 +4,7 @@ TEMPLATE-LATEX STATS
 Author: Pablo Pizarro R. @ ppizarror.com
 Licence:
     The MIT License (MIT)
-    Copyright 2017,2018 Pablo Pizarro R.
+    Copyright 2017-2018 Pablo Pizarro R.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -111,18 +111,20 @@ var errorID = {
         "code": 17,
         "moreinfo": "Ocurrió un error al obtner los id de los archivos compacto y normal"
     }
-}
+};
 
 // Escribe el error en el panel
 function throwErrorID(errorid, exceptionmsg) {
     clearInterval(loadingBarAnimation);
-    $('#progressLoading').html('');
-    $('#progressLoading').fadeTo('slow', 1.0);
+    let pload = $('#progressLoading');
+    pload.html('');
+    pload.fadeTo('slow', 1.0);
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');
+    // noinspection HtmlUnknownTarget
     $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
     $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
-    if (exceptionmsg != '') {
+    if (exceptionmsg !== '') {
         console.log(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
         console.log(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
     }

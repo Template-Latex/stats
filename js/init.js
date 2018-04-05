@@ -4,7 +4,7 @@ TEMPLATE-LATEX STATS
 Author: Pablo Pizarro R. @ ppizarror.com
 Licence:
     The MIT License (MIT)
-    Copyright 2017 Pablo Pizarro R.
+    Copyright 2017-2018 Pablo Pizarro R.
 
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
@@ -32,7 +32,7 @@ var loadedTable; // Tabla creada
 var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 // Analizar parámetros de entrada y establecer subtemplates disponibles
-$(document).ready(function($) {
+$(document).ready(function ($) {
 
     // Genera los acerca de
     printAboutInfo();
@@ -56,7 +56,7 @@ $(document).ready(function($) {
         }
 
         // Añade evento change en selector
-        $('#mainSelector').change(function() {
+        $('#mainSelector').change(function () {
             loadTemplate($('#mainSelector').val());
         });
 
@@ -66,16 +66,18 @@ $(document).ready(function($) {
     } catch (e) {
         throwErrorID(errorID.errorretrievetemplatelist, e);
         return;
-    } finally {}
+    } finally {
+    }
 
     // Obtiene el template desde $GET
     initTemplate = $.urlParam('template');
+    let found;
     if (initTemplate != null) {
         found = false;
         for (var i = 0; i < Object.keys(stat).length; i++) {
             if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].available) {
                 $('#mainSelector').val(Object.keys(stat)[i]);
-                setTimeout(function() {
+                setTimeout(function () {
                     loadTemplate(Object.keys(stat)[i]);
                 }, timeProcessOnGETurl);
                 found = true;
@@ -91,7 +93,7 @@ $(document).ready(function($) {
     // Se fija tabla al hacer scroll
     var lockScrollUpClass = false;
     var lockScrollDownClass = false;
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         if ($(window).scrollTop() > pxScrollDownToFixTable) {
             lockScrollDownClass = false;
             if (!lockScrollUpClass && $(window).height() >= $('#tableData').height()) {
@@ -108,7 +110,7 @@ $(document).ready(function($) {
             }
         }
     });
-    $(window).resize(function() {
+    $(window).resize(function () {
         lockScrollDownClass = false;
         lockScrollUpClass = false;
         if ($(window).height() < $('#tableData').height()) {
@@ -123,7 +125,7 @@ $(document).ready(function($) {
     });
 
     // Muestra botón scrollToTop
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         location.pathname.replace(/^\//, '');
         if ($(window).scrollTop() > pxScrollToShowButton) {
             $('a.back-to-top').fadeIn('slow');
