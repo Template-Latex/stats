@@ -367,7 +367,7 @@ function loadTemplate(templateid) {
                             labels: day_activity,
                             datasets: [{
                                 data: day_activity_counter,
-                                label: 'Número de versiones por día',
+                                label: 'Número de commits',
                                 borderColor: '#7e0042',
                                 backgroundColor: '#7e0042'
                             }]
@@ -383,7 +383,7 @@ function loadTemplate(templateid) {
                                 yAxes: [{
                                     scaleLabel: {
                                         display: true,
-                                        labelString: 'Número de versiones'
+                                        labelString: 'Número de commits'
                                     },
                                     ticks: {
                                         min: 0

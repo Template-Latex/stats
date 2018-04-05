@@ -26,7 +26,7 @@ Licence:
 
 // noinspection ES6ConvertVarToLetConst
 var aboutinfo = {
-    "version": "0.85",
+    "version": "0.86",
     "date": "05/04/2018",
     "author": {
         "name": "Pablo Pizarro R.",
