@@ -24,8 +24,6 @@ Licence:
     CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import * as ProgressBar from "./progressbar";
-
 var loadingBarAnimation; // Animación de la barra de carga
 
 // Añade format a los strings
@@ -212,8 +210,9 @@ function loadTemplate(templateid) {
     console.log(String.format('Cargando ID <{0}> ...', templateid));
 
     // Carga el id
+    var st;
     try {
-        let st = stat[templateid];
+        st = stat[templateid];
     } catch (e) {
         throwErrorID(errorID.badtemplateid);
         return;
@@ -230,7 +229,7 @@ function loadTemplate(templateid) {
             loadingBarTrigger();
         }, timeDurationProcessBar + 50);
     } catch (e) {
-        throwErrorID(errorID.loadingbarsetup);
+        throwErrorID(errorID.loadingbarsetup, e);
         return;
     } finally {
     }
@@ -271,7 +270,7 @@ function loadTemplate(templateid) {
             var loadedData = [];
 
             try {
-                for (var i = 1; i < data.length; i++) {
+                for (let i = 1; i < data.length; i++) {
                     a = [];
                     line = data[i].split(' ');
                     for (var j = 0; j < line.length; j++) {
@@ -1337,7 +1336,7 @@ function loadTemplate(templateid) {
                                     }
                                 });
                                 new Chart($('#plot-totaldownloads'), {
-                                    type: 'line',
+                                    type: downloadTotalChartType,
                                     data: {
                                         labels: version_releases,
                                         datasets: [{

@@ -27,8 +27,6 @@ Licence:
 // Variables globales
 var hasLoaded = false; // Indica si se ha cargado ya un template
 var initTemplate = ''; // Template pasado por get en url
-var loadedData = []; // Datos cargados
-var loadedTable; // Tabla creada
 var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 // Analizar parámetros de entrada y establecer subtemplates disponibles
@@ -46,9 +44,10 @@ $(document).ready(function ($) {
 
     // Escribe los templates disponibles en el selector
     try {
-        for (var i = 0; i < Object.keys(stat).length; i++) {
+        let $mainsection = $('#mainSelector');
+        for (let i = 0; i < Object.keys(stat).length; i++) {
             if (stat[Object.keys(stat)[i]].available) {
-                $('#mainSelector').append($('<option>', {
+                $mainsection.append($('<option>', {
                     value: Object.keys(stat)[i],
                     text: stat[Object.keys(stat)[i]].name
                 }));
@@ -56,12 +55,12 @@ $(document).ready(function ($) {
         }
 
         // Añade evento change en selector
-        $('#mainSelector').change(function () {
-            loadTemplate($('#mainSelector').val());
+        $mainsection.on('change', function () {
+            loadTemplate($mainsection.val());
         });
 
         // Desactiva primera opción en el selector
-        $('#mainSelector option[value=\'none\']').attr('disabled', 'disabled');
+        $($mainsection).find('option[value=\'none\']').attr('disabled', 'disabled');
 
     } catch (e) {
         throwErrorID(errorID.errorretrievetemplatelist, e);
@@ -75,7 +74,7 @@ $(document).ready(function ($) {
     if (initTemplate != null) {
         found = false;
         for (var i = 0; i < Object.keys(stat).length; i++) {
-            if (stat[Object.keys(stat)[i]].tag == initTemplate && stat[Object.keys(stat)[i]].available) {
+            if (stat[Object.keys(stat)[i]].tag === initTemplate && stat[Object.keys(stat)[i]].available) {
                 $('#mainSelector').val(Object.keys(stat)[i]);
                 setTimeout(function () {
                     loadTemplate(Object.keys(stat)[i]);
@@ -94,32 +93,38 @@ $(document).ready(function ($) {
     var lockScrollUpClass = false;
     var lockScrollDownClass = false;
     $(window).scroll(function () {
+        let $tabledata = $('#tableData');
+
+        // noinspection JSValidateTypes
         if ($(window).scrollTop() > pxScrollDownToFixTable) {
             lockScrollDownClass = false;
-            if (!lockScrollUpClass && $(window).height() >= $('#tableData').height()) {
-                $('#tableData').removeClass('nonFixedTableData');
-                $('#tableData').addClass('fixedTableData');
+            if (!lockScrollUpClass && $(window).height() >= $tabledata.height()) {
+                $tabledata.removeClass('nonFixedTableData');
+                $tabledata.addClass('fixedTableData');
                 lockScrollUpClass = true;
             }
         } else {
             lockScrollUpClass = false;
             if (!lockScrollDownClass) {
-                $('#tableData').addClass('nonFixedTableData');
-                $('#tableData').removeClass('fixedTableData');
+                $tabledata.addClass('nonFixedTableData');
+                $tabledata.removeClass('fixedTableData');
                 lockScrollDownClass = true;
             }
         }
     });
     $(window).resize(function () {
+        let $tabledata = $('#tableData');
+
         lockScrollDownClass = false;
         lockScrollUpClass = false;
-        if ($(window).height() < $('#tableData').height()) {
-            $('#tableData').addClass('nonFixedTableData');
-            $('#tableData').removeClass('fixedTableData');
+        if ($(window).height() < $tabledata.height()) {
+            $tabledata.addClass('nonFixedTableData');
+            $tabledata.removeClass('fixedTableData');
         } else {
+            // noinspection JSValidateTypes
             if ($(window).scrollTop() > pxScrollDownToFixTable) {
-                $('#tableData').removeClass('nonFixedTableData');
-                $('#tableData').addClass('fixedTableData');
+                $tabledata.removeClass('nonFixedTableData');
+                $tabledata.addClass('fixedTableData');
             }
         }
     });
@@ -127,6 +132,7 @@ $(document).ready(function ($) {
     // Muestra botón scrollToTop
     $(window).scroll(function () {
         location.pathname.replace(/^\//, '');
+        // noinspection JSValidateTypes
         if ($(window).scrollTop() > pxScrollToShowButton) {
             $('a.back-to-top').fadeIn('slow');
         } else {
