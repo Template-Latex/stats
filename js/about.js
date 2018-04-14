@@ -26,8 +26,8 @@ Licence:
 
 // noinspection ES6ConvertVarToLetConst
 var aboutinfo = {
-    "version": "0.86",
-    "date": "05/04/2018",
+    "version": "0.87",
+    "date": "14/04/2018",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -50,5 +50,5 @@ function printAboutInfo() {
 // Muestra el footer
 function generateFooter() {
     // noinspection HtmlUnknownTarget
-    $('#footer').html(String.format('<a href="{5}"><img src="res/github.png" /> {0}</a> v{1} ({2}) | Autor: <a href="{4}" title="{6}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource, aboutinfo.author.name));
+    $('#footer').html(String.format('<a href="{5}"><img src="res/github.png" alt=""/> {0}</a> v{1} ({2}) | Autor: <a href="{4}" title="{6}">{3}</a>', aboutinfo.productnamefooter, aboutinfo.version, aboutinfo.date, aboutinfo.author.tag, aboutinfo.author.website, aboutinfo.productsource, aboutinfo.author.name));
 }

@@ -61,10 +61,10 @@ function roundNumber(num, scale) {
         if (+arr[1] + scale > 0) {
             sig = '+';
         }
-        var i = +arr[0] + 'e' + sig + (+arr[1] + scale);
-        var j = Math.round(i);
-        var k = +(j + 'e-' + scale);
-        return k;
+        let i = +arr[0] + 'e' + sig + (+arr[1] + scale);
+        // noinspection JSCheckFunctionSignatures
+        let j = Math.round(i);
+        return +(j + 'e-' + scale);
     }
 }
 
@@ -213,7 +213,7 @@ function loadTemplate(templateid) {
 
     // Carga el id
     try {
-        st = stat[templateid];
+        let st = stat[templateid];
     } catch (e) {
         throwErrorID(errorID.badtemplateid);
         return;
@@ -691,8 +691,8 @@ function loadTemplate(templateid) {
                         // Se busca el id de archivo compacto y normal
                         var id_compact = -1;
                         var id_normal = -1;
-                        lastrel = json[0].assets;
-                        for (var i = 0; i < lastrel.length; i++) {
+                        var lastrel = json[0].assets;
+                        for (let i = 0; i < lastrel.length; i++) {
                             if (lastrel[i].name === 'Template-Informe.zip') {
                                 id_normal = i;
                             }
@@ -1286,7 +1286,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function (tooltipItem, data) {
+                                                title: function (tooltipItem) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
@@ -1788,11 +1788,10 @@ function loadTemplate(templateid) {
                             // Genera gráfico torta
                             if (showPieDownloadChart) {
                                 $('#plot-piedownloads').css('display', 'block');
-                                total_downloads_colors_pie = [];
+                                let total_downloads_colors_pie = [];
                                 for (var i = 0; i < downloads_total.length; i++) {
                                     total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
                                 }
-                                ;
                                 new Chart($('#plot-piedownloads'), {
                                     type: 'pie',
                                     data: {
@@ -1870,7 +1869,7 @@ function writeTableHeader() {
 
 // Regenera la sección de los gráficos
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 // Obtiene la lista de descargas y versiones de un id
