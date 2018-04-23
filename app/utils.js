@@ -187,7 +187,8 @@ function changeUrlParam(param, value) {
     var currentURL = window.location.href + '&';
     var change = new RegExp('(' + param + ')=(.*)&', 'g');
     var newURL = currentURL.replace(change, '$1=' + value + '&');
-    if (getURLParameter(param) !== '') {
+    // noinspection JSValidateTypes
+    if (getURLParameter(param) !== null) {
         try {
             window.history.replaceState('', '', newURL.slice(0, -1));
         } catch (e) {
@@ -1097,6 +1098,7 @@ function loadTemplate(templateid) {
                                                         var tooltipData = allData[tooltipItem.index];
                                                         var total = 0;
                                                         for (var i in allData) {
+                                                            // noinspection JSUnfilteredForInLoop
                                                             total += parseInt(allData[i]);
                                                         }
                                                         var tooltipPercentage = Math.round((tooltipData / total) * 100);
@@ -1143,6 +1145,7 @@ function loadTemplate(templateid) {
                                                     var tooltipData = allData[tooltipItem.index];
                                                     var total = 0;
                                                     for (var i in allData) {
+                                                        // noinspection JSUnfilteredForInLoop
                                                         total += parseInt(allData[i]);
                                                     }
                                                     var tooltipPercentage = Math.round((tooltipData / total) * 100);

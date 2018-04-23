@@ -125,7 +125,63 @@ function updateDownloadCounter(downloads, source) {
             ];
             break;
         case 'Template-Auxiliares':
-            download_list_counter = [];
+            download_list_counter = [
+                [[21, 5], '2.0'],
+                [[2, 3], '2.2'],
+                [[18, 9], '2.4'],
+                [[4, 1], '3.0'],
+                [[24, 4], '3.1'],
+                [[1, 5], '3.5.0'],
+                [[1, 1], '4.0'],
+                [[2, 1], '4.1.5'],
+                [[1, 1], '4.1.6'],
+                [[3, 1], '4.1.8'],
+                [[2, 1], '4.2.1'],
+                [[2, 1], '4.2.4'],
+                [[19, 5], '4.2.5'],
+                [[14, 4], '4.2.6'],
+                [[1, 1], '4.2.7'],
+                [[7, 4], '4.3.0'],
+                [[2, 1], '4.3.2'],
+                [[1, 1], '4.3.3'],
+                [[1, 1], '4.3.4'],
+                [[9, 3], '4.3.5'],
+                [[20, 5], '4.3.7'],
+                [[13, 4], '4.4.0'],
+                [[11, 3], '4.4.1'],
+                [[19, 6], '4.4.2'],
+                [[133, 34], '4.4.3']
+            ];
+            break;
+        case 'Template-Controles':
+            download_list_counter = [
+                [[2, 2], '1.0.0'],
+                [[1, 2], '1.0.6'],
+                [[2, 1], '1.0.8'],
+                [[1, 1], '1.1.3'],
+                [[6, 2], '1.1.4'],
+                [[3, 1], '1.1.5'],
+                [[1, 1], '1.1.6'],
+                [[1, 1], '1.1.8'],
+                [[1, 1], '1.2.0'],
+                [[1, 1], '1.2.1'],
+                [[1, 1], '1.2.2'],
+                [[5, 2], '1.2.3'],
+                [[5, 1], '1.2.4'],
+                [[6, 1], '1.2.6'],
+                [[4, 3], '1.2.7'],
+                [[8, 4], '1.2.8'],
+                [[43, 8], '1.2.9']
+            ];
+            break;
+        case 'Professional-CV':
+            download_list_counter = [
+                [[38, 9], '1.0.3'],
+                [[2, 1], '1.0.6'],
+                [[8, 1], '1.0.7'],
+                [[12, 3], '1.2.0'],
+                [[176, 42], '1.2.2']
+            ];
             break;
         case 'Template-Tareas':
             download_list_counter = [];
@@ -136,13 +192,7 @@ function updateDownloadCounter(downloads, source) {
         case 'Template-Pautas':
             download_list_counter = [];
             break;
-        case 'Template-Controles':
-            download_list_counter = [];
-            break;
         case 'Template-Tesis':
-            download_list_counter = [];
-            break;
-        case 'Professional-CV':
             download_list_counter = [];
             break;
     }
