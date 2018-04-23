@@ -1,32 +1,34 @@
-/*
-TEMPLATE-LATEX STATS
+/**
+ TEMPLATE-LATEX STATS
 
-Author: Pablo Pizarro R. @ ppizarror.com
-Licence:
-    The MIT License (MIT)
-    Copyright 2017-2018 Pablo Pizarro R.
+ Author: Pablo Pizarro R. @ ppizarror.com
+ Licence:
+ The MIT License (MIT)
+ Copyright 2017-2018 Pablo Pizarro R.
 
-    Permission is hereby granted, free of charge, to any person obtaining a
-    copy of this software and associated documentation files (the "Software"),
-    to deal in the Software without restriction, including without limitation
-    the rights to use, copy, modify, merge, publish, distribute, sublicense,
-    and/or sell copies of the Software, and to permit persons to whom the Software
-    is furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person obtaining a
+ copy of this software and associated documentation files (the "Software"),
+ to deal in the Software without restriction, including without limitation
+ the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ and/or sell copies of the Software, and to permit persons to whom the Software
+ is furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 
 var loadingBarAnimation; // Animación de la barra de carga
 
-// Añade format a los strings
+/**
+ * Añade format a los strings.
+ */
 if (!String.format) {
     String.format = function (format) {
         var args = Array.prototype.slice.call(arguments, 1);
@@ -38,7 +40,11 @@ if (!String.format) {
     };
 }
 
-// Obtiene parámetros de la url
+/**
+ * Obtiene parámetros de la url.
+ * @param name
+ * @return {*}
+ */
 $.urlParam = function (name) {
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
@@ -48,7 +54,12 @@ $.urlParam = function (name) {
     }
 };
 
-// Redondea un número
+/**
+ * Redondea un número.
+ * @param {number} num                  Número
+ * @param {number} scale                Escala
+ * @return {number}
+ */
 function roundNumber(num, scale) {
     if (!('' + num).includes('e')) {
         // noinspection JSCheckFunctionSignatures
@@ -66,16 +77,24 @@ function roundNumber(num, scale) {
     }
 }
 
-// Retorna el máximo de una lista
+/**
+ * Retorna el máximo de una lista.
+ * @param numArray
+ * @return {number}
+ */
 function getMaxOfArray(numArray) {
     return Math.max.apply(null, numArray);
 }
 
-// Crea un loadingbar
+/**
+ * Crea un loadingbar.
+ * @return
+ */
 function loadingBarTrigger() {
     $('#progressLoading').html(' ');
     switch (processBarAnimationStyle) {
         case 1:
+            // noinspection ES6ModulesDependencies
             var bar = new ProgressBar.Circle('#progressLoading', {
                 strokeWidth: processBarStrokeWidth,
                 easing: 'easeInOut',
@@ -88,6 +107,7 @@ function loadingBarTrigger() {
             bar.animate(1);
             break;
         case 2:
+            // noinspection ES6ModulesDependencies
             var circle = new ProgressBar.Circle('#progressLoading', {
                 color: processBarColor,
                 trailColor: processBarLColor,
@@ -117,18 +137,31 @@ function loadingBarTrigger() {
     }
 }
 
-// Crea una fecha a partir de un string
+/**
+ * Crea una fecha a partir de un string.
+ * @param str
+ * @return {Date}
+ */
 function parseDate(str) {
     var mdy = str.split('-');
     return new Date(mdy[0], mdy[1] - 1, mdy[2]);
 }
 
-// Hace la diferencia entre dos días
+/**
+ * Hace la diferencia entre dos días.
+ * @param first
+ * @param second
+ * @return {number}
+ */
 function daydiff(first, second) {
     return Math.round((second - first) / (1000 * 60 * 60 * 24));
 }
 
-// Ajusta las versiones de desarrollo para gráficos
+/**
+ * Ajusta las versiones de desarrollo para gráficos.
+ * @param version
+ * @return {*}
+ */
 function parseDevVersion(version) {
     if (version.length > 7) {
         version = version.substring(0, 7);
@@ -136,17 +169,25 @@ function parseDevVersion(version) {
     return version;
 }
 
-// Obtiene parámetro url
+/**
+ * Obtiene parámetro url.
+ * @param name
+ * @return {string | null}
+ */
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
 
-// Cambia el parámetro de la url
+/**
+ * Cambia el parámetro de la url.
+ * @param param
+ * @param value
+ */
 function changeUrlParam(param, value) {
     var currentURL = window.location.href + '&';
     var change = new RegExp('(' + param + ')=(.*)&', 'g');
     var newURL = currentURL.replace(change, '$1=' + value + '&');
-    if (getURLParameter(param) !== null) {
+    if (getURLParameter(param) !== '') {
         try {
             window.history.replaceState('', '', newURL.slice(0, -1));
         } catch (e) {
@@ -162,14 +203,17 @@ function changeUrlParam(param, value) {
     }
 }
 
-// Agrega plugins a Chart.js
+/**
+ * Agrega plugins a Chart.js
+ * @return
+ */
 function initializeChartjsPlugins() {
     Chart.pluginService.register({
         beforeRender: function (chart) {
             if (chart.config.options.showAllTooltips) {
                 chart.pluginTooltips = [];
                 chart.config.data.datasets.forEach(function (dataset, i) {
-                    chart.getDatasetMeta(i).data.forEach(function (sector, j) {
+                    chart.getDatasetMeta(i).data.forEach(function (sector) {
                         chart.pluginTooltips.push(new Chart.Tooltip({
                             _chart: chart.chart,
                             _chartInstance: chart,
@@ -202,7 +246,11 @@ function initializeChartjsPlugins() {
     });
 }
 
-// Carga un template y genera gráficos
+/**
+ * Carga un template y genera gráficos.
+ * @param {string} templateid           ID del template
+ * @return
+ */
 function loadTemplate(templateid) {
 
     // Limpia errores anteriores
@@ -214,13 +262,14 @@ function loadTemplate(templateid) {
     try {
         st = stat[templateid];
     } catch (e) {
-        throwErrorID(errorID.badtemplateid);
+        throwErrorID(errorID.badtemplateid, '');
         return;
     } finally {
     }
 
     // Muestra barra progreso y nombre template
     try {
+        // noinspection HtmlUnknownTarget
         $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', st.header, st.link));
         $(document).prop('title', 'Stats - ' + st.header);
         $('#progressLoading').fadeTo('slow', processBarSetOpacity);
@@ -271,8 +320,8 @@ function loadTemplate(templateid) {
 
             try {
                 for (let i = 1; i < data.length; i++) {
-                    a = [];
-                    line = data[i].split(' ');
+                    let a = [];
+                    let line = data[i].split(' ');
                     for (var j = 0; j < line.length; j++) {
                         if (line[j] !== '') {
                             a.push(line[j]);
@@ -293,7 +342,7 @@ function loadTemplate(templateid) {
 
             // Se genera la tabla
             try {
-                lenghtmenuoption = [];
+                var lenghtmenuoption = [];
                 if (loadedData.length >= tableMaxReg) {
                     lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, tableMaxReg];
                 } else if (tableHighReg <= loadedData.length && loadedData.length < tableMaxReg) {
@@ -323,11 +372,11 @@ function loadTemplate(templateid) {
 
             // Estadística tiempos de compilación
             try {
-                mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
-                plot_mean_ctime = [];
-                plot_partial_mean_ctime = [];
-                total_sum = 0.0;
-                for (k = 0; k < loadedData.length; k++) {
+                var mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
+                var plot_mean_ctime = [];
+                var plot_partial_mean_ctime = [];
+                var total_sum = 0.0;
+                for (let k = 0; k < loadedData.length; k++) {
                     plot_mean_ctime.push(mean_ctime);
                     total_sum += plot_ctime[k];
                     plot_partial_mean_ctime.push(roundNumber(total_sum / (k + 1), 2));
@@ -340,10 +389,10 @@ function loadTemplate(templateid) {
 
             // Estadística versiones por día
             try {
-                day_activity = [];
-                day_activity_counter = [];
+                var day_activity = [];
+                var day_activity_counter = [];
                 for (var i = 0; i < loadedData.length; i++) {
-                    k = jQuery.inArray(loadedData[i][3], day_activity);
+                    let k = jQuery.inArray(loadedData[i][3], day_activity);
                     if (k === -1) {
                         day_activity.push(loadedData[i][3]);
                         day_activity_counter.push(1);
@@ -456,8 +505,8 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function (tooltipItem, data) {
-                                        elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
+                                    title: function (tooltipItem) {
+                                        let elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
                                         if (elemindex !== -1) {
                                             return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
                                         } else {
@@ -531,8 +580,8 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function (tooltipItem, data) {
-                                        elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
+                                    title: function (tooltipItem) {
+                                        let elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
                                         if (elemindex !== -1) {
                                             return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
                                         } else {
@@ -700,7 +749,7 @@ function loadTemplate(templateid) {
                             }
                         }
                         if (id_compact === -1 || id_normal === -1) {
-                            throwErrorID(errorID.erroridnormalsingle);
+                            throwErrorID(errorID.erroridnormalsingle, '');
                             return;
                         }
 
@@ -712,7 +761,7 @@ function loadTemplate(templateid) {
                         var dptodownloads_single_total = [];
                         var dptodownloads_versions = [];
                         var dptos = [];
-                        for (var i = 0; i < lastrel.length; i++) {
+                        for (let i = 0; i < lastrel.length; i++) {
                             dpto = lastrel[i].name.split('-');
                             if (dpto.length === 4) {
                                 dpto = dpto[2];
@@ -1384,7 +1433,7 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function (tooltipItem, data) {
+                                                title: function (tooltipItem) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
                                                 }
                                             }
@@ -1447,9 +1496,10 @@ function loadTemplate(templateid) {
                                 } else {
                                     $('#plot-gloverdownloads').remove();
                                 }
+                                let $partDLchart = $('#plot-partdownloads');
                                 switch (downloadPartChartType) {
                                     case 'style1':
-                                        new Chart($('#plot-partdownloads'), {
+                                        new Chart($partDLchart, {
                                             type: 'bar',
                                             data: {
                                                 labels: lastversion_releases,
@@ -1541,7 +1591,7 @@ function loadTemplate(templateid) {
                                         });
                                         break;
                                     case 'style2':
-                                        new Chart($('#plot-partdownloads'), {
+                                        new Chart($partDLchart, {
                                             type: 'line',
                                             data: {
                                                 labels: lastversion_releases,
@@ -1640,8 +1690,8 @@ function loadTemplate(templateid) {
                                                     mode: 'index',
                                                     intersect: plotIntersectToShowLegend,
                                                     callbacks: {
-                                                        title: function (tooltipItem, data) {
-                                                            elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                        title: function (tooltipItem) {
+                                                            let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
                                                             if (elemindex !== -1) {
                                                                 return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
                                                             } else {
@@ -1786,12 +1836,13 @@ function loadTemplate(templateid) {
                             });
                             // Genera gráfico torta
                             if (showPieDownloadChart) {
-                                $('#plot-piedownloads').css('display', 'block');
+                                let $pieDL = $('#plot-piedownloads');
+                                $pieDL.css('display', 'block');
                                 let total_downloads_colors_pie = [];
-                                for (var i = 0; i < downloads_total.length; i++) {
+                                for (let i = 0; i < downloads_total.length; i++) {
                                     total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
                                 }
-                                new Chart($('#plot-piedownloads'), {
+                                new Chart($pieDL, {
                                     type: 'pie',
                                     data: {
                                         labels: version_releases,
@@ -1836,10 +1887,11 @@ function loadTemplate(templateid) {
                     // Muestra el contenido final con efecto
                     setTimeout(function () {
                         $('#mainContent').fadeIn('slow', function () {
+                            let $pld = $('#progressLoading');
                             $('#footer').css('display', 'inline-block');
                             clearInterval(loadingBarAnimation);
-                            $('#progressLoading').html('');
-                            $('#progressLoading').fadeTo('slow', 1.0);
+                            $pld.html('');
+                            $pld.fadeTo('slow', 1.0);
                         });
                         console.log('Carga exitosa');
                     }, timeShowContentOnLoad);
@@ -1849,7 +1901,7 @@ function loadTemplate(templateid) {
                 }
             });
             jsonQuery2.fail(function () {
-                throwErrorID(errorID.erroraccessjsonreleases);
+                throwErrorID(errorID.erroraccessjsonreleases, '');
             });
         } catch (e) {
             throwErrorID(errorID.criticaltemplateloading, e);
@@ -1857,24 +1909,34 @@ function loadTemplate(templateid) {
         }
     });
     jsonQuery1.fail(function () {
-        throwErrorID(errorID.erroraccessfile);
+        throwErrorID(errorID.erroraccessfile, '');
     });
 }
 
-// Regenera los datos de la tabla
+/**
+ * Regenera los datos de la tabla.
+ * @return
+ */
 function writeTableHeader() {
     $('#tableData').html(String.format('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></thead><tfoot><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></tfoot><tbody id="tableMem"></tbody></table>', tableDataNameCols[0], tableDataNameCols[1], tableDataNameCols[2], tableDataNameCols[3], tableDataNameCols[4], tableDataNameCols[5]));
 }
 
-// Regenera la sección de los gráficos
+/**
+ * Regenera la sección de los gráficos.
+ * @return
+ */
 function writeGraphCanvases() {
     $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
-// Obtiene la lista de descargas y versiones de un id
+/**
+ * Obtiene la lista de descargas y versiones de un ID.
+ * @param {string} templateid       ID del template
+ * @return
+ */
 function getDownloadCounter(templateid) {
     updateDownloadCounter(0, templateid);
-    for (var i = 0; i < download_list_counter.length; i++) {
+    for (let i = 0; i < download_list_counter.length; i++) {
         if (Array.isArray(download_list_counter[i][0])) {
             download_list_counter[i][0] = download_list_counter[i][0][0] + download_list_counter[i][0][1];
         }

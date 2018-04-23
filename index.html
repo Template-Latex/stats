@@ -36,10 +36,10 @@
     <meta name="robots" content="noindex, noarchive"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:description" content="Estadísticas de compilación y descargas de los templates"/>
-    <meta name="twitter:image" content="http://latex.ppizarror.com/stats/res/icon.png"/>
+    <meta name="twitter:image" content="http://latex.ppizarror.com/stats/icon.png"/>
     <meta name="twitter:title" content="Template-Latex Stats"/>
     <meta property="og:description" content="Estadísticas de compilación y descargas de los templates"/>
-    <meta property="og:image" content="http://latex.ppizarror.com/stats/res/icon.png"/>
+    <meta property="og:image" content="http://latex.ppizarror.com/stats/icon.png"/>
     <meta property="og:title" content="Template-Latex Stats"/>
     <meta property="og:url" content="http://latex.ppizarror.com/stats/"/>
 
@@ -53,7 +53,7 @@
     <meta name="msapplication-config" content="res/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Css -->
+    <!-- Hojas de estilo -->
     <link rel="stylesheet" type="text/css" href="css/main.min.css" media="screen">
     <link rel="stylesheet" type="text/css" href="css/tooltips.min.css" media="screen">
     <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css" media="screen">
@@ -68,14 +68,14 @@
     <script src="js/jstat.min.js"></script>
     <script src="js/progressbar.min.js"></script>
 
-    <!-- Javascript -->
-    <script src="js/config.min.js"></script>
-    <script src="js/about.min.js"></script>
-    <script src="js/prevdownload.min.js"></script>
-    <script src="js/utils.min.js"></script>
-    <script src="js/subrel.min.js"></script>
-    <script src="js/errors.min.js"></script>
-    <script src="js/init.min.js"></script>
+    <!-- Carga aplicación -->
+    <script src="app/config.min.js"></script>
+    <script src="app/about.min.js"></script>
+    <script src="app/prevdownload.min.js"></script>
+    <script src="app/utils.min.js"></script>
+    <script src="app/subrel.min.js"></script>
+    <script src="app/errors.min.js"></script>
+    <script src="app/init.min.js"></script>
 </head>
 
 <body>
@@ -86,8 +86,8 @@
         <div id="templateName"><span id="templateNameTxt">Template-Latex Stats</span></div>
         <div id="templateSelector">
             <label for="mainSelector"></label><select id="mainSelector">
-                <option value="none">Seleccione un Template ...</option>
-            </select>
+            <option value="none">Seleccione un Template ...</option>
+        </select>
         </div>
     </div>
     <div id="mainContent">
