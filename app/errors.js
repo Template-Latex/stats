@@ -116,9 +116,10 @@ var errorID = {
 };
 
 /**
- * Escribe el error en el panel
+ * Escribe el error en el panel.
  * @param {object} errorid          ID del error
  * @param {object} exceptionmsg     Mensaje de error
+ * @return
  */
 function throwErrorID(errorid, exceptionmsg) {
     clearInterval(loadingBarAnimation);

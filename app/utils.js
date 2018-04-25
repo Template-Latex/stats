@@ -42,7 +42,7 @@ if (!String.format) {
 
 /**
  * Obtiene parámetros de la url.
- * @param name
+ * @param {string} name
  * @return {*}
  */
 $.urlParam = function (name) {
@@ -56,8 +56,8 @@ $.urlParam = function (name) {
 
 /**
  * Redondea un número.
- * @param {number} num                  Número
- * @param {number} scale                Escala
+ * @param {number} num
+ * @param {number} scale
  * @return {number}
  */
 function roundNumber(num, scale) {
@@ -79,7 +79,7 @@ function roundNumber(num, scale) {
 
 /**
  * Retorna el máximo de una lista.
- * @param numArray
+ * @param {array} numArray
  * @return {number}
  */
 function getMaxOfArray(numArray) {
@@ -139,18 +139,18 @@ function loadingBarTrigger() {
 
 /**
  * Crea una fecha a partir de un string.
- * @param str
+ * @param {string} str
  * @return {Date}
  */
 function parseDate(str) {
     var mdy = str.split('-');
-    return new Date(mdy[0], mdy[1] - 1, mdy[2]);
+    return new Date(parseInt(mdy[0]), parseInt(mdy[1]) - 1, parseInt(mdy[2]));
 }
 
 /**
  * Hace la diferencia entre dos días.
- * @param first
- * @param second
+ * @param {Date} first
+ * @param {Date} second
  * @return {number}
  */
 function daydiff(first, second) {
@@ -159,7 +159,7 @@ function daydiff(first, second) {
 
 /**
  * Ajusta las versiones de desarrollo para gráficos.
- * @param version
+ * @param {string} version
  * @return {*}
  */
 function parseDevVersion(version) {
@@ -171,7 +171,7 @@ function parseDevVersion(version) {
 
 /**
  * Obtiene parámetro url.
- * @param name
+ * @param {string} name
  * @return {string | null}
  */
 function getURLParameter(name) {
@@ -180,8 +180,8 @@ function getURLParameter(name) {
 
 /**
  * Cambia el parámetro de la url.
- * @param param
- * @param value
+ * @param {string} param
+ * @param {string} value
  */
 function changeUrlParam(param, value) {
     var currentURL = window.location.href + '&';
@@ -205,7 +205,7 @@ function changeUrlParam(param, value) {
 }
 
 /**
- * Agrega plugins a Chart.js
+ * Agrega plugins a Chart.js.
  * @return
  */
 function initializeChartjsPlugins() {
@@ -254,11 +254,15 @@ function initializeChartjsPlugins() {
  */
 function loadTemplate(templateid) {
 
-    // Limpia errores anteriores
+    /**
+     * Limpia errores anteriores
+     */
     cleanErrorMsg();
     console.log(String.format('Cargando ID <{0}> ...', templateid));
 
-    // Carga el id
+    /**
+     * Carga el id
+     */
     var st;
     try {
         st = stat[templateid];
@@ -268,7 +272,9 @@ function loadTemplate(templateid) {
     } finally {
     }
 
-    // Muestra barra progreso y nombre template
+    /**
+     * Muestra barra progreso y nombre template
+     */
     try {
         // noinspection HtmlUnknownTarget
         $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', st.header, st.link));
@@ -284,10 +290,14 @@ function loadTemplate(templateid) {
     } finally {
     }
 
-    // Actualiza url
+    /**
+     * Actualiza url
+     */
     changeUrlParam('template', st.tag);
 
-    // Limpia estado anterior
+    /**
+     * Limpia estado anterior
+     */
     writeGraphCanvases();
     $('#tableMem').html('');
     if (!hasLoaded) {
@@ -307,7 +317,9 @@ function loadTemplate(templateid) {
         }
     }
 
-    // Se carga archivo de estadísticas
+    /**
+     * Se carga archivo de estadísticas
+     */
     var jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, st.data), function (data) {
         try {
             data = data.split('\n');
@@ -938,7 +950,17 @@ function loadTemplate(templateid) {
                     for (i = 0; i < lastday_released.length - 1; i++) {
                         lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
                     }
-                    lastday_total.push(Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1));
+                    let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
+                    lastday_total.push(last_ver_day_count);
+
+                    // Genera descargas por día versión global
+                    // let last_glob_day_count = Math.max(daydiff(new Date('April 23, 2018 00:00:00'), new Date()), 1);
+                    // let globver_downloads_days = [137, 209, 72, 315, last_glob_day_count];
+                    // let globver_downloads_per_day = [];
+                    // for (let i = 0; i < globver_releases.length; i++) {
+                    //     globver_downloads_per_day.push(roundNumber(globver_releases[i] / globver_downloads_days[i], 2));
+                    // }
+                    // console.log(globver_downloads_per_day);
 
                     // Descargas por día
                     var downloads_compact_per_day = [];
@@ -1378,6 +1400,7 @@ function loadTemplate(templateid) {
                                                     var tooltipData = allData[tooltipItem.index];
                                                     var total = 0;
                                                     for (var i in allData) {
+                                                        // noinspection JSUnfilteredForInLoop
                                                         total += allData[i];
                                                     }
                                                     var tooltipPercentage = Math.round((tooltipData / total) * 100);
@@ -1751,6 +1774,7 @@ function loadTemplate(templateid) {
                                                     var tooltipData = allData[tooltipItem.index];
                                                     var total = 0;
                                                     for (var i in allData) {
+                                                        // noinspection JSUnfilteredForInLoop
                                                         total += allData[i];
                                                     }
                                                     var tooltipPercentage = Math.round((tooltipData / total) * 100);

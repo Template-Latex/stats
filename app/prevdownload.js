@@ -1,6 +1,9 @@
 /**
- The MIT License (MIT)
+ TEMPLATE-LATEX STATS
 
+ Author: Pablo Pizarro R. @ ppizarror.com
+ Licence:
+ The MIT License (MIT)
  Copyright 2017-2018 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
@@ -24,7 +27,7 @@
 var download_list_counter;
 
 /**
- * Actualizador de descargas
+ * Actualizador de descargas.
  * @param downloads
  * @param source
  * @return {*}
