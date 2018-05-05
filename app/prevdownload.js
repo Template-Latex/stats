@@ -27,7 +27,7 @@
 var download_list_counter;
 
 /**
- * Actualizador de descargas.
+ * Actualizador de descargas
  * @param downloads
  * @param source
  * @return {*}

@@ -29,8 +29,8 @@
  * @type {{version: string, date: string, author: {name: string, tag: string, email: string, website: string, github: string}, productname: string, productnamefooter: string, productsource: string}}
  */
 var aboutinfo = {
-    "version": "1.10",
-    "date": "25/04/2018",
+    "version": "1.20",
+    "date": "05/05/2018",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -44,8 +44,8 @@ var aboutinfo = {
 };
 
 /**
- * Imprime un acerca-de en consola.
- * @return
+ * Imprime un acerca-de en consola
+ * @function
  */
 function printAboutInfo() {
     console.log(String.format('{0} v{1} ({2})', aboutinfo.productname, aboutinfo.version, aboutinfo.date));
@@ -54,8 +54,8 @@ function printAboutInfo() {
 }
 
 /**
- * Muestra el footer.
- * @return
+ * Muestra el footer
+ * @function
  */
 function generateFooter() {
     // noinspection HtmlUnknownTarget

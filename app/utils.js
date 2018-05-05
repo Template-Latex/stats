@@ -27,7 +27,7 @@
 var loadingBarAnimation; // Animación de la barra de carga
 
 /**
- * Añade format a los strings.
+ * Añade format a los strings
  */
 if (!String.format) {
     String.format = function (format) {
@@ -41,7 +41,8 @@ if (!String.format) {
 }
 
 /**
- * Obtiene parámetros de la url.
+ * Obtiene parámetros de la url
+ * @function
  * @param {string} name
  * @return {*}
  */
@@ -55,7 +56,8 @@ $.urlParam = function (name) {
 };
 
 /**
- * Redondea un número.
+ * Redondea un número
+ * @function
  * @param {number} num
  * @param {number} scale
  * @return {number}
@@ -78,7 +80,8 @@ function roundNumber(num, scale) {
 }
 
 /**
- * Retorna el máximo de una lista.
+ * Retorna el máximo de una lista
+ * @function
  * @param {array} numArray
  * @return {number}
  */
@@ -87,8 +90,8 @@ function getMaxOfArray(numArray) {
 }
 
 /**
- * Crea un loadingbar.
- * @return
+ * Crea un loadingbar
+ * @function
  */
 function loadingBarTrigger() {
     $('#progressLoading').html(' ');
@@ -138,7 +141,8 @@ function loadingBarTrigger() {
 }
 
 /**
- * Crea una fecha a partir de un string.
+ * Crea una fecha a partir de un string
+ * @function
  * @param {string} str
  * @return {Date}
  */
@@ -148,7 +152,8 @@ function parseDate(str) {
 }
 
 /**
- * Hace la diferencia entre dos días.
+ * Hace la diferencia entre dos días
+ * @function
  * @param {Date} first
  * @param {Date} second
  * @return {number}
@@ -158,7 +163,8 @@ function daydiff(first, second) {
 }
 
 /**
- * Ajusta las versiones de desarrollo para gráficos.
+ * Ajusta las versiones de desarrollo para gráficos
+ * @function
  * @param {string} version
  * @return {*}
  */
@@ -170,7 +176,8 @@ function parseDevVersion(version) {
 }
 
 /**
- * Obtiene parámetro url.
+ * Obtiene parámetro url
+ * @function
  * @param {string} name
  * @return {string | null}
  */
@@ -179,7 +186,8 @@ function getURLParameter(name) {
 }
 
 /**
- * Cambia el parámetro de la url.
+ * Cambia el parámetro de la url
+ * @function
  * @param {string} param
  * @param {string} value
  */
@@ -205,8 +213,8 @@ function changeUrlParam(param, value) {
 }
 
 /**
- * Agrega plugins a Chart.js.
- * @return
+ * Agrega plugins a Chart.js
+ * @function
  */
 function initializeChartjsPlugins() {
     Chart.pluginService.register({
@@ -248,9 +256,9 @@ function initializeChartjsPlugins() {
 }
 
 /**
- * Carga un template y genera gráficos.
- * @param {string} templateid           ID del template
- * @return
+ * Carga un template y genera gráficos
+ * @function
+ * @param {string} templateid - ID del template
  */
 function loadTemplate(templateid) {
 
@@ -324,7 +332,9 @@ function loadTemplate(templateid) {
         try {
             data = data.split('\n');
 
-            // Se cargan datos a listas
+            /**
+             * Se cargan datos a listas
+             */
             var plot_id = [];
             var plot_ctime = [];
             var plot_nline = [];
@@ -353,7 +363,9 @@ function loadTemplate(templateid) {
             } finally {
             }
 
-            // Se genera la tabla
+            /**
+             * Se genera la tabla
+             */
             try {
                 var lenghtmenuoption = [];
                 if (loadedData.length >= tableMaxReg) {
@@ -383,7 +395,9 @@ function loadTemplate(templateid) {
             }
             hasLoaded = true;
 
-            // Estadística tiempos de compilación
+            /**
+             * Estadística tiempos de compilación
+             */
             try {
                 var mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
                 var plot_mean_ctime = [];
@@ -400,7 +414,9 @@ function loadTemplate(templateid) {
             } finally {
             }
 
-            // Estadística versiones por día
+            /**
+             * Estadística versiones por día
+             */
             try {
                 var day_activity = [];
                 var day_activity_counter = [];
@@ -419,7 +435,9 @@ function loadTemplate(templateid) {
             } finally {
             }
 
-            // Plotea las estadísticas
+            /**
+             * Plotea las estadísticas
+             */
             try {
                 if (day_activity.length > 1) {
                     new Chart($('#plot-activityday'), {
@@ -726,7 +744,9 @@ function loadTemplate(templateid) {
             } finally {
             }
 
-            // Obtiene descargas de la versión
+            /**
+             * Obtiene descargas de la versión
+             */
             var downloads_link_compact = [];
             var downloads_link_normal = [];
             var downloads_total = [];
@@ -746,10 +766,14 @@ function loadTemplate(templateid) {
             var jsonQuery2 = $.getJSON(st.json, function (json) {
                 try {
 
-                    // Exclusivo para Template-Informe
+                    /**
+                     * Exclusivo para Template-Informe
+                     */
                     if (templateid === 'informe') {
 
-                        // Se busca el id de archivo compacto y normal
+                        /**
+                         * Se busca el id de archivo compacto y normal
+                         */
                         var id_compact = -1;
                         var id_normal = -1;
                         var lastrel = json[0].assets;
@@ -766,7 +790,9 @@ function loadTemplate(templateid) {
                             return;
                         }
 
-                        // Se crea lista de particiones para cada departamento
+                        /**
+                         * Se crea lista de particiones para cada departamento
+                         */
                         var dptodownloads_normal = [];
                         var dptodownloads_single = [];
                         var dptodownloads = [];
@@ -791,7 +817,9 @@ function loadTemplate(templateid) {
                         var adwl;
                         var dptototalvers = 0;
 
-                        // Se cargan datos del json de descargas
+                        /**
+                         * Se cargan datos del json de descargas
+                         */
                         for (i = json.length - 1; i >= 0; i--) {
                             if (json[i].assets.length <= 2) {
                                 // Versión normal sin departamentos
@@ -890,7 +918,9 @@ function loadTemplate(templateid) {
                         $('#plot-dptodownloadlines').remove();
                     }
 
-                    // Obtiene descargas anteriores
+                    /**
+                     * Obtiene descargas anteriores
+                     */
                     try {
                         var prev_downloads = getDownloadCounter(st.name);
                     } catch (e) {
@@ -909,7 +939,9 @@ function loadTemplate(templateid) {
                         }
                     }
 
-                    // Se normaliza la variación de descargas
+                    /**
+                     * Se normaliza la variación de descargas
+                     */
                     for (i = 0; i < var_downloads_releases.length; i++) {
                         if (lastdownloads_total[i] !== 0) {
                             var_downloads_releases[i] = roundNumber(100 * var_downloads_releases[i] / lastdownloads_total[i], downloadVariationRoundNumber);
@@ -918,7 +950,9 @@ function loadTemplate(templateid) {
                         }
                     }
 
-                    // Genera descargas por versión global
+                    /**
+                     * Genera descargas por versión global
+                     */
                     j = -1;
                     var lgv = '', gv;
                     for (i = 0; i < version_releases.length; i++) {
@@ -938,14 +972,18 @@ function loadTemplate(templateid) {
                         lgv = gv;
                     }
 
-                    // Genera descargas acumulado
+                    /**
+                     * Genera descargas acumulado
+                     */
                     var acum_downloads = [downloads_total[0]];
                     for (i = 1; i < downloads_total.length; i++) {
                         acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                     }
                     var sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
 
-                    // Calcula días de cada versión disponibles
+                    /**
+                     * Calcula días de cada versión disponibles
+                     */
                     var lastday_total = [];
                     for (i = 0; i < lastday_released.length - 1; i++) {
                         lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
@@ -953,7 +991,9 @@ function loadTemplate(templateid) {
                     let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
                     lastday_total.push(last_ver_day_count);
 
-                    // Genera descargas por día versión global
+                    /**
+                     * Genera descargas por día versión global
+                     */
                     // let last_glob_day_count = Math.max(daydiff(new Date('April 23, 2018 00:00:00'), new Date()), 1);
                     // let globver_downloads_days = [137, 209, 72, 315, last_glob_day_count];
                     // let globver_downloads_per_day = [];
@@ -962,7 +1002,9 @@ function loadTemplate(templateid) {
                     // }
                     // console.log(globver_downloads_per_day);
 
-                    // Descargas por día
+                    /**
+                     * Descargas por día
+                     */
                     var downloads_compact_per_day = [];
                     var downloads_normal_per_day = [];
                     var downloads_per_day = [];
@@ -972,10 +1014,14 @@ function loadTemplate(templateid) {
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
                     }
 
-                    // Número de versión correcto en últimas n-versiones
+                    /**
+                     * Número de versión correcto en últimas n-versiones
+                     */
                     var last_n_version = Math.min(30, json.length);
 
-                    // Genera el gráfico de descargas
+                    /**
+                     * Genera el gráfico de descargas
+                     */
                     try {
                         if (json.length >= 1) {
                             if (templateid === 'informe') {
@@ -1029,6 +1075,10 @@ function loadTemplate(templateid) {
                                     }
                                 }
                                 max_downloads_dptos_perv = roundNumber(max_downloads_dptos_perv * 1.2, 0); // Se actualiza el máximo a un valor superior
+                                /**
+                                 * Descagas por departamento, se muestran sólo los definidos
+                                 * en {@link dptosDisplayDefaultLinePlot}
+                                 */
                                 new Chart($('#plot-dptodownloadlines'), {
                                     type: 'line',
                                     data: {
@@ -1911,7 +1961,9 @@ function loadTemplate(templateid) {
                     } finally {
                     }
 
-                    // Muestra el contenido final con efecto
+                    /**
+                     * Muestra el contenido final con efecto
+                     */
                     setTimeout(function () {
                         $('#mainContent').fadeIn('slow', function () {
                             let $pld = $('#progressLoading');
@@ -1922,6 +1974,7 @@ function loadTemplate(templateid) {
                         });
                         console.log('Carga exitosa');
                     }, timeShowContentOnLoad);
+
                 } catch (e) {
                     throwErrorID(errorID.getdownloads, e);
                 } finally {
@@ -1941,25 +1994,25 @@ function loadTemplate(templateid) {
 }
 
 /**
- * Regenera los datos de la tabla.
- * @return
+ * Regenera los datos de la tabla
+ * @function
  */
 function writeTableHeader() {
     $('#tableData').html(String.format('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></thead><tfoot><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></tfoot><tbody id="tableMem"></tbody></table>', tableDataNameCols[0], tableDataNameCols[1], tableDataNameCols[2], tableDataNameCols[3], tableDataNameCols[4], tableDataNameCols[5]));
 }
 
 /**
- * Regenera la sección de los gráficos.
- * @return
+ * Regenera la sección de los gráficos
+ * @function
  */
 function writeGraphCanvases() {
     $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 /**
- * Obtiene la lista de descargas y versiones de un ID.
- * @param {string} templateid       ID del template
- * @return
+ * Obtiene la lista de descargas y versiones de un ID
+ * @function
+ * @param {string} templateid - ID del template
  */
 function getDownloadCounter(templateid) {
     updateDownloadCounter(0, templateid);

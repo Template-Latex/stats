@@ -31,8 +31,7 @@ a.back-to-top {
     z-index: 999;
     right: 20px;
     bottom: 20px;
-    background: #27AE61 url("../res/up-arrow.png") no-repeat center 43%;
-    background-color: rgb(91, 91, 91);
+    background: rgb(91, 91, 91) url("../res/up-arrow.png") no-repeat center 43%;
     opacity: 0.7;
 }
 
@@ -44,6 +43,7 @@ a.back-to-top {
         -moz-border-radius: 35px;
         border-radius: 35px;
     }
+
     #footer {
         margin-bottom: 1.7rem;
     }
@@ -57,6 +57,7 @@ a.back-to-top {
         -moz-border-radius: 30px;
         border-radius: 30px;
     }
+
     #footer {
         margin-bottom: 1.5rem;
     }
@@ -70,6 +71,7 @@ a.back-to-top {
         -moz-border-radius: 25px;
         border-radius: 25px;
     }
+
     #footer {
         margin-bottom: 1.3rem;
     }

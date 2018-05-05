@@ -32,8 +32,8 @@ var initTemplate = ''; // Template pasado por get en url
 var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 /**
- * Inicio de la aplicación.
- * Analizar parámetros de entrada y establecer subtemplates disponibles.
+ * Inicio de la aplicación
+ * Analizar parámetros de entrada y establecer subtemplates disponibles
  */
 $(function () {
 

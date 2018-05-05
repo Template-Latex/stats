@@ -33,8 +33,7 @@ body {
 #header {
     display: inline-block;
     width: 100%;
-    padding: 5px;
-    padding-top: 0;
+    padding: 0 5px 5px;
     margin-bottom: 8px;
 }
 
@@ -85,9 +84,7 @@ body {
     height: 50px;
     margin-right: 16px;
     top: 12px;
-    background-image: url("../icon.png");
-    background-position: left;
-    background-repeat: no-repeat;
+    background: url("../icon.png") no-repeat left;
     background-size: 50px;
 }
 
@@ -122,8 +119,7 @@ body {
     position: relative;
     float: right;
     border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid;
     padding: 5px;
     font-weight: 600;
     /*border-color: rgb(180, 180, 180);*/
@@ -132,7 +128,6 @@ body {
     background-color: #f6f7f8;
     cursor: pointer;
 }
-
 
 /*#mainSelector:hover {
     border-color: rgb(218, 218, 218);
@@ -146,8 +141,7 @@ body {
 
 #mainContent {
     max-width: 68rem;
-    margin: auto;
-    margin-top: 25px;
+    margin: 25px auto auto;
     display: none;
 }
 
@@ -159,21 +153,25 @@ body {
         font-size: 13px;
         padding-top: 4px;
     }
+
     #graphSection {
         width: 48%;
         display: inline-block;
         float: right;
         position: relative;
     }
+
     .fixedTableData {
         position: fixed;
         top: 15px;
         max-width: 544px;
     }
+
     .nonFixedTableData {
         width: 44%;
         position: relative;
     }
+
     #footer {
         text-align: right;
     }
@@ -189,19 +187,24 @@ body {
     body {
         min-width: 540px;
     }
+
     #header {
         min-width: 540px;
     }
+
     #templateName {
         font-size: 30px;
         top: 13px;
     }
+
     #templateSelector {
         top: 20px;
     }
+
     #mainSelector {
         font-size: 11px;
     }
+
     #tableData {
         max-width: 530px;
         margin-bottom: 30px;
@@ -209,6 +212,7 @@ body {
         margin-left: auto;
         margin-right: auto;
     }
+
     #graphSection {
         width: 75%;
         min-width: 530px;
@@ -216,10 +220,14 @@ body {
         margin-left: auto;
         margin-right: auto;
     }
-    .fixedTableData {}
+
+    .fixedTableData {
+    }
+
     .nonFixedTableData {
         position: relative;
     }
+
     #footer {
         text-align: center;
     }
@@ -230,27 +238,20 @@ body {
 }
 
 #errorMsg {
-    margin: auto;
     position: relative;
     width: 40%;
     padding: 20px;
-    margin-top: 10%;
-    border-color: rgb(218, 218, 218);
-    background-color: rgb(235, 235, 235);
+    margin: 10% auto auto;
+    background-color: rgb(233, 233, 233);
     text-align: center;
     font-size: 25px;
     font-weight: 300;
     border-radius: 5px;
-    border-width: 1px;
-    border-style: solid;
-    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgb(218, 218, 218);
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.06);
     display: none;
     word-wrap: break-word;
     cursor: pointer;
-}
-
-#errorMsg:hover {
-    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2);
 }
 
 #errorMsg img {

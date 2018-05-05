@@ -116,10 +116,10 @@ var errorID = {
 };
 
 /**
- * Escribe el error en el panel.
- * @param {object} errorid          ID del error
- * @param {object} exceptionmsg     Mensaje de error
- * @return
+ * Escribe el error en el panel
+ * @function
+ * @param {object} errorid - ID del error
+ * @param {object} exceptionmsg - Mensaje de error
  */
 function throwErrorID(errorid, exceptionmsg) {
     clearInterval(loadingBarAnimation);
@@ -131,7 +131,6 @@ function throwErrorID(errorid, exceptionmsg) {
     // noinspection HtmlUnknownTarget
     $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
     $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
-
     if (exceptionmsg !== '') {
         console.log(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
         console.log(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
@@ -139,8 +138,8 @@ function throwErrorID(errorid, exceptionmsg) {
 }
 
 /**
- * Oculta mensajes de error.
- * @return
+ * Oculta mensajes de error
+ * @function
  */
 function cleanErrorMsg() {
     $('#errorMsg').css('display', 'none');
