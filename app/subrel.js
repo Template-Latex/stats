@@ -31,7 +31,7 @@ var stat = {
         "header": "Template Informe",
         "index": 0,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
-        "link": "http://latex.ppizarror.com/Template-Informe/",
+        "link": "http://latex.ppizarror.com/informe.html",
         "name": "Template-Informe",
         "tag": "Informe"
     },
@@ -41,7 +41,7 @@ var stat = {
         "header": "Template Auxiliares",
         "index": 1,
         "json": "https://api.github.com/repos/Template-Latex/Template-Auxiliares/releases",
-        "link": "http://latex.ppizarror.com/Template-Auxiliares/",
+        "link": "http://latex.ppizarror.com/auxiliares.html",
         "name": "Template-Auxiliares",
         "tag": "Auxiliares"
     },
@@ -51,7 +51,7 @@ var stat = {
         "header": "Template Controles",
         "index": 2,
         "json": "https://api.github.com/repos/Template-Latex/Template-Controles/releases",
-        "link": "http://latex.ppizarror.com/Template-Controles/",
+        "link": "http://latex.ppizarror.com/controles.html",
         "name": "Template-Controles",
         "tag": "Controles"
     },
@@ -61,7 +61,7 @@ var stat = {
         "header": "Template Tesis",
         "index": 3,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
-        "link": "http://latex.ppizarror.com/Template-Informe/",
+        "link": "",
         "name": "Template-Tesis",
         "tag": "Tesis"
     },
@@ -71,7 +71,7 @@ var stat = {
         "header": "Template Apunte",
         "index": 4,
         "json": "https://api.github.com/repos/Template-Latex/Template-Apunte/releases",
-        "link": "http://latex.ppizarror.com/Template-Apunte/",
+        "link": "",
         "name": "Template-Apunte",
         "tag": "Apunte"
     },
@@ -81,7 +81,7 @@ var stat = {
         "header": "Template Pautas",
         "index": 5,
         "json": "https://api.github.com/repos/Template-Latex/Template-Pautas/releases",
-        "link": "http://latex.ppizarror.com/Template-Pautas/",
+        "link": "",
         "name": "Template-Pautas",
         "tag": "Pautas"
     },
@@ -91,7 +91,7 @@ var stat = {
         "header": "Template Tareas",
         "index": 6,
         "json": "https://api.github.com/repos/Template-Latex/Template-Tareas/releases",
-        "link": "http://latex.ppizarror.com/Template-Tareas/",
+        "link": "",
         "name": "Template-Tareas",
         "tag": "Tareas"
     },
@@ -101,7 +101,7 @@ var stat = {
         "header": "Professional CV",
         "index": 7,
         "json": "https://api.github.com/repos/Template-Latex/Professional-CV/releases",
-        "link": "http://latex.ppizarror.com/Professional-CV/",
+        "link": "http://latex.ppizarror.com/professional-cv.html",
         "name": "Professional-CV",
         "tag": "Professional-CV"
     }
