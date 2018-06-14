@@ -821,8 +821,11 @@ function loadTemplate(templateid) {
                          * Se cargan datos del json de descargas
                          */
                         for (i = json.length - 1; i >= 0; i--) {
+
+                            /**
+                             * Versión normal sin departamentos
+                             */
                             if (json[i].assets.length <= 2) {
-                                // Versión normal sin departamentos
                                 try {
                                     downloads_link_compact.push(json[i].assets[0].download_count);
                                     downloads_link_normal.push(json[i].assets[1].download_count);
@@ -839,8 +842,12 @@ function loadTemplate(templateid) {
                                     version_releases.push(json[i].tag_name);
                                 } catch (err) {
                                 }
-                            } else {
-                                // Versión con departamentos
+                            }
+
+                            /**
+                             * Versión con departamentos
+                             */
+                            else {
                                 dptototalvers += 1;
                                 adwl = json[i].assets;
                                 lastday_released_str.push(json[i].published_at.substring(0, 10));
@@ -851,6 +858,8 @@ function loadTemplate(templateid) {
                                 var vdownload_single = 0;
                                 var isdpto = false;
                                 var vrname, dpto, dptoindex, ddl;
+
+                                // Itera por cada departameto y suma descargas
                                 for (j = 0; j < adwl.length; j++) {
                                     vrname = json[i].assets[j].name;
                                     dpto = json[i].assets[j].name.split('-');
@@ -861,6 +870,10 @@ function loadTemplate(templateid) {
                                     } else {
                                         dpto = '';
                                     }
+
+                                    // Se parcha cambio de diqbt -> diqbtm
+                                    if (dpto === 'diqbt') dpto = 'diqbtm';
+
                                     dptoindex = dptos.indexOf(dpto);
                                     isdpto = dptoindex !== -1;
                                     ddl = parseInt(json[i].assets[j].download_count);
