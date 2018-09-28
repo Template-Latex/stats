@@ -27,9 +27,9 @@
 /**
  * Variables globales
  */
-var hasLoaded = false; // Indica si se ha cargado ya un template
-var initTemplate = ''; // Template pasado por get en url
-var mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
+let hasLoaded = false; // Indica si se ha cargado ya un template
+let initTemplate = ''; // Template pasado por get en url
+let mainUrl = 'http://latex.ppizarror.com/stats/'; // Url principal de los datos
 
 /**
  * Inicio de la aplicación
@@ -58,7 +58,7 @@ $(function () {
      */
     try {
         let $mainsection = $('#mainSelector');
-        for (let i = 0; i < Object.keys(stat).length; i++) {
+        for (let i = 0; i < Object.keys(stat).length; i += 1) {
             if (stat[Object.keys(stat)[i]].available) {
                 $mainsection.append($('<option>', {
                     value: Object.keys(stat)[i],
@@ -88,7 +88,7 @@ $(function () {
     let found;
     if (initTemplate != null) {
         found = false;
-        for (let i = 0; i < Object.keys(stat).length; i++) {
+        for (let i = 0; i < Object.keys(stat).length; i += 1) {
             if (stat[Object.keys(stat)[i]].tag === initTemplate && stat[Object.keys(stat)[i]].available) {
                 $('#mainSelector').val(Object.keys(stat)[i]);
                 setTimeout(function () {
@@ -107,8 +107,8 @@ $(function () {
     /**
      * Se fija tabla al hacer scroll
      */
-    var lockScrollUpClass = false;
-    var lockScrollDownClass = false;
+    let lockScrollUpClass = false;
+    let lockScrollDownClass = false;
     $(window).scroll(function () {
         let $tabledata = $('#tableData');
 

@@ -28,9 +28,9 @@
  * Información de la aplicación
  * @type {{version: string, date: string, author: {name: string, tag: string, email: string, website: string, github: string}, productname: string, productnamefooter: string, productsource: string}}
  */
-var aboutinfo = {
-    "version": "1.23",
-    "date": "24/08/2018",
+let aboutinfo = {
+    "version": "1.30",
+    "date": "27/09/2018",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
@@ -44,7 +44,8 @@ var aboutinfo = {
 };
 
 /**
- * Imprime un acerca-de en consola
+ * Imprime un acerca-de en consola.
+ *
  * @function
  */
 function printAboutInfo() {
@@ -54,7 +55,8 @@ function printAboutInfo() {
 }
 
 /**
- * Muestra el footer
+ * Muestra el footer.
+ *
  * @function
  */
 function generateFooter() {

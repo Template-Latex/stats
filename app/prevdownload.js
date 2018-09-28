@@ -27,9 +27,11 @@
 var download_list_counter;
 
 /**
- * Actualizador de descargas
- * @param downloads
- * @param source
+ * Actualizador de descargas.
+ *
+ * @function
+ * @param {number} downloads - Número de descargas
+ * @param {string} source - Tipo de fuente
  * @return {*}
  */
 function updateDownloadCounter(downloads, source) {
@@ -133,7 +135,12 @@ function updateDownloadCounter(downloads, source) {
                 [[132, 53], '5.4.0'],
                 [[16, 6], '5.4.5'],
                 [[51, 19], '5.4.6'],
-                [[397, 98], '5.4.7'],
+                [[398, 99], '5.4.7'],
+                [[70, 20], '5.4.8'],
+                [[22, 3], '5.5.0'],
+                [[5, 1], '5.5.2'],
+                [[71, 25], '5.5.3'],
+                [[196, 48], '5.5.4'],
             ];
             break;
         case 'Template-Auxiliares':

@@ -24,7 +24,7 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var stat = {
+let stat = {
     "informe": {
         "available": true,
         "data": "data/informe.txt",

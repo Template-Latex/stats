@@ -41,7 +41,8 @@ if (!String.format) {
 }
 
 /**
- * Obtiene parámetros de la url
+ * Obtiene parámetros de la url.
+ *
  * @function
  * @param {string} name
  * @return {*}
@@ -56,7 +57,8 @@ $.urlParam = function (name) {
 };
 
 /**
- * Redondea un número
+ * Redondea un número.
+ *
  * @function
  * @param {number} num
  * @param {number} scale
@@ -80,7 +82,8 @@ function roundNumber(num, scale) {
 }
 
 /**
- * Retorna el máximo de una lista
+ * Retorna el máximo de una lista.
+ *
  * @function
  * @param {array} numArray
  * @return {number}
@@ -90,7 +93,8 @@ function getMaxOfArray(numArray) {
 }
 
 /**
- * Crea un loadingbar
+ * Crea un loadingbar.
+ *
  * @function
  */
 function loadingBarTrigger() {
@@ -141,7 +145,8 @@ function loadingBarTrigger() {
 }
 
 /**
- * Crea una fecha a partir de un string
+ * Crea una fecha a partir de un string.
+ *
  * @function
  * @param {string} str
  * @return {Date}
@@ -152,7 +157,8 @@ function parseDate(str) {
 }
 
 /**
- * Hace la diferencia entre dos días
+ * Hace la diferencia entre dos días.
+ *
  * @function
  * @param {Date} first
  * @param {Date} second
@@ -163,7 +169,8 @@ function daydiff(first, second) {
 }
 
 /**
- * Ajusta las versiones de desarrollo para gráficos
+ * Ajusta las versiones de desarrollo para gráficos.
+ *
  * @function
  * @param {string} version
  * @return {*}
@@ -176,17 +183,20 @@ function parseDevVersion(version) {
 }
 
 /**
- * Obtiene parámetro url
+ * Obtiene parámetro url.
+ *
  * @function
  * @param {string} name
  * @return {string | null}
  */
 function getURLParameter(name) {
+    // noinspection JSConsecutiveCommasInArrayLiteral
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
 
 /**
- * Cambia el parámetro de la url
+ * Cambia el parámetro de la url.
+ *
  * @function
  * @param {string} param
  * @param {string} value
@@ -213,7 +223,8 @@ function changeUrlParam(param, value) {
 }
 
 /**
- * Agrega plugins a Chart.js
+ * Agrega plugins a Chart.js.
+ *
  * @function
  */
 function initializeChartjsPlugins() {
@@ -256,7 +267,8 @@ function initializeChartjsPlugins() {
 }
 
 /**
- * Carga un template y genera gráficos
+ * Carga un template y genera gráficos.
+ *
  * @function
  * @param {string} templateid - ID del template
  */
@@ -342,10 +354,10 @@ function loadTemplate(templateid) {
             var loadedData = [];
 
             try {
-                for (let i = 1; i < data.length; i++) {
+                for (let i = 1; i < data.length; i += 1) {
                     let a = [];
                     let line = data[i].split(' ');
-                    for (var j = 0; j < line.length; j++) {
+                    for (var j = 0; j < line.length; j += 1) {
                         if (line[j] !== '') {
                             a.push(line[j]);
                         }
@@ -403,7 +415,7 @@ function loadTemplate(templateid) {
                 var plot_mean_ctime = [];
                 var plot_partial_mean_ctime = [];
                 var total_sum = 0.0;
-                for (let k = 0; k < loadedData.length; k++) {
+                for (let k = 0; k < loadedData.length; k += 1) {
                     plot_mean_ctime.push(mean_ctime);
                     total_sum += plot_ctime[k];
                     plot_partial_mean_ctime.push(roundNumber(total_sum / (k + 1), 2));
@@ -420,7 +432,7 @@ function loadTemplate(templateid) {
             try {
                 var day_activity = [];
                 var day_activity_counter = [];
-                for (var i = 0; i < loadedData.length; i++) {
+                for (var i = 0; i < loadedData.length; i += 1) {
                     let k = jQuery.inArray(loadedData[i][3], day_activity);
                     if (k === -1) {
                         day_activity.push(loadedData[i][3]);
@@ -777,7 +789,7 @@ function loadTemplate(templateid) {
                         var id_compact = -1;
                         var id_normal = -1;
                         var lastrel = json[0].assets;
-                        for (let i = 0; i < lastrel.length; i++) {
+                        for (let i = 0; i < lastrel.length; i += 1) {
                             if (lastrel[i].name === 'Template-Informe.zip') {
                                 id_normal = i;
                             }
@@ -800,7 +812,7 @@ function loadTemplate(templateid) {
                         var dptodownloads_single_total = [];
                         var dptodownloads_versions = [];
                         var dptos = [];
-                        for (let i = 0; i < lastrel.length; i++) {
+                        for (let i = 0; i < lastrel.length; i += 1) {
                             dpto = lastrel[i].name.split('-');
                             if (dpto.length === 4) {
                                 dpto = dpto[2];
@@ -860,7 +872,7 @@ function loadTemplate(templateid) {
                                 var vrname, dpto, dptoindex, ddl;
 
                                 // Itera por cada departameto y suma descargas
-                                for (j = 0; j < adwl.length; j++) {
+                                for (j = 0; j < adwl.length; j += 1) {
                                     vrname = json[i].assets[j].name;
                                     dpto = json[i].assets[j].name.split('-');
                                     if (dpto.length === 4) {
@@ -942,7 +954,7 @@ function loadTemplate(templateid) {
                     } finally {
                     }
                     prev_downloads.reverse();
-                    for (i = 0; i < prev_downloads.length; i++) {
+                    for (i = 0; i < prev_downloads.length; i += 1) {
                         let vindx = version_releases.indexOf(prev_downloads[i][1]);
                         if (vindx === -1) {
                             version_releases.unshift(prev_downloads[i][1]);
@@ -955,7 +967,7 @@ function loadTemplate(templateid) {
                     /**
                      * Se normaliza la variación de descargas
                      */
-                    for (i = 0; i < var_downloads_releases.length; i++) {
+                    for (i = 0; i < var_downloads_releases.length; i += 1) {
                         if (lastdownloads_total[i] !== 0) {
                             var_downloads_releases[i] = roundNumber(100 * var_downloads_releases[i] / lastdownloads_total[i], downloadVariationRoundNumber);
                         } else {
@@ -968,7 +980,7 @@ function loadTemplate(templateid) {
                      */
                     j = -1;
                     var lgv = '', gv;
-                    for (i = 0; i < version_releases.length; i++) {
+                    for (i = 0; i < version_releases.length; i += 1) {
                         gv = version_releases[i].substring(0, 2);
                         if (gv[1] === '.') {
                             gv = gv[0];
@@ -989,7 +1001,7 @@ function loadTemplate(templateid) {
                      * Genera descargas acumulado
                      */
                     var acum_downloads = [downloads_total[0]];
-                    for (i = 1; i < downloads_total.length; i++) {
+                    for (i = 1; i < downloads_total.length; i += 1) {
                         acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                     }
                     var sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
@@ -998,7 +1010,7 @@ function loadTemplate(templateid) {
                      * Calcula días de cada versión disponibles
                      */
                     var lastday_total = [];
-                    for (i = 0; i < lastday_released.length - 1; i++) {
+                    for (i = 0; i < lastday_released.length - 1; i += 1) {
                         lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
                     }
                     let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
@@ -1010,7 +1022,7 @@ function loadTemplate(templateid) {
                     // let last_glob_day_count = Math.max(daydiff(new Date('April 23, 2018 00:00:00'), new Date()), 1);
                     // let globver_downloads_days = [137, 209, 72, 315, last_glob_day_count];
                     // let globver_downloads_per_day = [];
-                    // for (let i = 0; i < globver_releases.length; i++) {
+                    // for (let i = 0; i < globver_releases.length; i+=1) {
                     //     globver_downloads_per_day.push(roundNumber(globver_releases[i] / globver_downloads_days[i], 2));
                     // }
                     // console.log(globver_downloads_per_day);
@@ -1021,7 +1033,7 @@ function loadTemplate(templateid) {
                     var downloads_compact_per_day = [];
                     var downloads_normal_per_day = [];
                     var downloads_per_day = [];
-                    for (i = 0; i < lastday_total.length; i++) {
+                    for (i = 0; i < lastday_total.length; i += 1) {
                         downloads_compact_per_day.push(roundNumber(downloads_link_compact[i] / lastday_total[i], 2));
                         downloads_normal_per_day.push(roundNumber(downloads_link_normal[i] / lastday_total[i], 2));
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
@@ -1052,7 +1064,7 @@ function loadTemplate(templateid) {
                                 var lastverdptos_sum = 0;
                                 var dpto_color;
                                 var dpto_dataset_list;
-                                for (i = 0; i < dptos.length; i++) {
+                                for (i = 0; i < dptos.length; i += 1) {
                                     if (dptodownloads[i] > 0) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
                                         nonzero_dptos_downloads.push(dptodownloads[i]);
@@ -1069,7 +1081,7 @@ function loadTemplate(templateid) {
                                         dpto_dataset_list = []; // Dataset para el i-departamento elegido
 
                                         // Se obtienen las descargas del departamento para cada una de las versiones
-                                        for (let k = 0; k < dptototalvers; k++) {
+                                        for (let k = 0; k < dptototalvers; k += 1) {
                                             dpto_dataset_list.push(dptodownloads_single[i][k] + dptodownloads_normal[i][k]);
                                         }
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
@@ -1929,7 +1941,7 @@ function loadTemplate(templateid) {
                                 let $pieDL = $('#plot-piedownloads');
                                 $pieDL.css('display', 'block');
                                 let total_downloads_colors_pie = [];
-                                for (let i = 0; i < downloads_total.length; i++) {
+                                for (let i = 0; i < downloads_total.length; i += 1) {
                                     total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
                                 }
                                 new Chart($pieDL, {
@@ -2007,7 +2019,8 @@ function loadTemplate(templateid) {
 }
 
 /**
- * Regenera los datos de la tabla
+ * Regenera los datos de la tabla.
+ *
  * @function
  */
 function writeTableHeader() {
@@ -2015,7 +2028,8 @@ function writeTableHeader() {
 }
 
 /**
- * Regenera la sección de los gráficos
+ * Regenera la sección de los gráficos.
+ *
  * @function
  */
 function writeGraphCanvases() {
@@ -2023,13 +2037,14 @@ function writeGraphCanvases() {
 }
 
 /**
- * Obtiene la lista de descargas y versiones de un ID
+ * Obtiene la lista de descargas y versiones de un ID.
+ *
  * @function
  * @param {string} templateid - ID del template
  */
 function getDownloadCounter(templateid) {
     updateDownloadCounter(0, templateid);
-    for (let i = 0; i < download_list_counter.length; i++) {
+    for (let i = 0; i < download_list_counter.length; i += 1) {
         if (Array.isArray(download_list_counter[i][0])) {
             download_list_counter[i][0] = download_list_counter[i][0][0] + download_list_counter[i][0][1];
         }

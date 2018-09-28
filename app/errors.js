@@ -27,7 +27,7 @@
 /**
  * Código de errores
  */
-var errorID = {
+let errorID = {
     "badtemplateid": {
         "msg": "ID de Template incorrecto",
         "code": 1,
@@ -116,7 +116,8 @@ var errorID = {
 };
 
 /**
- * Escribe el error en el panel
+ * Escribe el error en el panel.
+ *
  * @function
  * @param {object} errorid - ID del error
  * @param {object} exceptionmsg - Mensaje de error
@@ -132,13 +133,14 @@ function throwErrorID(errorid, exceptionmsg) {
     $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
     $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
     if (exceptionmsg !== '') {
-        console.log(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
-        console.log(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
+        console.error(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
+        console.error(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
     }
 }
 
 /**
- * Oculta mensajes de error
+ * Oculta mensajes de error.
+ *
  * @function
  */
 function cleanErrorMsg() {
