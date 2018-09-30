@@ -141,6 +141,7 @@ function updateDownloadCounter(downloads, source) {
                 [[5, 1], '5.5.2'],
                 [[71, 25], '5.5.3'],
                 [[196, 48], '5.5.4'],
+                [[40, 11], '5.5.5'],
             ];
             break;
         case 'Template-Auxiliares':
@@ -179,6 +180,10 @@ function updateDownloadCounter(downloads, source) {
                 [[10, 2], '5.2.0'],
                 [[0, 0], '5.2.1'],
                 [[43, 18], '5.2.2'],
+                [[6, 1], '5.2.6'],
+                [[0, 0], '5.2.7'],
+                [[55, 11], '5.2.8'],
+                [[7, 3], '5.2.9'],
             ];
             break;
         case 'Template-Controles':
@@ -209,6 +214,10 @@ function updateDownloadCounter(downloads, source) {
                 [[4, 1], '2.1.5'],
                 [[0, 0], '2.1.8'],
                 [[15, 5], '2.1.9'],
+                [[0, 0], '2.2.1'],
+                [[1, 0], '2.2.2'],
+                [[19, 0], '2.2.3'],
+                [[0, 0], '2.2.4'],
             ];
             break;
         case 'Professional-CV':
