@@ -793,7 +793,7 @@ function loadTemplate(templateid) {
                             if (lastrel[i].name === 'Template-Informe.zip') {
                                 id_normal = i;
                             }
-                            if (lastrel[i].name === 'Template-Informe-Single.zip') {
+                            if (lastrel[i].name === 'Template-Informe-Single.zip' || lastrel[i].name === 'Template-Informe.min.zip') {
                                 id_compact = i;
                             }
                         }
@@ -814,7 +814,7 @@ function loadTemplate(templateid) {
                         var dptos = [];
                         for (let i = 0; i < lastrel.length; i += 1) {
                             dpto = lastrel[i].name.split('-');
-                            if (dpto.length === 4) {
+                            if (dpto.length >= 3) {
                                 dpto = dpto[2];
                                 if (dptos.indexOf(dpto) === -1) {
                                     dptos.push(dpto);
@@ -875,12 +875,17 @@ function loadTemplate(templateid) {
                                 for (j = 0; j < adwl.length; j += 1) {
                                     vrname = json[i].assets[j].name;
                                     dpto = json[i].assets[j].name.split('-');
-                                    if (dpto.length === 4) {
-                                        dpto = dpto[2];
-                                    } else if (dpto.length === 3) {
-                                        dpto = dpto[2].replace('.zip', '');
-                                    } else {
-                                        dpto = '';
+
+                                    if (vrname.includes('Single')) {
+                                        if (dpto.length === 4) {
+                                            dpto = dpto[2];
+                                        } else if (dpto.length === 3) {
+                                            dpto = dpto[2].replace('.zip', '');
+                                        } else {
+                                            dpto = '';
+                                        }
+                                    } else if(vrname.includes('.min')){
+                                        dpto = dpto[2].replace('.min.zip', '');
                                     }
 
                                     // Se parcha cambio de diqbt -> diqbtm
@@ -889,7 +894,7 @@ function loadTemplate(templateid) {
                                     dptoindex = dptos.indexOf(dpto);
                                     isdpto = dptoindex !== -1;
                                     ddl = parseInt(json[i].assets[j].download_count);
-                                    if (vrname.includes('Single')) {
+                                    if (vrname.includes('Single') || vrname.includes('.min')) {
                                         vdownload_single += ddl;
                                         if (isdpto) {
                                             dptodownloads_single[dptoindex].push(ddl);
