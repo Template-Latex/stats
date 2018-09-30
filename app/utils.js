@@ -815,7 +815,11 @@ function loadTemplate(templateid) {
                         for (let i = 0; i < lastrel.length; i += 1) {
                             dpto = lastrel[i].name.split('-');
                             if (dpto.length >= 3) {
-                                dpto = dpto[2];
+                                if (dpto.length === 4) {
+                                    dpto = dpto[2];
+                                } else {
+                                    dpto = dpto[2].replace('.min.zip', '');
+                                }
                                 if (dptos.indexOf(dpto) === -1) {
                                     dptos.push(dpto);
                                     dptodownloads_normal.push([]);
@@ -876,7 +880,13 @@ function loadTemplate(templateid) {
                                     vrname = json[i].assets[j].name;
                                     dpto = json[i].assets[j].name.split('-');
 
-                                    if (vrname.includes('Single')) {
+                                    if (vrname.includes('.min')) {
+                                        if (dpto.length === 3) {
+                                            dpto = dpto[2].replace('.min.zip', '');
+                                        } else {
+                                            dpto = dpto[1].replace('.min.zip', '');
+                                        }
+                                    } else {
                                         if (dpto.length === 4) {
                                             dpto = dpto[2];
                                         } else if (dpto.length === 3) {
@@ -884,8 +894,6 @@ function loadTemplate(templateid) {
                                         } else {
                                             dpto = '';
                                         }
-                                    } else if(vrname.includes('.min')){
-                                        dpto = dpto[2].replace('.min.zip', '');
                                     }
 
                                     // Se parcha cambio de diqbt -> diqbtm
@@ -1044,6 +1052,7 @@ function loadTemplate(templateid) {
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
                     }
 
+                    console.log(dptodownloads_single);
                     /**
                      * Número de versión correcto en últimas n-versiones
                      */
@@ -1092,15 +1101,15 @@ function loadTemplate(templateid) {
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
                                         var hiddendpto = dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) === -1;
                                         nonzero_dptos_datasets.push({
-                                            label: dptos[i].toUpperCase(),
                                             backgroundColor: dpto_color,
                                             borderColor: dpto_color,
+                                            borderWidth: plotLineWidth,
                                             data: dpto_dataset_list,
                                             fill: false,
+                                            hidden: hiddendpto,
+                                            label: dptos[i].toUpperCase(),
                                             radius: 1,
                                             tension: 0.3,
-                                            borderWidth: plotLineWidth,
-                                            hidden: hiddendpto
                                         });
                                     }
                                 }
