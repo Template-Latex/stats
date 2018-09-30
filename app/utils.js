@@ -1038,7 +1038,6 @@ function loadTemplate(templateid) {
                     // for (let i = 0; i < globver_releases.length; i+=1) {
                     //     globver_downloads_per_day.push(roundNumber(globver_releases[i] / globver_downloads_days[i], 2));
                     // }
-                    // console.log(globver_downloads_per_day);
 
                     /**
                      * Descargas por día
@@ -1052,7 +1051,6 @@ function loadTemplate(templateid) {
                         downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
                     }
 
-                    console.log(dptodownloads_single);
                     /**
                      * Número de versión correcto en últimas n-versiones
                      */
