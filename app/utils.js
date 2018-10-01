@@ -789,18 +789,6 @@ function loadTemplate(templateid) {
                         var id_compact = -1;
                         var id_normal = -1;
                         var lastrel = json[0].assets;
-                        for (let i = 0; i < lastrel.length; i += 1) {
-                            if (lastrel[i].name === 'Template-Informe.zip') {
-                                id_normal = i;
-                            }
-                            if (lastrel[i].name === 'Template-Informe-Single.zip' || lastrel[i].name === 'Template-Informe.min.zip') {
-                                id_compact = i;
-                            }
-                        }
-                        if (id_compact === -1 || id_normal === -1) {
-                            throwErrorID(errorID.erroridnormalsingle, '');
-                            return;
-                        }
 
                         /**
                          * Se crea lista de particiones para cada departamento
@@ -837,6 +825,23 @@ function loadTemplate(templateid) {
                          * Se cargan datos del json de descargas
                          */
                         for (i = json.length - 1; i >= 0; i--) {
+
+                            /**
+                             * Se busca el número de la versión compacta y normal
+                             */
+                            let rel = json[i].assets;
+                            for (let j = 0; j < rel.length; j += 1) {
+                                if (rel[j].name === 'Template-Informe.zip') {
+                                    id_normal = j;
+                                }
+                                if (rel[j].name === 'Template-Informe-Single.zip' || rel[j].name === 'Template-Informe.min.zip') {
+                                    id_compact = j;
+                                }
+                            }
+                            if (id_compact === -1 || id_normal === -1) {
+                                throwErrorID(errorID.erroridnormalsingle, '');
+                                return;
+                            }
 
                             /**
                              * Versión normal sin departamentos
