@@ -447,6 +447,16 @@ function loadTemplate(templateid) {
             } finally {
             }
 
+            let $deleteindex = 0;
+            for (let i = 0; i < day_activity.length; i += 1) {
+                if (day_activity_counter[i] > 40) {
+                    day_activity.splice($deleteindex, 1);
+                    day_activity_counter.splice($deleteindex, 1);
+                    $deleteindex -= 1;
+                }
+                $deleteindex += 1;
+            }
+
             /**
              * Plotea las estadísticas
              */
