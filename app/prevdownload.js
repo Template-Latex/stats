@@ -142,6 +142,7 @@ function updateDownloadCounter(downloads, source) {
                 [[71, 25], '5.5.3'],
                 [[196, 48], '5.5.4'],
                 [[40, 11], '5.5.5'],
+                [[331, 85], '5.5.7'],
             ];
             break;
         case 'Template-Auxiliares':
