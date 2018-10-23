@@ -31,7 +31,7 @@ let stat = {
         "header": "Template Informe",
         "index": 0,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
-        "link": "http://latex.ppizarror.com/informe.html",
+        "link": "https://latex.ppizarror.com/informe.html",
         "name": "Template-Informe",
         "tag": "Informe"
     },
@@ -41,7 +41,7 @@ let stat = {
         "header": "Template Auxiliares",
         "index": 1,
         "json": "https://api.github.com/repos/Template-Latex/Template-Auxiliares/releases",
-        "link": "http://latex.ppizarror.com/auxiliares.html",
+        "link": "https://latex.ppizarror.com/auxiliares.html",
         "name": "Template-Auxiliares",
         "tag": "Auxiliares"
     },
@@ -51,7 +51,7 @@ let stat = {
         "header": "Template Controles",
         "index": 2,
         "json": "https://api.github.com/repos/Template-Latex/Template-Controles/releases",
-        "link": "http://latex.ppizarror.com/controles.html",
+        "link": "https://latex.ppizarror.com/controles.html",
         "name": "Template-Controles",
         "tag": "Controles"
     },
@@ -101,7 +101,7 @@ let stat = {
         "header": "Professional CV",
         "index": 7,
         "json": "https://api.github.com/repos/Template-Latex/Professional-CV/releases",
-        "link": "http://latex.ppizarror.com/professional-cv.html",
+        "link": "https://latex.ppizarror.com/professional-cv.html",
         "name": "Professional-CV",
         "tag": "Professional-CV"
     }
