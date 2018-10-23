@@ -7,12 +7,12 @@
             "WIDTH": 200,
             "HEIGHT": 200
         },
-        "URL": "http://latex.ppizarror.com/stats/",
+        "URL": "https://latex.ppizarror.com/stats/",
         "URL_TITLE": "Template-Latex Stats"
     },
     "AUTHOR": {
         "NAME": "Pablo Pizarro R.",
-        "URL": "http://ppizarror.com",
+        "URL": "https://ppizarror.com",
         "ALT": "ppizarror",
         "DATE": "2017 - 2018",
         "SECTION": {
@@ -23,12 +23,12 @@
     "DESCRIPTION": "Estadísticas de compilación y descargas de los distintos subtemplates",
     "BADGES": {
         "0": {
-            "IMAGE": "http://ppizarror.com/badges/autor.svg",
-            "HREF": "http://ppizarror.com",
+            "IMAGE": "https://ppizarror.com/badges/autor.svg",
+            "HREF": "https://ppizarror.com",
             "ALT": "@ppizarror"
         },
         "1": {
-            "IMAGE": "http://ppizarror.com/badges/licenciamit.svg",
+            "IMAGE": "https://ppizarror.com/badges/licenciamit.svg",
             "HREF": "https://opensource.org/licenses/MIT/",
             "ALT": "Licencia MIT"
         }
