@@ -142,7 +142,11 @@ function updateDownloadCounter(downloads, source) {
                 [[71, 25], '5.5.3'],
                 [[196, 48], '5.5.4'],
                 [[40, 11], '5.5.5'],
-                [[331, 85], '5.5.7'],
+                [[333, 86], '5.5.7'],
+                [[146, 39], '6.0.0'],
+                [[55, 9], '6.0.1'],
+                [[105, 26], '6.0.2'],
+                [[69, 14], '6.0.3'],
             ];
             break;
         case 'Template-Auxiliares':
@@ -185,6 +189,9 @@ function updateDownloadCounter(downloads, source) {
                 [[0, 0], '5.2.7'],
                 [[55, 11], '5.2.8'],
                 [[7, 3], '5.2.9'],
+                [[29, 4], '5.3.0'],
+                [[9, 2], '6.0.0'],
+                [[7, 0], '6.0.1'],
             ];
             break;
         case 'Template-Controles':
@@ -219,6 +226,9 @@ function updateDownloadCounter(downloads, source) {
                 [[1, 0], '2.2.2'],
                 [[19, 0], '2.2.3'],
                 [[0, 0], '2.2.4'],
+                [[7, 3], '2.2.5'],
+                [[4, 0], '3.0.0'],
+                [[4, 0], '3.0.1'],
             ];
             break;
         case 'Professional-CV':
@@ -229,7 +239,9 @@ function updateDownloadCounter(downloads, source) {
                 [[12, 3], '1.2.0'],
                 [[176, 42], '1.2.2'],
                 [[14, 6], '1.2.3'],
-                [[26, 6], '1.2.4']
+                [[32, 7], '1.2.4'],
+                [[104, 93], '1.2.5'],
+                [[31, 9], '1.2.6']
             ];
             break;
         case 'Template-Tareas':
