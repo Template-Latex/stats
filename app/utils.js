@@ -2051,6 +2051,7 @@ function loadTemplate(templateid) {
  * @function
  */
 function writeTableHeader() {
+    // noinspection HtmlDeprecatedAttribute
     $('#tableData').html(String.format('<table id="mainTable" class="display" width="100%" cellspacing="0"><thead><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></thead><tfoot><tr><th>{0}</th><th>{1}</th><th>{2}</th><th>{3}</th><th>{4}</th><th>{5}</th></tr></tfoot><tbody id="tableMem"></tbody></table>', tableDataNameCols[0], tableDataNameCols[1], tableDataNameCols[2], tableDataNameCols[3], tableDataNameCols[4], tableDataNameCols[5]));
 }
 
