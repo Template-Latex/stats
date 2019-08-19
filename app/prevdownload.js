@@ -318,6 +318,9 @@ function updateDownloadCounter(downloads, source) {
         case 'Template-Tesis':
             download_list_counter = [];
             break;
+        case 'Template-Reporte':
+            download_list_counter = [];
+            break;
     }
 
     let tdownld;

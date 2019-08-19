@@ -104,5 +104,15 @@ let stat = {
         "link": "https://latex.ppizarror.com/professional-cv.html",
         "name": "Professional-CV",
         "tag": "Professional-CV"
-    }
+    },
+    "reporte": {
+        "available": true,
+        "data": "data/reporte.txt",
+        "header": "Template Reporte",
+        "index": 7,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Reporte/releases",
+        "link": "https://latex.ppizarror.com/reporte.html",
+        "name": "Template-Reporte",
+        "tag": "Reporte"
+    },
 };
