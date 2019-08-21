@@ -56,7 +56,7 @@ let stat = {
         "tag": "Controles"
     },
     "tesis": {
-        "available": false,
+        "available": true,
         "data": "data/tesis.txt",
         "header": "Template Tesis",
         "index": 3,
