@@ -60,7 +60,7 @@ let stat = {
         "data": "data/tesis.txt",
         "header": "Template Tesis",
         "index": 3,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
+        "json": "https://api.github.com/repos/Template-Latex/Template-Tesis/releases",
         "link": "",
         "name": "Template-Tesis",
         "tag": "Tesis"
