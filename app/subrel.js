@@ -25,15 +25,16 @@
  */
 
 let stat = {
-    "informe": {
-        "available": true,
-        "data": "data/informe.txt",
-        "header": "Template Informe",
-        "index": 0,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
-        "link": "https://latex.ppizarror.com/informe.html",
-        "name": "Template-Informe",
-        "tag": "Informe"
+    "apunte": {
+        "available": false,
+        "data": "data/apunte.txt",
+        "header": "Template Apunte",
+        "index": 4,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Apunte/releases",
+        "link": "",
+        "name": "Template-Apunte",
+        "subdepto": false,
+        "tag": "Apunte"
     },
     "auxiliares": {
         "available": true,
@@ -43,6 +44,7 @@ let stat = {
         "json": "https://api.github.com/repos/Template-Latex/Template-Auxiliares/releases",
         "link": "https://latex.ppizarror.com/auxiliares.html",
         "name": "Template-Auxiliares",
+        "subdepto": false,
         "tag": "Auxiliares"
     },
     "controles": {
@@ -53,27 +55,19 @@ let stat = {
         "json": "https://api.github.com/repos/Template-Latex/Template-Controles/releases",
         "link": "https://latex.ppizarror.com/controles.html",
         "name": "Template-Controles",
+        "subdepto": false,
         "tag": "Controles"
     },
-    "tesis": {
+    "informe": {
         "available": true,
-        "data": "data/tesis.txt",
-        "header": "Template Tesis",
-        "index": 3,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Tesis/releases",
-        "link": "",
-        "name": "Template-Tesis",
-        "tag": "Tesis"
-    },
-    "apunte": {
-        "available": false,
-        "data": "data/apunte.txt",
-        "header": "Template Apunte",
-        "index": 4,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Apunte/releases",
-        "link": "",
-        "name": "Template-Apunte",
-        "tag": "Apunte"
+        "data": "data/informe.txt",
+        "header": "Template Informe",
+        "index": 0,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
+        "link": "https://latex.ppizarror.com/informe.html",
+        "name": "Template-Informe",
+        "subdepto": true,
+        "tag": "Informe"
     },
     "pautas": {
         "available": false,
@@ -83,17 +77,8 @@ let stat = {
         "json": "https://api.github.com/repos/Template-Latex/Template-Pautas/releases",
         "link": "",
         "name": "Template-Pautas",
+        "subdepto": false,
         "tag": "Pautas"
-    },
-    "tareas": {
-        "available": false,
-        "data": "data/tareas.txt",
-        "header": "Template Tareas",
-        "index": 6,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Tareas/releases",
-        "link": "",
-        "name": "Template-Tareas",
-        "tag": "Tareas"
     },
     "professional-cv": {
         "available": true,
@@ -103,6 +88,7 @@ let stat = {
         "json": "https://api.github.com/repos/Template-Latex/Professional-CV/releases",
         "link": "https://latex.ppizarror.com/professional-cv.html",
         "name": "Professional-CV",
+        "subdepto": false,
         "tag": "Professional-CV"
     },
     "reporte": {
@@ -113,6 +99,28 @@ let stat = {
         "json": "https://api.github.com/repos/Template-Latex/Template-Reporte/releases",
         "link": "https://latex.ppizarror.com/reporte.html",
         "name": "Template-Reporte",
+        "subdepto": true,
         "tag": "Reporte"
     },
+    "tesis": {
+        "available": true,
+        "data": "data/tesis.txt",
+        "header": "Template Tesis",
+        "index": 3,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Tesis/releases",
+        "link": "",
+        "name": "Template-Tesis",
+        "subdepto": true,
+        "tag": "Tesis"
+    },
+    "tareas": {
+        "available": false,
+        "data": "data/tareas.txt",
+        "header": "Template Tareas",
+        "index": 6,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Tareas/releases",
+        "link": "",
+        "name": "Template-Tareas",
+        "tag": "Tareas"
+    }
 };

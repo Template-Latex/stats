@@ -205,7 +205,7 @@ function changeUrlParam(param, value) {
     var currentURL = window.location.href + '&';
     var change = new RegExp('(' + param + ')=(.*)&', 'g');
     var newURL = currentURL.replace(change, '$1=' + value + '&');
-    // noinspection JSValidateTypes
+    // noinspection JSValidateTypes,JSIncompatibleTypesComparison
     if (getURLParameter(param) !== null) {
         try {
             window.history.replaceState('', '', newURL.slice(0, -1));
@@ -214,7 +214,7 @@ function changeUrlParam(param, value) {
         }
     } else {
         var currURL = window.location.href;
-        if (currURL.indexOf("?") !== -1) {
+        if (currURL.indexOf('?') !== -1) {
             window.history.replaceState('', '', currentURL.slice(0, -1) + '&' + param + '=' + value);
         } else {
             window.history.replaceState('', '', currentURL.slice(0, -1) + '?' + param + '=' + value);
@@ -789,9 +789,9 @@ function loadTemplate(templateid) {
                 try {
 
                     /**
-                     * Exclusivo para Template-Informe
+                     * Versión con subdepartamentos
                      */
-                    if (templateid === 'informe') {
+                    if (st.subdepto) {
 
                         /**
                          * Se busca el id de archivo compacto y normal
@@ -841,10 +841,11 @@ function loadTemplate(templateid) {
                              */
                             let rel = json[i].assets;
                             for (let j = 0; j < rel.length; j += 1) {
-                                if (rel[j].name === 'Template-Informe.zip') {
+                                if (rel[j].name === String.format('{0}.zip', st.name)) {
                                     id_normal = j;
                                 }
-                                if (rel[j].name === 'Template-Informe-Single.zip' || rel[j].name === 'Template-Informe.min.zip') {
+                                if (rel[j].name === String.format('{0}-Single.zip', st.name) ||
+                                    rel[j].name === String.format('{0}.min.zip', st.name)) {
                                     id_compact = j;
                                 }
                             }
@@ -1076,7 +1077,7 @@ function loadTemplate(templateid) {
                      */
                     try {
                         if (json.length >= 1) {
-                            if (templateid === 'informe') {
+                            if (st.subdepto) {
                                 var dpto_colors = []; // Colores de los departamentos (random)
                                 var nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
                                 var nonzero_dptos_downloads = [];
