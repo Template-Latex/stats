@@ -10,7 +10,9 @@
 </div><br />
 
 ## Licencia
+
 Este proyecto está licenciado bajo la licencia MIT [https://opensource.org/licenses/MIT]
+
 
 ## Autor
 <a href="https://ppizarror.com" title="ppizarror">Pablo Pizarro R.</a> | 2017 - 2019
