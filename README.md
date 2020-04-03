@@ -5,8 +5,8 @@
   <br /><br />
   Stats</h1>
 <p align="center">Estadísticas de compilación y descargas de los distintos subtemplates</p>
-<div align="center"><a href="https://ppizarror.com"><img alt="@ppizarror" src="https://ppizarror.com/badges/autor.svg" /></a>
-<a href="https://opensource.org/licenses/MIT/"><img alt="Licencia MIT" src="https://ppizarror.com/badges/licenciamit.svg" /></a>
+<div align="center"><a href="https://ppizarror.com"><img alt="@ppizarror" src="https://ppizarror.com/res/badges/autor.svg" /></a>
+<a href="https://opensource.org/licenses/MIT/"><img alt="Licencia MIT" src="https://ppizarror.com/res/badges/licenciamit.svg" /></a>
 </div><br />
 
 ## Licencia
