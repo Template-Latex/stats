@@ -34,7 +34,7 @@ let aboutinfo = {
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
-        "email": "pablo.pizarro@ing.uchile.cl",
+        "email": "pablo@ppizarror.com",
         "website": "https://ppizarror.com/",
         "github": "https://github.com/ppizarror"
     },
