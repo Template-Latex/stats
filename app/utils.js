@@ -379,7 +379,7 @@ function loadTemplate(templateid) {
              * Se genera la tabla
              */
             try {
-                var lenghtmenuoption = [];
+                var lenghtmenuoption;
                 if (loadedData.length >= tableMaxReg) {
                     lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, tableMaxReg];
                 } else if (tableHighReg <= loadedData.length && loadedData.length < tableMaxReg) {
@@ -1033,7 +1033,6 @@ function loadTemplate(templateid) {
                     for (i = 1; i < downloads_total.length; i += 1) {
                         acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
                     }
-                    var sum_lastdownloads = sum_compactdownloads + sum_normaldownloads;
 
                     /**
                      * Calcula días de cada versión disponibles
@@ -1282,65 +1281,6 @@ function loadTemplate(templateid) {
                                 });
                             }
                             if (json.length > 1) {
-                                new Chart($('#plot-vartypedownload'), {
-                                    type: 'line',
-                                    data: {
-                                        labels: lastversion_releases,
-                                        datasets: [{
-                                            data: var_downloads_releases,
-                                            label: 'Modo normal',
-                                            borderColor: '#6d26bb',
-                                            backgroundColor: '#6d26bb',
-                                            fill: false,
-                                            radius: 1,
-                                            borderWidth: plotLineWidth
-                                        }]
-                                    },
-                                    options: {
-                                        title: {
-                                            display: true,
-                                            text: String.format('Variación distribución de descargas últimas {0} versiones', last_n_version),
-                                            fontSize: plotTitleFontSize,
-                                            fontStyle: plotTitleFontStyle
-                                        },
-                                        scales: {
-                                            yAxes: [{
-                                                scaleLabel: {
-                                                    display: true,
-                                                    labelString: 'Porcentaje descarga (%)'
-                                                },
-                                                ticks: {
-                                                    max: 100
-                                                }
-                                            }],
-                                            xAxes: [{
-                                                scaleLabel: {
-                                                    display: true,
-                                                    labelString: 'Número de versión'
-                                                }
-                                            }]
-                                        },
-                                        legend: {
-                                            display: false
-                                        },
-                                        responsive: true,
-                                        tooltips: {
-                                            enabled: true,
-                                            mode: 'index',
-                                            intersect: plotIntersectToShowLegend,
-                                            callbacks: {
-                                                title: function (tooltipItem) {
-                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex !== -1) {
-                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
-                                                    } else {
-                                                        return tooltipItem[0].xLabel;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
                                 new Chart($('#plot-downloadsperday'), {
                                     type: 'line',
                                     data: {
@@ -1464,50 +1404,6 @@ function loadTemplate(templateid) {
                                             callbacks: {
                                                 title: function (tooltipItem) {
                                                     return String.format('Versión {0}', tooltipItem[0].xLabel);
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                                new Chart($('#plot-pielastdays'), {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ['Versión compacta', 'Versión normal'],
-                                        datasets: [{
-                                            data: [sum_compactdownloads, sum_normaldownloads],
-                                            label: "N° descargas de cada versión",
-                                            borderColor: ['#ff6000', '#afac1a'],
-                                            backgroundColor: ['#ff6000', '#afac1a']
-                                        }]
-                                    },
-                                    options: {
-                                        title: {
-                                            display: true,
-                                            text: String.format('Distribución descargas últimas {1} versiones ({0} descargas)', sum_lastdownloads, last_n_version),
-                                            fontSize: plotTitleFontSize,
-                                            fontStyle: plotTitleFontStyle
-                                        },
-                                        legend: {
-                                            display: true,
-                                            position: 'right'
-                                        },
-                                        showAllTooltips: false,
-                                        tooltips: {
-                                            enabled: true,
-                                            mode: 'index',
-                                            intersect: true,
-                                            callbacks: {
-                                                label: function (tooltipItem, data) {
-                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                    var tooltipLabel = data.labels[tooltipItem.index];
-                                                    var tooltipData = allData[tooltipItem.index];
-                                                    var total = 0;
-                                                    for (var i in allData) {
-                                                        // noinspection JSUnfilteredForInLoop
-                                                        total += allData[i];
-                                                    }
-                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                                                 }
                                             }
                                         }
@@ -1841,54 +1737,7 @@ function loadTemplate(templateid) {
                                 $('#plot-downloadsperday').remove();
                                 $('#plot-gloverdownloads').remove();
                                 $('#plot-partdownloads').remove();
-                                $('#plot-pielastdays').remove();
                                 $('#plot-totaldownloads').remove();
-                                $('#plot-vartypedownload').remove();
-                            }
-                            if ((downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]) > 0) {
-                                new Chart($('#plot-pielastversion'), {
-                                    type: 'pie',
-                                    data: {
-                                        labels: ['Versión compacta', 'Versión normal'],
-                                        datasets: [{
-                                            data: [downloads_link_compact[json.length - 1], downloads_link_normal[json.length - 1]],
-                                            label: 'N° descargas de cada versión',
-                                            borderColor: ['#70dad0', '#535eda'],
-                                            backgroundColor: ['#70dad0', '#535eda']
-                                        }]
-                                    },
-                                    options: {
-                                        title: {
-                                            display: true,
-                                            text: String.format('Distribución descargas última versión v{0} ({1} descargas)', lastversion_releases[json.length - 1], downloads_link_compact[json.length - 1] + downloads_link_normal[json.length - 1]),
-                                            fontSize: plotTitleFontSize,
-                                            fontStyle: plotTitleFontStyle
-                                        },
-                                        legend: {
-                                            display: true,
-                                            position: 'right'
-                                        },
-                                        showAllTooltips: false,
-                                        tooltips: {
-                                            callbacks: {
-                                                label: function (tooltipItem, data) {
-                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                    var tooltipLabel = data.labels[tooltipItem.index];
-                                                    var tooltipData = allData[tooltipItem.index];
-                                                    var total = 0;
-                                                    for (var i in allData) {
-                                                        // noinspection JSUnfilteredForInLoop
-                                                        total += allData[i];
-                                                    }
-                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
-                                                }
-                                            }
-                                        }
-                                    }
-                                });
-                            } else {
-                                $('#plot-pielastversion').remove();
                             }
                             new Chart($('#plot-sizeversion'), {
                                 type: 'line',
@@ -2002,11 +1851,8 @@ function loadTemplate(templateid) {
                             $('#plot-gloverdownloads').remove();
                             $('#plot-partdownloads').remove();
                             $('#plot-piedownloads').remove();
-                            $('#plot-pielastdays').remove();
-                            $('#plot-pielastversion').remove();
                             $('#plot-sizeversion').remove();
                             $('#plot-totaldownloads').remove();
-                            $('#plot-vartypedownload').remove();
                         }
                     } catch (e) {
                         throwErrorID(errorID.downloadgraph, e);
@@ -2062,7 +1908,7 @@ function writeTableHeader() {
  * @function
  */
 function writeGraphCanvases() {
-    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-vartypedownload" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-pielastdays" class="graphCanvas"></canvas><canvas id="plot-pielastversion" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
+    $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
 }
 
 /**
