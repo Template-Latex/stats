@@ -818,6 +818,7 @@ function loadTemplate(templateid) {
                                 } else {
                                     dpto = dpto[2].replace('.min.zip', '');
                                 }
+                                dpto = dpto.replace('.zip', '');
                                 if (dptos.indexOf(dpto) === -1) {
                                     dptos.push(dpto);
                                     dptodownloads_normal.push([]);
@@ -835,24 +836,6 @@ function loadTemplate(templateid) {
                          * Se cargan datos del json de descargas
                          */
                         for (i = json.length - 1; i >= 0; i--) {
-
-                            /**
-                             * Se busca el número de la versión compacta y normal
-                             */
-                            let rel = json[i].assets;
-                            for (let j = 0; j < rel.length; j += 1) {
-                                if (rel[j].name === String.format('{0}.zip', st.name)) {
-                                    id_normal = j;
-                                }
-                                if (rel[j].name === String.format('{0}-Single.zip', st.name) ||
-                                    rel[j].name === String.format('{0}.min.zip', st.name)) {
-                                    id_compact = j;
-                                }
-                            }
-                            if (id_compact === -1 || id_normal === -1) {
-                                throwErrorID(errorID.erroridnormalsingle, '');
-                                return;
-                            }
 
                             /**
                              * Versión normal sin departamentos
@@ -880,11 +863,34 @@ function loadTemplate(templateid) {
                              * Versión con departamentos
                              */
                             else {
+
+                                /**
+                                 * Se busca el número de la versión compacta y normal
+                                 */
+                                id_normal = -1;
+                                id_compact = -1;
+                                let rel = json[i].assets;
+                                for (let j = 0; j < rel.length; j += 1) {
+                                    if (rel[j].name === String.format('{0}.zip', st.name)) {
+                                        id_normal = j;
+                                    }
+                                    if (rel[j].name === String.format('{0}-Single.zip', st.name) ||
+                                        rel[j].name === String.format('{0}.min.zip', st.name)) {
+                                        id_compact = j;
+                                    }
+                                }
+                                if (id_normal === -1) {
+                                    throwErrorID(errorID.erroridnormalsingle, '');
+                                    return;
+                                }
+
                                 dptototalvers += 1;
                                 adwl = json[i].assets;
                                 lastday_released_str.push(json[i].published_at.substring(0, 10));
                                 lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                lastdownloads_compact_size.push(roundNumber(json[i].assets[id_compact].size / 1000, 2));
+                                if (id_compact !== -1) {
+                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[id_compact].size / 1000, 2));
+                                }
                                 lastdownloads_normal_size.push(roundNumber(json[i].assets[id_normal].size / 1000, 2));
                                 var vdownload_normal = 0;
                                 var vdownload_single = 0;
@@ -1109,7 +1115,11 @@ function loadTemplate(templateid) {
 
                                         // Se obtienen las descargas del departamento para cada una de las versiones
                                         for (let k = 0; k < dptototalvers; k += 1) {
-                                            dpto_dataset_list.push(dptodownloads_single[i][k] + dptodownloads_normal[i][k]);
+                                            let c = 0;
+                                            if (!isNaN(dptodownloads_single[i][k])) {
+                                                c = dptodownloads_single[i][k];
+                                            }
+                                            dpto_dataset_list.push(c + dptodownloads_normal[i][k]);
                                         }
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
                                         var hiddendpto = dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) === -1;
