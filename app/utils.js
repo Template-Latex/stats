@@ -1087,7 +1087,7 @@ function loadTemplate(templateid) {
                                 var nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
                                 var nonzero_dptos_downloads = [];
                                 var sumdptodownloads = 0; // Suma total de descargas de departamentos
-                                var lastverldptos = dptodownloads_single[0].length - 1;
+                                var lastverldptos = dptodownloads_normal[0].length - 1;
                                 var lastverdptosdownloads = [];
                                 var lastdpdownloads = 0; // Suma total descargas de departamentos última versión
                                 var nonzero_dptos_datasets = [];
@@ -1102,7 +1102,10 @@ function loadTemplate(templateid) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
                                         nonzero_dptos_downloads.push(dptodownloads[i]);
                                         sumdptodownloads += dptodownloads[i];
-                                        lastverdptos_sum = dptodownloads_single[i][lastverldptos] + dptodownloads_normal[i][lastverldptos];
+                                        lastverdptos_sum = dptodownloads_normal[i][lastverldptos];
+                                        if (!isNaN(dptodownloads_single[i][lastverldptos])) {
+                                            lastverdptos_sum += dptodownloads_single[i][lastverldptos];
+                                        }
                                         dpto_color = '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
                                         dpto_colors.push(dpto_color);
                                         if (lastverdptos_sum > 0) {
