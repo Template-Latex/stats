@@ -1763,6 +1763,7 @@ function loadTemplate(templateid) {
                                         backgroundColor: '#ff8f2e',
                                         fill: false,
                                         borderWidth: plotLineWidth,
+                                        hidden: false,
                                         radius: 2,
                                         pointStyle: 'circle'
                                     },
@@ -1772,6 +1773,7 @@ function loadTemplate(templateid) {
                                             borderColor: '#ff346f',
                                             backgroundColor: '#ff346f',
                                             fill: false,
+                                            hidden: true,
                                             borderWidth: plotLineWidth,
                                             radius: 2,
                                             pointStyle: 'triangle'
