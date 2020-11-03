@@ -4,7 +4,7 @@
  Author: Pablo Pizarro R. @ ppizarror.com
  Licence:
  The MIT License (MIT)
- Copyright 2017-2018 Pablo Pizarro R.
+ Copyright 2017-2020 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -118,7 +118,6 @@ let errorID = {
 /**
  * Escribe el error en el panel.
  *
- * @function
  * @param {object} errorid - ID del error
  * @param {object} exceptionmsg - Mensaje de error
  */
@@ -130,7 +129,7 @@ function throwErrorID(errorid, exceptionmsg) {
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');
     // noinspection HtmlUnknownTarget
-    $('#errorMsgText').html(String.format('{0} {1}', '<img src="res/erroricon.png" />', errorid.msg));
+    $('#errorMsgText').html(String.format('{0} {1}', '<img alt="" src="res/erroricon.png" />', errorid.msg));
     $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
     if (exceptionmsg !== '') {
         console.error(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
@@ -140,8 +139,6 @@ function throwErrorID(errorid, exceptionmsg) {
 
 /**
  * Oculta mensajes de error.
- *
- * @function
  */
 function cleanErrorMsg() {
     $('#errorMsg').css('display', 'none');

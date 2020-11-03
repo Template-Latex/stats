@@ -4,7 +4,7 @@
  Author: Pablo Pizarro R. @ ppizarror.com
  Licence:
  The MIT License (MIT)
- Copyright 2017-2018 Pablo Pizarro R.
+ Copyright 2017-2020 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -109,6 +109,7 @@ $(function () {
      */
     let lockScrollUpClass = false;
     let lockScrollDownClass = false;
+    // noinspection JSDeprecatedSymbols
     $(window).scroll(function () {
         let $tabledata = $('#tableData');
 
@@ -129,6 +130,7 @@ $(function () {
             }
         }
     });
+    // noinspection JSDeprecatedSymbols
     $(window).resize(function () {
         let $tabledata = $('#tableData');
 
@@ -146,6 +148,7 @@ $(function () {
         }
     });
 
+    // noinspection JSDeprecatedSymbols
     /**
      * Muestra botón scrollToTop
      */
