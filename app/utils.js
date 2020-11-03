@@ -4,7 +4,7 @@
  Author: Pablo Pizarro R. @ ppizarror.com
  Licence:
  The MIT License (MIT)
- Copyright 2017-2018 Pablo Pizarro R.
+ Copyright 2017-2020 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -43,7 +43,6 @@ if (!String.format) {
 /**
  * Obtiene parámetros de la url.
  *
- * @function
  * @param {string} name
  * @return {*}
  */
@@ -59,7 +58,6 @@ $.urlParam = function (name) {
 /**
  * Redondea un número.
  *
- * @function
  * @param {number} num
  * @param {number} scale
  * @return {number}
@@ -84,7 +82,6 @@ function roundNumber(num, scale) {
 /**
  * Retorna el máximo de una lista.
  *
- * @function
  * @param {array} numArray
  * @return {number}
  */
@@ -94,8 +91,6 @@ function getMaxOfArray(numArray) {
 
 /**
  * Crea un loadingbar.
- *
- * @function
  */
 function loadingBarTrigger() {
     $('#progressLoading').html(' ');
@@ -147,7 +142,6 @@ function loadingBarTrigger() {
 /**
  * Crea una fecha a partir de un string.
  *
- * @function
  * @param {string} str
  * @return {Date}
  */
@@ -159,7 +153,6 @@ function parseDate(str) {
 /**
  * Hace la diferencia entre dos días.
  *
- * @function
  * @param {Date} first
  * @param {Date} second
  * @return {number}
@@ -171,7 +164,6 @@ function daydiff(first, second) {
 /**
  * Ajusta las versiones de desarrollo para gráficos.
  *
- * @function
  * @param {string} version
  * @return {*}
  */
@@ -185,7 +177,6 @@ function parseDevVersion(version) {
 /**
  * Obtiene parámetro url.
  *
- * @function
  * @param {string} name
  * @return {string | null}
  */
@@ -197,7 +188,6 @@ function getURLParameter(name) {
 /**
  * Cambia el parámetro de la url.
  *
- * @function
  * @param {string} param
  * @param {string} value
  */
@@ -224,8 +214,6 @@ function changeUrlParam(param, value) {
 
 /**
  * Agrega plugins a Chart.js.
- *
- * @function
  */
 function initializeChartjsPlugins() {
     Chart.pluginService.register({
@@ -269,7 +257,6 @@ function initializeChartjsPlugins() {
 /**
  * Carga un template y genera gráficos.
  *
- * @function
  * @param {string} templateid - ID del template
  */
 function loadTemplate(templateid) {
@@ -856,6 +843,7 @@ function loadTemplate(templateid) {
                                     var_downloads_releases.push(json[i].assets[1].download_count);
                                     version_releases.push(json[i].tag_name);
                                 } catch (err) {
+                                    console.warn(err);
                                 }
                             }
 
@@ -956,20 +944,33 @@ function loadTemplate(templateid) {
                     } else {
                         for (i = json.length - 1; i >= 0; i--) {
                             try {
-                                downloads_link_compact.push(json[i].assets[0].download_count);
-                                downloads_link_normal.push(json[i].assets[1].download_count);
-                                downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                if (json[i].assets.length === 2) {
+                                    downloads_link_compact.push(json[i].assets[0].download_count);
+                                    downloads_link_normal.push(json[i].assets[1].download_count);
+                                    downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
+                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
+                                    lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
+                                    sum_compactdownloads += json[i].assets[0].download_count;
+                                    sum_normaldownloads += json[i].assets[1].download_count;
+                                    var_downloads_releases.push(json[i].assets[1].download_count);
+                                } else {
+                                    downloads_link_compact.push(0);
+                                    downloads_link_normal.push(json[i].assets[0].download_count);
+                                    downloads_total.push(json[i].assets[0].download_count);
+                                    lastdownloads_compact_size.push(0);
+                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
+                                    lastdownloads_total.push(json[i].assets[0].download_count);
+                                    sum_compactdownloads += 0;
+                                    sum_normaldownloads += json[i].assets[0].download_count;
+                                    var_downloads_releases.push(json[i].assets[0].download_count);
+                                }
+                                lastversion_releases.push(json[i].tag_name);
                                 lastday_released_str.push(json[i].published_at.substring(0, 10));
                                 lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
-                                lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
-                                lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                lastversion_releases.push(json[i].tag_name);
-                                sum_compactdownloads += json[i].assets[0].download_count;
-                                sum_normaldownloads += json[i].assets[1].download_count;
-                                var_downloads_releases.push(json[i].assets[1].download_count);
                                 version_releases.push(json[i].tag_name);
                             } catch (err) {
+                                console.warn(err);
                             }
                         }
                         // Se borran plots de departamentos
@@ -1322,6 +1323,7 @@ function loadTemplate(templateid) {
                                                 borderColor: '#a4a4a4',
                                                 backgroundColor: '#a4a4a4',
                                                 fill: false,
+                                                hidden: true,
                                                 radius: 1,
                                                 borderWidth: plotLineWidth
                                             }
@@ -1909,8 +1911,6 @@ function loadTemplate(templateid) {
 
 /**
  * Regenera los datos de la tabla.
- *
- * @function
  */
 function writeTableHeader() {
     // noinspection HtmlDeprecatedAttribute
@@ -1919,8 +1919,6 @@ function writeTableHeader() {
 
 /**
  * Regenera la sección de los gráficos.
- *
- * @function
  */
 function writeGraphCanvases() {
     $('#graphSection').html('<canvas id="plot-ctime" class="graphCanvas" style="margin-top:-8.5px;"></canvas><canvas id="plot-totaldownloads" class="graphCanvas"></canvas><canvas id="plot-partdownloads" class="graphCanvas"></canvas><canvas id="plot-downloadsperday" class="graphCanvas"></canvas><canvas id="plot-acumdownloads" class="graphCanvas"></canvas><canvas id="plot-gloverdownloads" class="graphCanvas"></canvas><canvas id="plot-piedptototal" class="graphCanvas"></canvas><canvas id="plot-piedptolast" class="graphCanvas"></canvas><canvas id="plot-dptodownloadlines" class="graphCanvas"></canvas><canvas id="plot-sizeversion" class="graphCanvas"></canvas><canvas id="plot-nline" class="graphCanvas"></canvas><canvas id="plot-piedownloads" class="graphCanvas"></canvas><canvas id="plot-activityday" class="graphCanvas"></canvas>');
@@ -1929,7 +1927,6 @@ function writeGraphCanvases() {
 /**
  * Obtiene la lista de descargas y versiones de un ID.
  *
- * @function
  * @param {string} templateid - ID del template
  */
 function getDownloadCounter(templateid) {
