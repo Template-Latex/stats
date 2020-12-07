@@ -763,7 +763,6 @@ function loadTemplate(templateid) {
             var globver_releases = [];
             var lastday_released = [];
             var lastday_released_str = [];
-            var lastdownloads_compact_size = [];
             var lastdownloads_normal_size = [];
             var lastdownloads_total = [];
             var lastversion_releases = [];
@@ -834,7 +833,6 @@ function loadTemplate(templateid) {
                                     downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                                     lastday_released_str.push(json[i].published_at.substring(0, 10));
                                     lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
                                     lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
                                     lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                                     lastversion_releases.push(json[i].tag_name);
@@ -876,9 +874,6 @@ function loadTemplate(templateid) {
                                 adwl = json[i].assets;
                                 lastday_released_str.push(json[i].published_at.substring(0, 10));
                                 lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                if (id_compact !== -1) {
-                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[id_compact].size / 1000, 2));
-                                }
                                 lastdownloads_normal_size.push(roundNumber(json[i].assets[id_normal].size / 1000, 2));
                                 var vdownload_normal = 0;
                                 var vdownload_single = 0;
@@ -948,7 +943,6 @@ function loadTemplate(templateid) {
                                     downloads_link_compact.push(json[i].assets[0].download_count);
                                     downloads_link_normal.push(json[i].assets[1].download_count);
                                     downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                    lastdownloads_compact_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
                                     lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
                                     lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
                                     sum_compactdownloads += json[i].assets[0].download_count;
@@ -958,7 +952,6 @@ function loadTemplate(templateid) {
                                     downloads_link_compact.push(0);
                                     downloads_link_normal.push(json[i].assets[0].download_count);
                                     downloads_total.push(json[i].assets[0].download_count);
-                                    lastdownloads_compact_size.push(0);
                                     lastdownloads_normal_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
                                     lastdownloads_total.push(json[i].assets[0].download_count);
                                     sum_compactdownloads += 0;
@@ -1050,17 +1043,7 @@ function loadTemplate(templateid) {
                     }
                     let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
                     lastday_total.push(last_ver_day_count);
-
-                    /**
-                     * Genera descargas por día versión global
-                     */
-                    // let last_glob_day_count = Math.max(daydiff(new Date('April 23, 2018 00:00:00'), new Date()), 1);
-                    // let globver_downloads_days = [137, 209, 72, 315, last_glob_day_count];
-                    // let globver_downloads_per_day = [];
-                    // for (let i = 0; i < globver_releases.length; i+=1) {
-                    //     globver_downloads_per_day.push(roundNumber(globver_releases[i] / globver_downloads_days[i], 2));
-                    // }
-
+                    
                     /**
                      * Descargas por día
                      */
@@ -1102,7 +1085,7 @@ function loadTemplate(templateid) {
                                     if (dptodownloads[i] > 0) {
                                         nonzero_dptos.push(dptos[i].toUpperCase());
                                         nonzero_dptos_downloads.push(dptodownloads[i]);
-                                        sumdptodownloads += dptodownloads[i];
+                                        // sumdptodownloads += dptodownloads[i];
                                         lastverdptos_sum = dptodownloads_normal[i][lastverldptos];
                                         if (!isNaN(dptodownloads_single[i][lastverldptos])) {
                                             lastverdptos_sum += dptodownloads_single[i][lastverldptos];
@@ -1123,7 +1106,13 @@ function loadTemplate(templateid) {
                                             if (!isNaN(dptodownloads_single[i][k])) {
                                                 c = dptodownloads_single[i][k];
                                             }
-                                            dpto_dataset_list.push(c + dptodownloads_normal[i][k]);
+                                            let v = 0;
+                                            if (!isNaN(dptodownloads_normal[i][k])) {
+                                                v = dptodownloads_normal[i][k];
+                                            }
+                                            let total = c + v;
+                                            dpto_dataset_list.push(total);
+                                            sumdptodownloads += total;
                                         }
                                         max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
                                         var hiddendpto = dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) === -1;
@@ -1136,7 +1125,7 @@ function loadTemplate(templateid) {
                                             hidden: hiddendpto,
                                             label: dptos[i].toUpperCase(),
                                             radius: 1,
-                                            tension: 0.3,
+                                            tension: 0.3
                                         });
                                     }
                                 }
@@ -1768,18 +1757,7 @@ function loadTemplate(templateid) {
                                         hidden: false,
                                         radius: 2,
                                         pointStyle: 'circle'
-                                    },
-                                        {
-                                            data: lastdownloads_compact_size,
-                                            label: 'Versión compacta',
-                                            borderColor: '#ff346f',
-                                            backgroundColor: '#ff346f',
-                                            fill: false,
-                                            hidden: true,
-                                            borderWidth: plotLineWidth,
-                                            radius: 2,
-                                            pointStyle: 'triangle'
-                                        }
+                                    }
                                     ]
                                 },
                                 options: {
@@ -1804,7 +1782,7 @@ function loadTemplate(templateid) {
                                         }]
                                     },
                                     legend: {
-                                        display: true
+                                        display: false
                                     },
                                     responsive: true,
                                     tooltips: {
