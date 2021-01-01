@@ -4,7 +4,7 @@
  Author: Pablo Pizarro R. @ ppizarror.com
  Licence:
  The MIT License (MIT)
- Copyright 2017-2020 Pablo Pizarro R.
+ Copyright 2017-2021 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@
  */
 let aboutinfo = {
     "version": "2.0.0",
-    "date": "11/03/2020",
+    "date": "01/01/2021",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",

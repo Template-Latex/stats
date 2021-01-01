@@ -4,7 +4,7 @@
  Author: Pablo Pizarro R. @ ppizarror.com
  Licence:
  The MIT License (MIT)
- Copyright 2017-2018 Pablo Pizarro R.
+ Copyright 2017-2021 Pablo Pizarro R.
 
  Permission is hereby granted, free of charge, to any person obtaining a
  copy of this software and associated documentation files (the "Software"),
