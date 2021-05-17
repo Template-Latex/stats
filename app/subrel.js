@@ -69,16 +69,16 @@ let stat = {
         "subdepto": true,
         "tag": "Informe"
     },
-    "pautas": {
-        "available": false,
-        "data": "data/pautas.txt",
-        "header": "Template Pautas",
+    "presentacion": {
+        "available": true,
+        "data": "data/presentacion.txt",
+        "header": "Template Presentación",
         "index": 5,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Pautas/releases",
+        "json": "https://api.github.com/repos/Template-Latex/Template-Presentacion/releases",
         "link": "",
-        "name": "Template-Pautas",
+        "name": "Template-Presentacion",
         "subdepto": false,
-        "tag": "Pautas"
+        "tag": "Presentacion"
     },
     "professional-cv": {
         "available": true,
@@ -112,15 +112,5 @@ let stat = {
         "name": "Template-Tesis",
         "subdepto": true,
         "tag": "Tesis"
-    },
-    "tareas": {
-        "available": false,
-        "data": "data/tareas.txt",
-        "header": "Template Tareas",
-        "index": 6,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Tareas/releases",
-        "link": "",
-        "name": "Template-Tareas",
-        "tag": "Tareas"
     }
 };

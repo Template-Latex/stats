@@ -1043,7 +1043,7 @@ function loadTemplate(templateid) {
                     }
                     let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
                     lastday_total.push(last_ver_day_count);
-                    
+
                     /**
                      * Descargas por día
                      */
