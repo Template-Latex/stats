@@ -25,16 +25,16 @@
  */
 
 let stat = {
-    "apunte": {
+    "articulo": {
         "available": false,
-        "data": "data/apunte.txt",
-        "header": "Template Apunte",
+        "data": "data/articulo.txt",
+        "header": "Template Articulo",
         "index": 4,
-        "json": "https://api.github.com/repos/Template-Latex/Template-Apunte/releases",
+        "json": "https://api.github.com/repos/Template-Latex/Template-Articulo/releases",
         "link": "",
-        "name": "Template-Apunte",
+        "name": "Template-Articulo",
         "subdepto": false,
-        "tag": "Apunte"
+        "tag": "Articulo"
     },
     "auxiliares": {
         "available": true,

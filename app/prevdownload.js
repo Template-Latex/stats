@@ -423,7 +423,7 @@ function updateDownloadCounter(downloads, source) {
         case 'Template-Presentacion':
             download_list_counter = [];
             break;
-        case 'Template-Apunte':
+        case 'Template-Articulo':
             download_list_counter = [];
             break;
         case 'Template-Tesis':
