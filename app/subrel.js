@@ -26,7 +26,7 @@
 
 let stat = {
     "articulo": {
-        "available": false,
+        "available": true,
         "data": "data/articulo.txt",
         "header": "Template Articulo",
         "index": 4,
@@ -68,6 +68,17 @@ let stat = {
         "name": "Template-Informe",
         "subdepto": true,
         "tag": "Informe"
+    },
+    "poster": {
+        "available": true,
+        "data": "data/poster.txt",
+        "header": "Template Poster",
+        "index": 4,
+        "json": "https://api.github.com/repos/Template-Latex/Template-Poster/releases",
+        "link": "",
+        "name": "Template-Poster",
+        "subdepto": false,
+        "tag": "Poster"
     },
     "presentacion": {
         "available": true,

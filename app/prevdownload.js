@@ -426,6 +426,9 @@ function updateDownloadCounter(downloads, source) {
         case 'Template-Articulo':
             download_list_counter = [];
             break;
+        case 'Template-Poster':
+            download_list_counter = [];
+            break;
         case 'Template-Tesis':
             download_list_counter = [
                 [[41, 40], '0.1.3'],

@@ -145,6 +145,10 @@ body {
     display: none;
 }
 
+#tableData {
+    overflow-x: auto;
+}
+
 @media screen and (min-width: 68em) {
     #tableData {
         min-width: 544px;
@@ -155,7 +159,7 @@ body {
     }
 
     #graphSection {
-        width: 48%;
+        width: 47%;
         display: inline-block;
         float: right;
         position: relative;

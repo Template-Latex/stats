@@ -73,6 +73,7 @@ $(function () {
         });
 
         // Desactiva primera opción en el selector
+        // noinspection JSCheckFunctionSignatures
         $($mainsection).find('option[value=\'none\']').attr('disabled', 'disabled');
 
     } catch (e) {
