@@ -118,22 +118,22 @@ let errorID = {
 /**
  * Escribe el error en el panel.
  *
- * @param {object} errorid - ID del error
- * @param {object} exceptionmsg - Mensaje de error
+ * @param {object} $errorid - ID del error
+ * @param {object} $exceptionmsg - Mensaje de error
  */
-function throwErrorID(errorid, exceptionmsg) {
+function throwErrorID($errorid, $exceptionmsg) {
     clearInterval(loadingBarAnimation);
-    let pload = $('#progressLoading');
-    pload.html('');
-    pload.fadeTo('slow', 1.0);
+    let $pload = $('#progressLoading');
+    $pload.html('');
+    $pload.fadeTo('slow', 1.0);
     $('#mainContent').css('display', 'none');
     $('#errorMsg').css('display', 'block');
     // noinspection HtmlUnknownTarget
-    $('#errorMsgText').html(String.format('{0} {1}', '<img alt="" src="res/erroricon.png" />', errorid.msg));
-    $('#errorMoreInfoMsg').html(errorid.moreinfo + '.');
-    if (exceptionmsg !== '') {
-        console.error(String.format('Error #{0}: {1}', errorid.code, errorid.msg));
-        console.error(String.format('EXCEPTION: {0} {1}', exceptionmsg.message, exceptionmsg.stack));
+    $('#errorMsgText').html(String.format('{0} {1}', '<img alt="" src="res/erroricon.png" />', $errorid.msg));
+    $('#errorMoreInfoMsg').html($errorid.moreinfo + '.');
+    if ($exceptionmsg !== '') {
+        console.error(String.format('Error #{0}: {1}', $errorid.code, $errorid.msg));
+        console.error(String.format('EXCEPTION: {0} {1}', $exceptionmsg.message, $exceptionmsg.stack));
     }
 }
 

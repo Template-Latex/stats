@@ -29,13 +29,13 @@
  * @type {{version: string, date: string, author: {name: string, tag: string, email: string, website: string, github: string}, productname: string, productnamefooter: string, productsource: string}}
  */
 let aboutinfo = {
-    "version": "2.0.2",
-    "date": "27/10/2021",
+    "version": "2.1.0",
+    "date": "06/11/2021",
     "author": {
         "name": "Pablo Pizarro R.",
         "tag": "@ppizarror",
         "email": "pablo@ppizarror.com",
-        "website": "https://ppizarror.com/",
+        "website": "https://ppizarror.com",
         "github": "https://github.com/ppizarror"
     },
     "productname": "Template-Latex Stats",
