@@ -24,18 +24,18 @@
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var loadingBarAnimation; // Animación de la barra de carga
+let loadingBarAnimation; // Animación de la barra de carga
 
 /**
  * Añade format a los strings
  */
 if (!String.format) {
-    String.format = function (format) {
-        var args = Array.prototype.slice.call(arguments, 1);
-        return format.replace(/{(\d+)}/g, function (match, number) {
-            return typeof args[number] !== 'undefined' ?
-                args[number] :
-                match;
+    String.format = function ($format) {
+        let $args = Array.prototype.slice.call(arguments, 1);
+        return $format.replace(/{(\d+)}/g, function ($match, $number) {
+            return typeof $args[$number] !== 'undefined' ?
+                $args[$number] :
+                $match;
         });
     };
 }
@@ -43,50 +43,50 @@ if (!String.format) {
 /**
  * Obtiene parámetros de la url.
  *
- * @param {string} name
+ * @param {string} $name
  * @return {*}
  */
-$.urlParam = function (name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results == null) {
+$.urlParam = function ($name) {
+    let $results = new RegExp('[\?&]' + $name + '=([^&#]*)').exec(window.location.href);
+    if ($results == null) {
         return null;
     } else {
-        return decodeURI(results[1]) || 0;
+        return decodeURI($results[1]) || 0;
     }
 };
 
 /**
  * Redondea un número.
  *
- * @param {number} num
- * @param {number} scale
+ * @param {number} $num
+ * @param {number} $scale
  * @return {number}
  */
-function roundNumber(num, scale) {
-    if (!('' + num).includes('e')) {
+function roundNumber($num, $scale) {
+    if (!('' + $num).includes('e')) {
         // noinspection JSCheckFunctionSignatures
-        return +(Math.round(num + 'e+' + scale) + 'e-' + scale);
+        return +(Math.round($num + 'e+' + $scale) + 'e-' + $scale);
     } else {
-        var arr = ('' + num).split('e');
-        var sig = '';
-        if (+arr[1] + scale > 0) {
-            sig = '+';
+        let $arr = ('' + $num).split('e');
+        let $sig = '';
+        if (+$arr[1] + $scale > 0) {
+            $sig = '+';
         }
-        let i = +arr[0] + 'e' + sig + (+arr[1] + scale);
+        let i = +$arr[0] + 'e' + $sig + (+$arr[1] + $scale);
         // noinspection JSCheckFunctionSignatures
         let j = Math.round(i);
-        return +(j + 'e-' + scale);
+        return +(j + 'e-' + $scale);
     }
 }
 
 /**
  * Retorna el máximo de una lista.
  *
- * @param {array} numArray
+ * @param {array} $numArray
  * @return {number}
  */
-function getMaxOfArray(numArray) {
-    return Math.max.apply(null, numArray);
+function getMaxOfArray($numArray) {
+    return Math.max.apply(null, $numArray);
 }
 
 /**
@@ -97,7 +97,7 @@ function loadingBarTrigger() {
     switch (processBarAnimationStyle) {
         case 1:
             // noinspection ES6ModulesDependencies
-            var bar = new ProgressBar.Circle('#progressLoading', {
+            let $bar = new ProgressBar.Circle('#progressLoading', {
                 strokeWidth: processBarStrokeWidth,
                 easing: 'easeInOut',
                 duration: timeDurationProcessBar,
@@ -106,11 +106,11 @@ function loadingBarTrigger() {
                 trailWidth: 0.01,
                 svgStyle: null
             });
-            bar.animate(1);
+            $bar.animate(1);
             break;
         case 2:
             // noinspection ES6ModulesDependencies
-            var circle = new ProgressBar.Circle('#progressLoading', {
+            let $circle = new ProgressBar.Circle('#progressLoading', {
                 color: processBarColor,
                 trailColor: processBarLColor,
                 strokeWidth: processBarStrokeWidth,
@@ -118,22 +118,22 @@ function loadingBarTrigger() {
                 easing: 'easeInOut'
             });
 
-            circle.set(0.05);
+            $circle.set(0.05);
 
             setTimeout(function () {
-                circle.animate(0.3);
+                $circle.animate(0.3);
             }, 1000);
 
             setTimeout(function () {
-                circle.animate(0.4);
+                $circle.animate(0.4);
             }, 3500);
 
             setTimeout(function () {
-                circle.animate(0.8);
+                $circle.animate(0.8);
             }, 5500);
 
             setTimeout(function () {
-                circle.animate(1);
+                $circle.animate(1);
             }, 8000);
             break;
     }
@@ -142,72 +142,72 @@ function loadingBarTrigger() {
 /**
  * Crea una fecha a partir de un string.
  *
- * @param {string} str
+ * @param {string} $str
  * @return {Date}
  */
-function parseDate(str) {
-    var mdy = str.split('-');
-    return new Date(parseInt(mdy[0]), parseInt(mdy[1]) - 1, parseInt(mdy[2]));
+function parseDate($str) {
+    let $mdy = $str.split('-');
+    return new Date(parseInt($mdy[0]), parseInt($mdy[1]) - 1, parseInt($mdy[2]));
 }
 
 /**
  * Hace la diferencia entre dos días.
  *
- * @param {Date} first
- * @param {Date} second
+ * @param {Date} $first
+ * @param {Date} $second
  * @return {number}
  */
-function daydiff(first, second) {
-    return Math.round((second - first) / (1000 * 60 * 60 * 24));
+function daydiff($first, $second) {
+    return Math.round(($second - $first) / (1000 * 60 * 60 * 24));
 }
 
 /**
  * Ajusta las versiones de desarrollo para gráficos.
  *
- * @param {string} version
+ * @param {string} $version
  * @return {*}
  */
-function parseDevVersion(version) {
-    if (version.length > 7) {
-        version = version.substring(0, 7);
+function parseDevVersion($version) {
+    if ($version.length > 7) {
+        $version = $version.substring(0, 7);
     }
-    return version;
+    return $version;
 }
 
 /**
  * Obtiene parámetro url.
  *
- * @param {string} name
+ * @param {string} $name
  * @return {string | null}
  */
-function getURLParameter(name) {
+function getURLParameter($name) {
     // noinspection JSConsecutiveCommasInArrayLiteral
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    return decodeURIComponent((new RegExp('[?|&]' + $name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
 }
 
 /**
  * Cambia el parámetro de la url.
  *
- * @param {string} param
- * @param {string} value
+ * @param {string} $param
+ * @param {string} $value
  */
-function changeUrlParam(param, value) {
-    var currentURL = window.location.href + '&';
-    var change = new RegExp('(' + param + ')=(.*)&', 'g');
-    var newURL = currentURL.replace(change, '$1=' + value + '&');
+function changeUrlParam($param, $value) {
+    let $currentURL = window.location.href + '&';
+    let $change = new RegExp('(' + $param + ')=(.*)&', 'g');
+    let $newURL = $currentURL.replace($change, '$1=' + $value + '&');
     // noinspection JSValidateTypes,JSIncompatibleTypesComparison
-    if (getURLParameter(param) !== null) {
+    if (getURLParameter($param) !== null) {
         try {
-            window.history.replaceState('', '', newURL.slice(0, -1));
-        } catch (e) {
-            console.log(e);
+            window.history.replaceState('', '', $newURL.slice(0, -1));
+        } catch ($e) {
+            console.log($e);
         }
     } else {
-        var currURL = window.location.href;
-        if (currURL.indexOf('?') !== -1) {
-            window.history.replaceState('', '', currentURL.slice(0, -1) + '&' + param + '=' + value);
+        let $currURL = window.location.href;
+        if ($currURL.indexOf('?') !== -1) {
+            window.history.replaceState('', '', $currentURL.slice(0, -1) + '&' + $param + '=' + $value);
         } else {
-            window.history.replaceState('', '', currentURL.slice(0, -1) + '?' + param + '=' + value);
+            window.history.replaceState('', '', $currentURL.slice(0, -1) + '?' + $param + '=' + $value);
         }
     }
 }
@@ -217,38 +217,38 @@ function changeUrlParam(param, value) {
  */
 function initializeChartjsPlugins() {
     Chart.pluginService.register({
-        beforeRender: function (chart) {
-            if (chart.config.options.showAllTooltips) {
-                chart.pluginTooltips = [];
-                chart.config.data.datasets.forEach(function (dataset, i) {
-                    chart.getDatasetMeta(i).data.forEach(function (sector) {
-                        chart.pluginTooltips.push(new Chart.Tooltip({
-                            _chart: chart.chart,
-                            _chartInstance: chart,
-                            _data: chart.data,
-                            _options: chart.options.tooltips,
-                            _active: [sector]
-                        }, chart));
+        beforeRender: function ($chart) {
+            if ($chart.config.options.showAllTooltips) {
+                $chart.pluginTooltips = [];
+                $chart.config.data.datasets.forEach(function ($dataset, $i) {
+                    $chart.getDatasetMeta($i).data.forEach(function ($sector) {
+                        $chart.pluginTooltips.push(new Chart.Tooltip({
+                            _chart: $chart.chart,
+                            _chartInstance: $chart,
+                            _data: $chart.data,
+                            _options: $chart.options.tooltips,
+                            _active: [$sector]
+                        }, $chart));
                     });
                 });
-                chart.options.tooltips.enabled = false;
+                $chart.options.tooltips.enabled = false;
             }
         },
-        afterDraw: function (chart, easing) {
-            if (chart.config.options.showAllTooltips) {
-                if (!chart.allTooltipsOnce) {
-                    if (easing !== 1)
+        afterDraw: function ($chart, $easing) {
+            if ($chart.config.options.showAllTooltips) {
+                if (!$chart.allTooltipsOnce) {
+                    if ($easing !== 1)
                         return;
-                    chart.allTooltipsOnce = true;
+                    $chart.allTooltipsOnce = true;
                 }
-                chart.options.tooltips.enabled = true;
-                Chart.helpers.each(chart.pluginTooltips, function (tooltip) {
-                    tooltip.initialize();
-                    tooltip.update();
-                    tooltip.pivot();
-                    tooltip.transition(easing).draw();
+                $chart.options.tooltips.enabled = true;
+                Chart.helpers.each($chart.pluginTooltips, function ($tooltip) {
+                    $tooltip.initialize();
+                    $tooltip.update();
+                    $tooltip.pivot();
+                    $tooltip.transition($easing).draw();
                 });
-                chart.options.tooltips.enabled = false;
+                $chart.options.tooltips.enabled = false;
             }
         }
     });
@@ -257,23 +257,23 @@ function initializeChartjsPlugins() {
 /**
  * Carga un template y genera gráficos.
  *
- * @param {string} templateid - ID del template
+ * @param {string} $templateid - ID del template
  */
-function loadTemplate(templateid) {
+function loadTemplate($templateid) {
 
     /**
      * Limpia errores anteriores
      */
     cleanErrorMsg();
-    console.log(String.format('Cargando ID <{0}> ...', templateid));
+    console.log(String.format('Cargando ID <{0}> ...', $templateid));
 
     /**
      * Carga el id
      */
-    var st;
+    let $st;
     try {
-        st = stat[templateid];
-    } catch (e) {
+        $st = stat[$templateid];
+    } catch ($e) {
         throwErrorID(errorID.badtemplateid, '');
         return;
     } finally {
@@ -284,15 +284,15 @@ function loadTemplate(templateid) {
      */
     try {
         // noinspection HtmlUnknownTarget
-        $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', st.header, st.link));
-        $(document).prop('title', 'Stats - ' + st.header);
+        $('#templateNameTxt').html(String.format('<a href="{1}">{0}</a>', $st.header, $st.link));
+        $(document).prop('title', 'Stats - ' + $st.header);
         $('#progressLoading').fadeTo('slow', processBarSetOpacity);
         loadingBarTrigger();
         loadingBarAnimation = setInterval(function () {
             loadingBarTrigger();
         }, timeDurationProcessBar + 50);
-    } catch (e) {
-        throwErrorID(errorID.loadingbarsetup, e);
+    } catch ($e) {
+        throwErrorID(errorID.loadingbarsetup, $e);
         return;
     } finally {
     }
@@ -300,7 +300,7 @@ function loadTemplate(templateid) {
     /**
      * Actualiza url
      */
-    changeUrlParam('template', st.tag);
+    changeUrlParam('template', $st.tag);
 
     /**
      * Limpia estado anterior
@@ -317,8 +317,8 @@ function loadTemplate(templateid) {
                 $('#mainTable').DataTable().clear().destroy();
                 writeTableHeader();
             }
-        } catch (e) {
-            throwErrorID(errorID.deletetable, e);
+        } catch ($e) {
+            throwErrorID(errorID.deletetable, $e);
             return;
         } finally {
         }
@@ -327,37 +327,37 @@ function loadTemplate(templateid) {
     /**
      * Se carga archivo de estadísticas
      */
-    var jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, st.data), function (data) {
+    let $jsonQuery1 = jQuery.get(String.format('{0}{1}', mainUrl, $st.data), function ($data) {
         try {
-            data = data.split('\n');
+            $data = $data.split('\n');
 
             /**
              * Se cargan datos a listas
              */
-            var plot_id = [];
-            var plot_ctime = [];
-            var plot_nline = [];
-            var plot_ver = [];
-            var loadedData = [];
+            let $plot_id = [];
+            let $plot_ctime = [];
+            let $plot_nline = [];
+            let $plot_ver = [];
+            let $loadedData = [];
 
             try {
-                for (let i = 1; i < data.length; i += 1) {
-                    let a = [];
-                    let line = data[i].split(' ');
-                    for (var j = 0; j < line.length; j += 1) {
-                        if (line[j] !== '') {
-                            a.push(line[j]);
+                for (let $i = 1; $i < $data.length; $i += 1) {
+                    let $a = [];
+                    let $line = $data[$i].split(' ');
+                    for (let $j = 0; $j < $line.length; $j += 1) {
+                        if ($line[$j] !== '') {
+                            $a.push($line[$j]);
                         }
                     }
-                    loadedData.push(a);
-                    plot_id.push(parseInt(a[0]));
-                    plot_ctime.push(parseFloat(a[2]));
-                    plot_nline.push(parseInt(a[4]));
-                    plot_ver.push(parseDevVersion(a[1]));
-                    $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', a[0], a[1], a[2], a[3], a[4], a[5]));
+                    $loadedData.push($a);
+                    $plot_id.push(parseInt($a[0]));
+                    $plot_ctime.push(parseFloat($a[2]));
+                    $plot_nline.push(parseInt($a[4]));
+                    $plot_ver.push(parseDevVersion($a[1]));
+                    $('#tableMem').append(String.format('<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>', $a[0], $a[1], $a[2], $a[3], $a[4], $a[5]));
                 }
-            } catch (e) {
-                throwErrorID(errorID.parsedata, e);
+            } catch ($e) {
+                throwErrorID(errorID.parsedata, $e);
                 return;
             } finally {
             }
@@ -366,17 +366,17 @@ function loadTemplate(templateid) {
              * Se genera la tabla
              */
             try {
-                var lenghtmenuoption;
-                if (loadedData.length >= tableMaxReg) {
-                    lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, tableMaxReg];
-                } else if (tableHighReg <= loadedData.length && loadedData.length < tableMaxReg) {
-                    lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, loadedData.length];
-                } else if (tableMedReg <= loadedData.length && loadedData.length < tableHighReg) {
-                    lenghtmenuoption = [tableMinReg, tableMedReg, loadedData.length];
-                } else if (tableMinReg <= loadedData.length && loadedData.length < tableMedReg) {
-                    lenghtmenuoption = [tableMinReg, loadedData.length];
+                let $lenghtmenuoption;
+                if ($loadedData.length >= tableMaxReg) {
+                    $lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, tableMaxReg];
+                } else if (tableHighReg <= $loadedData.length && $loadedData.length < tableMaxReg) {
+                    $lenghtmenuoption = [tableMinReg, tableMedReg, tableHighReg, $loadedData.length];
+                } else if (tableMedReg <= $loadedData.length && $loadedData.length < tableHighReg) {
+                    $lenghtmenuoption = [tableMinReg, tableMedReg, $loadedData.length];
+                } else if (tableMinReg <= $loadedData.length && $loadedData.length < tableMedReg) {
+                    $lenghtmenuoption = [tableMinReg, $loadedData.length];
                 } else {
-                    lenghtmenuoption = [loadedData.length];
+                    $lenghtmenuoption = [$loadedData.length];
                 }
                 $('#mainTable').DataTable({
                     'language': {
@@ -385,10 +385,10 @@ function loadTemplate(templateid) {
                     'order': [
                         [0, 'desc']
                     ],
-                    'lengthMenu': lenghtmenuoption
+                    'lengthMenu': $lenghtmenuoption
                 });
-            } catch (e) {
-                throwErrorID(errorID.generatetable, e);
+            } catch ($e) {
+                throwErrorID(errorID.generatetable, $e);
                 return;
             } finally {
             }
@@ -397,18 +397,19 @@ function loadTemplate(templateid) {
             /**
              * Estadística tiempos de compilación
              */
+            let $mean_ctime, $plot_mean_ctime, $plot_partial_mean_ctime, $total_sum;
             try {
-                var mean_ctime = roundNumber(jStat.mean(plot_ctime), 2);
-                var plot_mean_ctime = [];
-                var plot_partial_mean_ctime = [];
-                var total_sum = 0.0;
-                for (let k = 0; k < loadedData.length; k += 1) {
-                    plot_mean_ctime.push(mean_ctime);
-                    total_sum += plot_ctime[k];
-                    plot_partial_mean_ctime.push(roundNumber(total_sum / (k + 1), 2));
+                $mean_ctime = roundNumber(jStat.mean($plot_ctime), 2);
+                $plot_mean_ctime = [];
+                $plot_partial_mean_ctime = [];
+                $total_sum = 0.0;
+                for (let k = 0; k < $loadedData.length; k += 1) {
+                    $plot_mean_ctime.push($mean_ctime);
+                    $total_sum += $plot_ctime[k];
+                    $plot_partial_mean_ctime.push(roundNumber($total_sum / (k + 1), 2));
                 }
-            } catch (e) {
-                throwErrorID(errorID.calcctimemean, e);
+            } catch ($e) {
+                throwErrorID(errorID.calcctimemean, $e);
                 return;
             } finally {
             }
@@ -416,29 +417,29 @@ function loadTemplate(templateid) {
             /**
              * Estadística versiones por día
              */
+            let $day_activity = [];
+            let $day_activity_counter = [];
             try {
-                var day_activity = [];
-                var day_activity_counter = [];
-                for (var i = 0; i < loadedData.length; i += 1) {
-                    let k = jQuery.inArray(loadedData[i][3], day_activity);
-                    if (k === -1) {
-                        day_activity.push(loadedData[i][3]);
-                        day_activity_counter.push(1);
+                for (let $i = 0; $i < $loadedData.length; $i += 1) {
+                    let $k = jQuery.inArray($loadedData[$i][3], $day_activity);
+                    if ($k === -1) {
+                        $day_activity.push($loadedData[$i][3]);
+                        $day_activity_counter.push(1);
                     } else {
-                        day_activity_counter[k] += 1;
+                        $day_activity_counter[$k] += 1;
                     }
                 }
-            } catch (e) {
-                throwErrorID(errorID.errorcreatedayactivitystat, e);
+            } catch ($e) {
+                throwErrorID(errorID.errorcreatedayactivitystat, $e);
                 return;
             } finally {
             }
 
             let $deleteindex = 0;
-            for (let i = 0; i < day_activity.length; i += 1) {
-                if (day_activity_counter[i] > 40) {
-                    day_activity.splice($deleteindex, 1);
-                    day_activity_counter.splice($deleteindex, 1);
+            for (let $i = 0; $i < $day_activity.length; $i += 1) {
+                if ($day_activity_counter[$i] > 40) {
+                    $day_activity.splice($deleteindex, 1);
+                    $day_activity_counter.splice($deleteindex, 1);
                     $deleteindex -= 1;
                 }
                 $deleteindex += 1;
@@ -448,13 +449,13 @@ function loadTemplate(templateid) {
              * Plotea las estadísticas
              */
             try {
-                if (day_activity.length > 1) {
+                if ($day_activity.length > 1) {
                     new Chart($('#plot-activityday'), {
                         type: 'bar',
                         data: {
-                            labels: day_activity,
+                            labels: $day_activity,
                             datasets: [{
-                                data: day_activity_counter,
+                                data: $day_activity_counter,
                                 label: 'Número de commits',
                                 borderColor: '#7e0042',
                                 backgroundColor: '#7e0042'
@@ -502,9 +503,9 @@ function loadTemplate(templateid) {
                     new Chart($('#plot-ctime'), {
                         type: 'line',
                         data: {
-                            labels: plot_id,
+                            labels: $plot_id,
                             datasets: [{
-                                data: plot_ctime,
+                                data: $plot_ctime,
                                 label: 'Tiempo de compilación (s)',
                                 borderColor: '#8436d7',
                                 backgroundColor: '#8436d7',
@@ -513,7 +514,7 @@ function loadTemplate(templateid) {
                                 radius: 1
                             },
                                 {
-                                    data: plot_mean_ctime,
+                                    data: $plot_mean_ctime,
                                     label: 'Promedio (s)',
                                     borderColor: '#e470f6',
                                     backgroundColor: '#e470f6',
@@ -523,7 +524,7 @@ function loadTemplate(templateid) {
                                     radius: 0
                                 },
                                 {
-                                    data: plot_partial_mean_ctime,
+                                    data: $plot_partial_mean_ctime,
                                     label: 'Promedio parcial (s)',
                                     borderColor: '#fccf5f',
                                     backgroundColor: '#fccf5f',
@@ -545,12 +546,12 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function (tooltipItem) {
-                                        let elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
-                                        if (elemindex !== -1) {
-                                            return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
+                                    title: function ($tooltipItem) {
+                                        let $elemindex = $plot_id.indexOf(parseInt($tooltipItem[0].xLabel));
+                                        if ($elemindex !== -1) {
+                                            return String.format('ID:{2} v{0} ({1}) ', $loadedData[$elemindex][1], $loadedData[$elemindex][3], $tooltipItem[0].xLabel);
                                         } else {
-                                            return tooltipItem[0].xLabel;
+                                            return $tooltipItem[0].xLabel;
                                         }
                                     }
                                 }
@@ -578,9 +579,9 @@ function loadTemplate(templateid) {
                     new Chart($('#plot-nline'), {
                         type: 'line',
                         data: {
-                            labels: plot_id,
+                            labels: $plot_id,
                             datasets: [{
-                                data: plot_nline,
+                                data: $plot_nline,
                                 label: 'N° líneas de código',
                                 borderColor: '#3e95cd',
                                 backgroundColor: '#3e95cd',
@@ -620,12 +621,12 @@ function loadTemplate(templateid) {
                                 mode: 'index',
                                 intersect: plotIntersectToShowLegend,
                                 callbacks: {
-                                    title: function (tooltipItem) {
-                                        let elemindex = plot_id.indexOf(parseInt(tooltipItem[0].xLabel));
-                                        if (elemindex !== -1) {
-                                            return String.format('ID:{2} v{0} ({1}) ', loadedData[elemindex][1], loadedData[elemindex][3], tooltipItem[0].xLabel);
+                                    title: function ($tooltipItem) {
+                                        let $elemindex = $plot_id.indexOf(parseInt($tooltipItem[0].xLabel));
+                                        if ($elemindex !== -1) {
+                                            return String.format('ID:{2} v{0} ({1}) ', $loadedData[$elemindex][1], $loadedData[$elemindex][3], $tooltipItem[0].xLabel);
                                         } else {
-                                            return tooltipItem[0].xLabel;
+                                            return $tooltipItem[0].xLabel;
                                         }
                                     }
                                 }
@@ -636,9 +637,9 @@ function loadTemplate(templateid) {
                     new Chart($('#plot-ctime'), {
                         type: 'line',
                         data: {
-                            labels: plot_ver,
+                            labels: $plot_ver,
                             datasets: [{
-                                data: plot_ctime,
+                                data: $plot_ctime,
                                 label: 'Tiempo de compilación (s)',
                                 borderColor: '#8436d7',
                                 backgroundColor: '#8436d7',
@@ -647,7 +648,7 @@ function loadTemplate(templateid) {
                                 radius: 1
                             },
                                 {
-                                    data: plot_mean_ctime,
+                                    data: $plot_mean_ctime,
                                     label: 'Promedio (s)',
                                     borderColor: '#e470f6',
                                     backgroundColor: '#e470f6',
@@ -657,7 +658,7 @@ function loadTemplate(templateid) {
                                     radius: 0
                                 },
                                 {
-                                    data: plot_partial_mean_ctime,
+                                    data: $plot_partial_mean_ctime,
                                     label: 'Promedio parcial (s)',
                                     borderColor: '#fccf5f',
                                     backgroundColor: '#fccf5f',
@@ -702,9 +703,9 @@ function loadTemplate(templateid) {
                     new Chart($('#plot-nline'), {
                         type: 'line',
                         data: {
-                            labels: plot_ver,
+                            labels: $plot_ver,
                             datasets: [{
-                                data: plot_nline,
+                                data: $plot_nline,
                                 label: 'Número de líneas de código',
                                 borderColor: '#3e95cd',
                                 backgroundColor: '#3e95cd',
@@ -747,8 +748,8 @@ function loadTemplate(templateid) {
                         }
                     });
                 }
-            } catch (e) {
-                throwErrorID(errorID.genplots, e);
+            } catch ($e) {
+                throwErrorID(errorID.genplots, $e);
                 return;
             } finally {
             }
@@ -756,90 +757,93 @@ function loadTemplate(templateid) {
             /**
              * Obtiene descargas de la versión
              */
-            var downloads_link_compact = [];
-            var downloads_link_normal = [];
-            var downloads_total = [];
-            var globver_downloads = [];
-            var globver_releases = [];
-            var lastday_released = [];
-            var lastday_released_str = [];
-            var lastdownloads_normal_size = [];
-            var lastdownloads_total = [];
-            var lastversion_releases = [];
-            var sum_compactdownloads = 0;
-            var sum_normaldownloads = 0;
-            var var_downloads_releases = [];
-            var version_releases = [];
+            let $downloads_link_compact = [];
+            let $downloads_link_normal = [];
+            let $downloads_total = [];
+            let $globver_downloads = [];
+            let $globver_releases = [];
+            let $lastday_released = [];
+            let $lastday_released_str = [];
+            let $lastdownloads_normal_size = [];
+            let $lastdownloads_total = [];
+            let $lastversion_releases = [];
+            let $let_downloads_releases = [];
+            let $prev_downloads;
+            let $sum_compactdownloads = 0;
+            let $sum_normaldownloads = 0;
+            let $var_downloads_releases = [];
+            let $version_releases = [];
 
-            var jsonQuery2 = $.getJSON(st.json, function (json) {
+            let $jsonQuery2 = $.getJSON($st.json, function ($json) {
+                let $dptodownloads = [];
+                let $dptodownloads_normal = [];
+                let $dptodownloads_normal_total = [];
+                let $dptodownloads_single = [];
+                let $dptodownloads_single_total = [];
+                let $dptodownloads_versions = [];
+                let $dptos = [];
+                let $dptototalvers = 0;
+
                 try {
 
                     /**
                      * Versión con subdepartamentos
                      */
-                    if (st.subdepto) {
+                    if ($st.subdepto) {
 
                         /**
                          * Se busca el id de archivo compacto y normal
                          */
-                        var id_compact = -1;
-                        var id_normal = -1;
-                        var lastrel = json[0].assets;
+                        let $id_compact = -1;
+                        let $id_normal = -1;
+                        let $lastrel = $json[0].assets;
 
                         /**
                          * Se crea lista de particiones para cada departamento
                          */
-                        var dptodownloads_normal = [];
-                        var dptodownloads_single = [];
-                        var dptodownloads = [];
-                        var dptodownloads_normal_total = [];
-                        var dptodownloads_single_total = [];
-                        var dptodownloads_versions = [];
-                        var dptos = [];
-                        for (let i = 0; i < lastrel.length; i += 1) {
-                            dpto = lastrel[i].name.split('-');
-                            if (dpto.length >= 3) {
-                                if (dpto.length === 4) {
-                                    dpto = dpto[2];
+                        for (let $i = 0; $i < $lastrel.length; $i += 1) {
+                            let $dpto = $lastrel[$i].name.split('-');
+                            if ($dpto.length >= 3) {
+                                if ($dpto.length === 4) {
+                                    $dpto = $dpto[2];
                                 } else {
-                                    dpto = dpto[2].replace('.min.zip', '');
+                                    $dpto = $dpto[2].replace('.min.zip', '');
                                 }
-                                dpto = dpto.replace('.zip', '');
-                                if (dptos.indexOf(dpto) === -1) {
-                                    dptos.push(dpto);
-                                    dptodownloads_normal.push([]);
-                                    dptodownloads_single.push([]);
-                                    dptodownloads.push(0);
-                                    dptodownloads_normal_total.push(0);
-                                    dptodownloads_single_total.push(0);
+                                $dpto = $dpto.replace('.zip', '');
+                                if ($dptos.indexOf($dpto) === -1) {
+                                    $dptos.push($dpto);
+                                    $dptodownloads_normal.push([]);
+                                    $dptodownloads_single.push([]);
+                                    $dptodownloads.push(0);
+                                    $dptodownloads_normal_total.push(0);
+                                    $dptodownloads_single_total.push(0);
                                 }
                             }
                         }
-                        var adwl;
-                        var dptototalvers = 0;
+                        let $adwl;
 
                         /**
-                         * Se cargan datos del json de descargas
+                         * Se cargan datos del $json de descargas
                          */
-                        for (i = json.length - 1; i >= 0; i--) {
+                        for (let $i = $json.length - 1; $i >= 0; $i--) {
 
                             /**
                              * Versión normal sin departamentos
                              */
-                            if (json[i].assets.length <= 2) {
+                            if ($json[$i].assets.length <= 2) {
                                 try {
-                                    downloads_link_compact.push(json[i].assets[0].download_count);
-                                    downloads_link_normal.push(json[i].assets[1].download_count);
-                                    downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                    lastday_released_str.push(json[i].published_at.substring(0, 10));
-                                    lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
-                                    lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                    lastversion_releases.push(json[i].tag_name);
-                                    sum_compactdownloads += json[i].assets[0].download_count;
-                                    sum_normaldownloads += json[i].assets[1].download_count;
-                                    var_downloads_releases.push(json[i].assets[1].download_count);
-                                    version_releases.push(json[i].tag_name);
+                                    $downloads_link_compact.push($json[$i].assets[0].download_count);
+                                    $downloads_link_normal.push($json[$i].assets[1].download_count);
+                                    $downloads_total.push($json[$i].assets[0].download_count + $json[$i].assets[1].download_count);
+                                    $lastday_released_str.push($json[$i].published_at.substring(0, 10));
+                                    $lastday_released.push(parseDate($json[$i].published_at.substring(0, 10)));
+                                    $lastdownloads_normal_size.push(roundNumber($json[$i].assets[1].size / 1000, 2));
+                                    $lastdownloads_total.push($json[$i].assets[0].download_count + $json[$i].assets[1].download_count);
+                                    $lastversion_releases.push($json[$i].tag_name);
+                                    $sum_compactdownloads += $json[$i].assets[0].download_count;
+                                    $sum_normaldownloads += $json[$i].assets[1].download_count;
+                                    $let_downloads_releases.push($json[$i].assets[1].download_count);
+                                    $version_releases.push($json[$i].tag_name);
                                 } catch (err) {
                                     console.warn(err);
                                 }
@@ -853,115 +857,121 @@ function loadTemplate(templateid) {
                                 /**
                                  * Se busca el número de la versión compacta y normal
                                  */
-                                id_normal = -1;
-                                id_compact = -1;
-                                let rel = json[i].assets;
-                                for (let j = 0; j < rel.length; j += 1) {
-                                    if (rel[j].name === String.format('{0}.zip', st.name)) {
-                                        id_normal = j;
+                                $id_normal = -1;
+                                $id_compact = -1;
+                                let $rel = $json[$i].assets;
+                                for (let $j = 0; $j < $rel.length; $j += 1) {
+                                    if ($rel[$j].name === String.format('{0}.zip', $st.name)) {
+                                        $id_normal = $j;
                                     }
-                                    if (rel[j].name === String.format('{0}-Single.zip', st.name) ||
-                                        rel[j].name === String.format('{0}.min.zip', st.name)) {
-                                        id_compact = j;
+                                    if ($rel[$j].name === String.format('{0}-Single.zip', $st.name) ||
+                                        $rel[$j].name === String.format('{0}.min.zip', $st.name)) {
+                                        $id_compact = $j;
                                     }
                                 }
-                                if (id_normal === -1) {
+                                if ($id_normal === -1) {
                                     throwErrorID(errorID.erroridnormalsingle, '');
                                     return;
                                 }
 
-                                dptototalvers += 1;
-                                adwl = json[i].assets;
-                                lastday_released_str.push(json[i].published_at.substring(0, 10));
-                                lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                lastdownloads_normal_size.push(roundNumber(json[i].assets[id_normal].size / 1000, 2));
-                                var vdownload_normal = 0;
-                                var vdownload_single = 0;
-                                var isdpto = false;
-                                var vrname, dpto, dptoindex, ddl;
+                                $dptototalvers += 1;
+                                $adwl = $json[$i].assets;
+                                $lastday_released_str.push($json[$i].published_at.substring(0, 10));
+                                $lastday_released.push(parseDate($json[$i].published_at.substring(0, 10)));
+                                $lastdownloads_normal_size.push(roundNumber($json[$i].assets[$id_normal].size / 1000, 2));
+                                let $vdownload_normal = 0;
+                                let $vdownload_single = 0;
+                                let $isdpto = false;
+                                let $vrname, $dpto, $dptoindex, $ddl;
 
                                 // Itera por cada departameto y suma descargas
-                                for (j = 0; j < adwl.length; j += 1) {
-                                    vrname = json[i].assets[j].name;
-                                    dpto = json[i].assets[j].name.split('-');
+                                for (let $j = 0; $j < $adwl.length; $j += 1) {
+                                    $vrname = $json[$i].assets[$j].name;
+                                    $dpto = $json[$i].assets[$j].name.split('-');
 
-                                    if (vrname.includes('.min')) {
-                                        if (dpto.length === 3) {
-                                            dpto = dpto[2].replace('.min.zip', '');
+                                    if ($vrname.includes('.min')) {
+                                        if ($dpto.length === 3) {
+                                            $dpto = $dpto[2].replace('.min.zip', '');
                                         } else {
-                                            dpto = dpto[1].replace('.min.zip', '');
+                                            $dpto = $dpto[1].replace('.min.zip', '');
                                         }
                                     } else {
-                                        if (dpto.length === 4) {
-                                            dpto = dpto[2];
-                                        } else if (dpto.length === 3) {
-                                            dpto = dpto[2].replace('.zip', '');
+                                        if ($dpto.length === 4) {
+                                            $dpto = $dpto[2];
+                                        } else if ($dpto.length === 3) {
+                                            $dpto = $dpto[2].replace('.zip', '');
                                         } else {
-                                            dpto = '';
+                                            $dpto = '';
                                         }
                                     }
 
                                     // Se parcha cambio de diqbt -> diqbtm
-                                    if (dpto === 'diqbt') dpto = 'diqbtm';
+                                    if ($dpto === 'diqbt') $dpto = 'diqbtm';
 
-                                    dptoindex = dptos.indexOf(dpto);
-                                    isdpto = dptoindex !== -1;
-                                    ddl = parseInt(json[i].assets[j].download_count);
-                                    if (vrname.includes('Single') || vrname.includes('.min')) {
-                                        vdownload_single += ddl;
-                                        if (isdpto) {
-                                            dptodownloads_single[dptoindex].push(ddl);
-                                            dptodownloads_single_total[dptoindex] += ddl;
+                                    $dptoindex = $dptos.indexOf($dpto);
+                                    $isdpto = $dptoindex !== -1;
+                                    $ddl = parseInt($json[$i].assets[$j].download_count);
+                                    if ($vrname.includes('Single') || $vrname.includes('.min')) {
+                                        $vdownload_single += $ddl;
+                                        if ($isdpto) {
+                                            $dptodownloads_single[$dptoindex].push($ddl);
+                                            $dptodownloads_single_total[$dptoindex] += $ddl;
                                         }
                                     } else {
-                                        vdownload_normal += ddl;
-                                        if (isdpto) {
-                                            dptodownloads_normal[dptoindex].push(ddl);
-                                            dptodownloads_normal_total[dptoindex] += ddl;
+                                        $vdownload_normal += $ddl;
+                                        if ($isdpto) {
+                                            $dptodownloads_normal[$dptoindex].push($ddl);
+                                            $dptodownloads_normal_total[$dptoindex] += $ddl;
                                         }
                                     }
-                                    if (isdpto) {
-                                        dptodownloads[dptoindex] += ddl;
+                                    if ($isdpto) {
+                                        $dptodownloads[$dptoindex] += $ddl;
                                     }
                                 }
-                                downloads_link_compact.push(vdownload_single);
-                                downloads_link_normal.push(vdownload_normal);
-                                downloads_total.push(vdownload_normal + vdownload_single);
-                                lastdownloads_total.push(vdownload_normal + vdownload_single);
-                                lastversion_releases.push(json[i].tag_name);
-                                dptodownloads_versions.push(json[i].tag_name);
-                                sum_compactdownloads += vdownload_single;
-                                sum_normaldownloads += vdownload_normal;
-                                var_downloads_releases.push(vdownload_normal);
-                                version_releases.push(json[i].tag_name);
+                                $downloads_link_compact.push($vdownload_single);
+                                $downloads_link_normal.push($vdownload_normal);
+                                $downloads_total.push($vdownload_normal + $vdownload_single);
+                                $lastdownloads_total.push($vdownload_normal + $vdownload_single);
+                                $lastversion_releases.push($json[$i].tag_name);
+                                $dptodownloads_versions.push($json[$i].tag_name);
+                                $sum_compactdownloads += $vdownload_single;
+                                $sum_normaldownloads += $vdownload_normal;
+                                $var_downloads_releases.push($vdownload_normal);
+                                $version_releases.push($json[$i].tag_name);
                             }
                         }
-                    } else {
-                        for (i = json.length - 1; i >= 0; i--) {
+
+                    }
+
+                    /**
+                     * Versión sin subdepartamentos
+                     */
+                    else {
+                        for (let $i = $json.length - 1; $i >= 0; $i--) {
                             try {
-                                if (json[i].assets.length === 2) {
-                                    downloads_link_compact.push(json[i].assets[0].download_count);
-                                    downloads_link_normal.push(json[i].assets[1].download_count);
-                                    downloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[1].size / 1000, 2));
-                                    lastdownloads_total.push(json[i].assets[0].download_count + json[i].assets[1].download_count);
-                                    sum_compactdownloads += json[i].assets[0].download_count;
-                                    sum_normaldownloads += json[i].assets[1].download_count;
-                                    var_downloads_releases.push(json[i].assets[1].download_count);
+                                if ($json[$i].assets.length === 2) {
+                                    $downloads_link_compact.push($json[$i].assets[0].download_count);
+                                    $downloads_link_normal.push($json[$i].assets[1].download_count);
+                                    $downloads_total.push($json[$i].assets[0].download_count + $json[$i].assets[1].download_count);
+                                    $lastdownloads_normal_size.push(roundNumber($json[$i].assets[1].size / 1000, 2));
+                                    $lastdownloads_total.push($json[$i].assets[0].download_count + $json[$i].assets[1].download_count);
+                                    $sum_compactdownloads += $json[$i].assets[0].download_count;
+                                    $sum_normaldownloads += $json[$i].assets[1].download_count;
+                                    $var_downloads_releases.push($json[$i].assets[1].download_count);
                                 } else {
-                                    downloads_link_compact.push(0);
-                                    downloads_link_normal.push(json[i].assets[0].download_count);
-                                    downloads_total.push(json[i].assets[0].download_count);
-                                    lastdownloads_normal_size.push(roundNumber(json[i].assets[0].size / 1000, 2));
-                                    lastdownloads_total.push(json[i].assets[0].download_count);
-                                    sum_compactdownloads += 0;
-                                    sum_normaldownloads += json[i].assets[0].download_count;
-                                    var_downloads_releases.push(json[i].assets[0].download_count);
+                                    $downloads_link_compact.push(0);
+                                    $downloads_link_normal.push($json[$i].assets[0].download_count);
+                                    $downloads_total.push($json[$i].assets[0].download_count);
+                                    $lastdownloads_normal_size.push(roundNumber($json[$i].assets[0].size / 1000, 2));
+                                    $lastdownloads_total.push($json[$i].assets[0].download_count);
+                                    $sum_compactdownloads += 0;
+                                    $sum_normaldownloads += $json[$i].assets[0].download_count;
+                                    $var_downloads_releases.push($json[$i].assets[0].download_count);
                                 }
-                                lastversion_releases.push(json[i].tag_name);
-                                lastday_released_str.push(json[i].published_at.substring(0, 10));
-                                lastday_released.push(parseDate(json[i].published_at.substring(0, 10)));
-                                version_releases.push(json[i].tag_name);
+                                $lastversion_releases.push($json[$i].tag_name);
+                                $lastday_released_str.push($json[$i].published_at.substring(0, 10));
+                                $lastday_released.push(parseDate($json[$i].published_at.substring(0, 10)));
+                                $version_releases.push($json[$i].tag_name);
                             } catch (err) {
                                 console.warn(err);
                             }
@@ -976,160 +986,160 @@ function loadTemplate(templateid) {
                      * Obtiene descargas anteriores
                      */
                     try {
-                        var prev_downloads = getDownloadCounter(st.name);
-                    } catch (e) {
-                        throwErrorID(errorID.retrievedownloadcounter, e);
+                        $prev_downloads = getDownloadCounter($st.name);
+                    } catch ($e) {
+                        throwErrorID(errorID.retrievedownloadcounter, $e);
                         return;
                     } finally {
                     }
-                    prev_downloads.reverse();
-                    for (i = 0; i < prev_downloads.length; i += 1) {
-                        let vindx = version_releases.indexOf(prev_downloads[i][1]);
-                        if (vindx === -1) {
-                            version_releases.unshift(prev_downloads[i][1]);
-                            downloads_total.unshift(prev_downloads[i][0]);
+                    $prev_downloads.reverse();
+                    for (let $i = 0; $i < $prev_downloads.length; $i += 1) {
+                        let $vindx = $version_releases.indexOf($prev_downloads[$i][1]);
+                        if ($vindx === -1) {
+                            $version_releases.unshift($prev_downloads[$i][1]);
+                            $downloads_total.unshift($prev_downloads[$i][0]);
                         } else {
-                            // downloads_total[vindx] += prev_downloads[i][0];
+                            // $downloads_total[$vindx] += $prev_downloads[i][0];
                         }
                     }
 
                     /**
                      * Se normaliza la variación de descargas
                      */
-                    for (i = 0; i < var_downloads_releases.length; i += 1) {
-                        if (lastdownloads_total[i] !== 0) {
-                            var_downloads_releases[i] = roundNumber(100 * var_downloads_releases[i] / lastdownloads_total[i], downloadVariationRoundNumber);
+                    for (let $i = 0; $i < $var_downloads_releases.length; $i += 1) {
+                        if ($lastdownloads_total[$i] !== 0) {
+                            $var_downloads_releases[$i] = roundNumber(100 * $var_downloads_releases[$i] / $lastdownloads_total[$i], downloadVariationRoundNumber);
                         } else {
-                            var_downloads_releases[i] = roundNumber(0, downloadVariationRoundNumber);
+                            $var_downloads_releases[$i] = roundNumber(0, downloadVariationRoundNumber);
                         }
                     }
 
                     /**
                      * Genera descargas por versión global
                      */
-                    j = -1;
-                    var lgv = '', gv;
-                    for (i = 0; i < version_releases.length; i += 1) {
-                        gv = version_releases[i].substring(0, 2);
-                        if (gv[1] === '.') {
-                            gv = gv[0];
-                        } else if (gv[0] === '<') {
-                            gv = gv[1];
+                    let $j = -1;
+                    let $lgv = '', $gv;
+                    for (let $i = 0; $i < $version_releases.length; $i += 1) {
+                        $gv = $version_releases[$i].substring(0, 2);
+                        if ($gv[1] === '.') {
+                            $gv = $gv[0];
+                        } else if ($gv[0] === '<') {
+                            $gv = $gv[1];
                         }
-                        if (lgv !== gv) {
-                            globver_releases.push(gv);
-                            globver_downloads.push(downloads_total[i]);
-                            j += 1;
+                        if ($lgv !== $gv) {
+                            $globver_releases.push($gv);
+                            $globver_downloads.push($downloads_total[$i]);
+                            $j += 1;
                         } else {
-                            globver_downloads[j] += downloads_total[i];
+                            $globver_downloads[$j] += $downloads_total[$i];
                         }
-                        lgv = gv;
+                        $lgv = $gv;
                     }
 
                     /**
                      * Genera descargas acumulado
                      */
-                    var acum_downloads = [downloads_total[0]];
-                    for (i = 1; i < downloads_total.length; i += 1) {
-                        acum_downloads.push(downloads_total[i] + acum_downloads[i - 1]);
+                    let $acum_downloads = [$downloads_total[0]];
+                    for (let $i = 1; $i < $downloads_total.length; $i += 1) {
+                        $acum_downloads.push($downloads_total[$i] + $acum_downloads[$i - 1]);
                     }
 
                     /**
                      * Calcula días de cada versión disponibles
                      */
-                    var lastday_total = [];
-                    for (i = 0; i < lastday_released.length - 1; i += 1) {
-                        lastday_total.push(Math.max(daydiff(lastday_released[i], lastday_released[i + 1]), 1));
+                    let $lastday_total = [];
+                    for (let $i = 0; $i < $lastday_released.length - 1; $i += 1) {
+                        $lastday_total.push(Math.max(daydiff($lastday_released[$i], $lastday_released[$i + 1]), 1));
                     }
-                    let last_ver_day_count = Math.max(daydiff(lastday_released[lastday_released.length - 1], new Date()), 1);
-                    lastday_total.push(last_ver_day_count);
+                    let $last_ver_day_count = Math.max(daydiff($lastday_released[$lastday_released.length - 1], new Date()), 1);
+                    $lastday_total.push($last_ver_day_count);
 
                     /**
                      * Descargas por día
                      */
-                    var downloads_compact_per_day = [];
-                    var downloads_normal_per_day = [];
-                    var downloads_per_day = [];
-                    for (i = 0; i < lastday_total.length; i += 1) {
-                        downloads_compact_per_day.push(roundNumber(downloads_link_compact[i] / lastday_total[i], 2));
-                        downloads_normal_per_day.push(roundNumber(downloads_link_normal[i] / lastday_total[i], 2));
-                        downloads_per_day.push(roundNumber(lastdownloads_total[i] / lastday_total[i], 2));
+                    let $downloads_compact_per_day = [];
+                    let $downloads_normal_per_day = [];
+                    let $downloads_per_day = [];
+                    for (let $i = 0; $i < $lastday_total.length; $i += 1) {
+                        $downloads_compact_per_day.push(roundNumber($downloads_link_compact[$i] / $lastday_total[$i], 2));
+                        $downloads_normal_per_day.push(roundNumber($downloads_link_normal[$i] / $lastday_total[$i], 2));
+                        $downloads_per_day.push(roundNumber($lastdownloads_total[$i] / $lastday_total[$i], 2));
                     }
 
                     /**
                      * Número de versión correcto en últimas n-versiones
                      */
-                    var last_n_version = Math.min(30, json.length);
+                    let $last_n_version = Math.min(30, $json.length);
 
                     /**
                      * Genera el gráfico de descargas
                      */
                     try {
-                        if (json.length >= 1) {
-                            if (st.subdepto) {
-                                var dpto_colors = []; // Colores de los departamentos (random)
-                                var nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
-                                var nonzero_dptos_downloads = [];
-                                var sumdptodownloads = 0; // Suma total de descargas de departamentos
-                                var lastverldptos = dptodownloads_normal[0].length - 1;
-                                var lastverdptosdownloads = [];
-                                var lastdpdownloads = 0; // Suma total descargas de departamentos última versión
-                                var nonzero_dptos_datasets = [];
-                                var max_downloads_dptos_perv = 0;
-                                var lastverdptos_dpt = [];
-                                var lastverdptos_colors = [];
-                                var lastverdptos_sum = 0;
-                                var dpto_color;
-                                var dpto_dataset_list;
-                                for (i = 0; i < dptos.length; i += 1) {
-                                    if (dptodownloads[i] > 0) {
-                                        nonzero_dptos.push(dptos[i].toUpperCase());
-                                        nonzero_dptos_downloads.push(dptodownloads[i]);
-                                        // sumdptodownloads += dptodownloads[i];
-                                        lastverdptos_sum = dptodownloads_normal[i][lastverldptos];
-                                        if (!isNaN(dptodownloads_single[i][lastverldptos])) {
-                                            lastverdptos_sum += dptodownloads_single[i][lastverldptos];
+                        if ($json.length >= 1) {
+                            if ($st.subdepto) {
+                                let $dpto_colors = []; // Colores de los departamentos (random)
+                                let $nonzero_dptos = []; // Lista de departamentos con más de 0 descargas
+                                let $nonzero_dptos_downloads = [];
+                                let $sumdptodownloads = 0; // Suma total de descargas de departamentos
+                                let $lastverldptos = $dptodownloads_normal[0].length - 1;
+                                let $lastverdptosdownloads = [];
+                                let $lastdpdownloads = 0; // Suma total descargas de departamentos última versión
+                                let $nonzero_dptos_datasets = [];
+                                let $max_downloads_dptos_perv = 0;
+                                let $lastverdptos_dpt = [];
+                                let $lastverdptos_colors = [];
+                                let $lastverdptos_sum = 0;
+                                let $dpto_color;
+                                let $dpto_dataset_list;
+                                for (let $i = 0; $i < $dptos.length; $i += 1) {
+                                    if ($dptodownloads[$i] > 0) {
+                                        $nonzero_dptos.push($dptos[$i].toUpperCase());
+                                        $nonzero_dptos_downloads.push($dptodownloads[$i]);
+                                        // $sumdptodownloads += $dptodownloads[$i];
+                                        $lastverdptos_sum = $dptodownloads_normal[$i][$lastverldptos];
+                                        if (!isNaN($dptodownloads_single[$i][$lastverldptos])) {
+                                            $lastverdptos_sum += $dptodownloads_single[$i][$lastverldptos];
                                         }
-                                        dpto_color = '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
-                                        dpto_colors.push(dpto_color);
-                                        if (lastverdptos_sum > 0) {
-                                            lastdpdownloads += lastverdptos_sum;
-                                            lastverdptosdownloads.push(lastverdptos_sum);
-                                            lastverdptos_dpt.push(dptos[i].toUpperCase());
-                                            lastverdptos_colors.push(dpto_color);
+                                        $dpto_color = '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+                                        $dpto_colors.push($dpto_color);
+                                        if ($lastverdptos_sum > 0) {
+                                            $lastdpdownloads += $lastverdptos_sum;
+                                            $lastverdptosdownloads.push($lastverdptos_sum);
+                                            $lastverdptos_dpt.push($dptos[$i].toUpperCase());
+                                            $lastverdptos_colors.push($dpto_color);
                                         }
-                                        dpto_dataset_list = []; // Dataset para el i-departamento elegido
+                                        $dpto_dataset_list = []; // Dataset para el $i-departamento elegido
 
                                         // Se obtienen las descargas del departamento para cada una de las versiones
-                                        for (let k = 0; k < dptototalvers; k += 1) {
-                                            let c = 0;
-                                            if (!isNaN(dptodownloads_single[i][k])) {
-                                                c = dptodownloads_single[i][k];
+                                        for (let $k = 0; $k < $dptototalvers; $k += 1) {
+                                            let $c = 0;
+                                            if (!isNaN($dptodownloads_single[$i][$k])) {
+                                                $c = $dptodownloads_single[$i][$k];
                                             }
-                                            let v = 0;
-                                            if (!isNaN(dptodownloads_normal[i][k])) {
-                                                v = dptodownloads_normal[i][k];
+                                            let $v = 0;
+                                            if (!isNaN($dptodownloads_normal[$i][$k])) {
+                                                $v = $dptodownloads_normal[$i][$k];
                                             }
-                                            let total = c + v;
-                                            dpto_dataset_list.push(total);
-                                            sumdptodownloads += total;
+                                            let $total = $c + $v;
+                                            $dpto_dataset_list.push($total);
+                                            $sumdptodownloads += $total;
                                         }
-                                        max_downloads_dptos_perv = Math.max(max_downloads_dptos_perv, getMaxOfArray(dpto_dataset_list));
-                                        var hiddendpto = dptosDisplayDefaultLinePlot.indexOf(dptos[i].toUpperCase()) === -1;
-                                        nonzero_dptos_datasets.push({
-                                            backgroundColor: dpto_color,
-                                            borderColor: dpto_color,
+                                        $max_downloads_dptos_perv = Math.max($max_downloads_dptos_perv, getMaxOfArray($dpto_dataset_list));
+                                        let $hiddendpto = dptosDisplayDefaultLinePlot.indexOf($dptos[$i].toUpperCase()) === -1;
+                                        $nonzero_dptos_datasets.push({
+                                            backgroundColor: $dpto_color,
+                                            borderColor: $dpto_color,
                                             borderWidth: plotLineWidth,
-                                            data: dpto_dataset_list,
+                                            data: $dpto_dataset_list,
                                             fill: false,
-                                            hidden: hiddendpto,
-                                            label: dptos[i].toUpperCase(),
+                                            hidden: $hiddendpto,
+                                            label: $dptos[$i].toUpperCase(),
                                             radius: 1,
                                             tension: 0.3
                                         });
                                     }
                                 }
-                                max_downloads_dptos_perv = roundNumber(max_downloads_dptos_perv * 1.2, 0); // Se actualiza el máximo a un valor superior
+                                $max_downloads_dptos_perv = roundNumber($max_downloads_dptos_perv * 1.2, 0); // Se actualiza el máximo a un valor superior
                                 /**
                                  * Descagas por departamento, se muestran sólo los definidos
                                  * en {@link dptosDisplayDefaultLinePlot}
@@ -1137,13 +1147,13 @@ function loadTemplate(templateid) {
                                 new Chart($('#plot-dptodownloadlines'), {
                                     type: 'line',
                                     data: {
-                                        labels: dptodownloads_versions,
-                                        datasets: nonzero_dptos_datasets
+                                        labels: $dptodownloads_versions,
+                                        datasets: $nonzero_dptos_datasets
                                     },
                                     options: {
                                         title: {
                                             display: true,
-                                            text: String.format('Descargas por departamento últimas {0} versiones', dptototalvers),
+                                            text: String.format('Descargas por departamento últimas {0} versiones', $dptototalvers),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -1160,7 +1170,7 @@ function loadTemplate(templateid) {
                                                             return value;
                                                         }
                                                     },
-                                                    max: max_downloads_dptos_perv
+                                                    max: $max_downloads_dptos_perv
                                                 }
                                             }],
                                             xAxes: [{
@@ -1179,9 +1189,9 @@ function loadTemplate(templateid) {
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
                                                 title: function (tooltipItem) {
-                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex !== -1) {
-                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                    let $elemindex = $lastversion_releases.indexOf(tooltipItem[0].xLabel);
+                                                    if ($elemindex !== -1) {
+                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, $lastday_released_str[$elemindex]);
                                                     } else {
                                                         return tooltipItem[0].xLabel;
                                                     }
@@ -1190,22 +1200,22 @@ function loadTemplate(templateid) {
                                         }
                                     }
                                 });
-                                if (lastdpdownloads > 0) {
+                                if ($lastdpdownloads > 0) {
                                     new Chart($('#plot-piedptolast'), {
                                         type: 'pie',
                                         data: {
-                                            labels: lastverdptos_dpt,
+                                            labels: $lastverdptos_dpt,
                                             datasets: [{
-                                                data: lastverdptosdownloads,
+                                                data: $lastverdptosdownloads,
                                                 label: 'N° descargas de cada versión',
-                                                borderColor: lastverdptos_colors,
-                                                backgroundColor: lastverdptos_colors
+                                                borderColor: $lastverdptos_colors,
+                                                backgroundColor: $lastverdptos_colors
                                             }]
                                         },
                                         options: {
                                             title: {
                                                 display: true,
-                                                text: String.format('Distribución descargas departamentos última versión v{1} ({0} descargas)', lastdpdownloads, dptodownloads_versions[lastverldptos]),
+                                                text: String.format('Distribución descargas departamentos última versión v{1} ({0} descargas)', $lastdpdownloads, $dptodownloads_versions[$lastverldptos]),
                                                 fontSize: plotTitleFontSize,
                                                 fontStyle: plotTitleFontStyle
                                             },
@@ -1219,17 +1229,17 @@ function loadTemplate(templateid) {
                                                 mode: 'index',
                                                 intersect: true,
                                                 callbacks: {
-                                                    label: function (tooltipItem, data) {
-                                                        var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                        var tooltipLabel = data.labels[tooltipItem.index];
-                                                        var tooltipData = allData[tooltipItem.index];
-                                                        var total = 0;
-                                                        for (var i in allData) {
+                                                    label: function ($tooltipItem, $data) {
+                                                        let $allData = $data.datasets[$tooltipItem.datasetIndex].data;
+                                                        let $tooltipLabel = $data.labels[$tooltipItem.index];
+                                                        let $tooltipData = $allData[$tooltipItem.index];
+                                                        let $total = 0;
+                                                        for (let $i in $allData) {
                                                             // noinspection JSUnfilteredForInLoop
-                                                            total += parseInt(allData[i]);
+                                                            $total += parseInt($allData[$i]);
                                                         }
-                                                        var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                        return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                                                        let $tooltipPercentage = Math.round(($tooltipData / $total) * 100);
+                                                        return $tooltipLabel + ': ' + $tooltipData + ' (' + $tooltipPercentage + '%)';
                                                     }
                                                 }
                                             }
@@ -1241,18 +1251,18 @@ function loadTemplate(templateid) {
                                 new Chart($('#plot-piedptototal'), {
                                     type: 'pie',
                                     data: {
-                                        labels: nonzero_dptos,
+                                        labels: $nonzero_dptos,
                                         datasets: [{
-                                            data: nonzero_dptos_downloads,
+                                            data: $nonzero_dptos_downloads,
                                             label: 'N° descargas de cada versión',
-                                            borderColor: dpto_colors,
-                                            backgroundColor: dpto_colors
+                                            borderColor: $dpto_colors,
+                                            backgroundColor: $dpto_colors
                                         }]
                                     },
                                     options: {
                                         title: {
                                             display: true,
-                                            text: String.format('Distribución descargas departamentos últimas {1} versiones ({0} descargas)', sumdptodownloads, dptototalvers),
+                                            text: String.format('Distribución descargas departamentos últimas {1} versiones ({0} descargas)', $sumdptodownloads, $dptototalvers),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -1266,30 +1276,30 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: true,
                                             callbacks: {
-                                                label: function (tooltipItem, data) {
-                                                    var allData = data.datasets[tooltipItem.datasetIndex].data;
-                                                    var tooltipLabel = data.labels[tooltipItem.index];
-                                                    var tooltipData = allData[tooltipItem.index];
-                                                    var total = 0;
-                                                    for (var i in allData) {
+                                                label: function ($tooltipItem, $data) {
+                                                    let $allData = $data.datasets[$tooltipItem.datasetIndex].data;
+                                                    let $tooltipLabel = $data.labels[$tooltipItem.index];
+                                                    let $tooltipData = $allData[$tooltipItem.index];
+                                                    let $total = 0;
+                                                    for (let $i in $allData) {
                                                         // noinspection JSUnfilteredForInLoop
-                                                        total += parseInt(allData[i]);
+                                                        $total += parseInt($allData[$i]);
                                                     }
-                                                    var tooltipPercentage = Math.round((tooltipData / total) * 100);
-                                                    return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
+                                                    let $tooltipPercentage = Math.round(($tooltipData / $total) * 100);
+                                                    return $tooltipLabel + ': ' + $tooltipData + ' (' + $tooltipPercentage + '%)';
                                                 }
                                             }
                                         }
                                     }
                                 });
                             }
-                            if (json.length > 1) {
+                            if ($json.length >= 1) {
                                 new Chart($('#plot-downloadsperday'), {
                                     type: 'line',
                                     data: {
-                                        labels: lastversion_releases,
+                                        labels: $lastversion_releases,
                                         datasets: [{
-                                            data: downloads_per_day,
+                                            data: $downloads_per_day,
                                             label: 'Total descargas por día',
                                             borderColor: '#2b2b2b',
                                             backgroundColor: '#2b2b2b',
@@ -1298,7 +1308,7 @@ function loadTemplate(templateid) {
                                             borderWidth: plotLineWidth
                                         },
                                             {
-                                                data: downloads_normal_per_day,
+                                                data: $downloads_normal_per_day,
                                                 label: 'Modo normal',
                                                 borderColor: '#606060',
                                                 backgroundColor: '#606060',
@@ -1307,7 +1317,7 @@ function loadTemplate(templateid) {
                                                 borderWidth: plotLineWidth
                                             },
                                             {
-                                                data: downloads_compact_per_day,
+                                                data: $downloads_compact_per_day,
                                                 label: 'Modo compacto',
                                                 borderColor: '#a4a4a4',
                                                 backgroundColor: '#a4a4a4',
@@ -1321,7 +1331,7 @@ function loadTemplate(templateid) {
                                     options: {
                                         title: {
                                             display: true,
-                                            text: String.format('Descargas por día últimas {0} versiones', last_n_version),
+                                            text: String.format('Descargas por día últimas {0} versiones', $last_n_version),
                                             fontSize: plotTitleFontSize,
                                             fontStyle: plotTitleFontStyle
                                         },
@@ -1348,12 +1358,12 @@ function loadTemplate(templateid) {
                                             mode: 'index',
                                             intersect: plotIntersectToShowLegend,
                                             callbacks: {
-                                                title: function (tooltipItem) {
-                                                    let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                    if (elemindex !== -1) {
-                                                        return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                title: function ($tooltipItem) {
+                                                    let $elemindex = $lastversion_releases.indexOf($tooltipItem[0].xLabel);
+                                                    if ($elemindex !== -1) {
+                                                        return String.format('Versión {0} ({1})', $tooltipItem[0].xLabel, $lastday_released_str[$elemindex]);
                                                     } else {
-                                                        return tooltipItem[0].xLabel;
+                                                        return $tooltipItem[0].xLabel;
                                                     }
                                                 }
                                             }
@@ -1363,9 +1373,9 @@ function loadTemplate(templateid) {
                                 new Chart($('#plot-acumdownloads'), {
                                     type: 'line',
                                     data: {
-                                        labels: version_releases,
+                                        labels: $version_releases,
                                         datasets: [{
-                                            data: acum_downloads,
+                                            data: $acum_downloads,
                                             label: 'N° de descargas acumuladas',
                                             borderColor: '#9f0000',
                                             backgroundColor: '#9f0000',
@@ -1416,9 +1426,9 @@ function loadTemplate(templateid) {
                                 new Chart($('#plot-totaldownloads'), {
                                     type: downloadTotalChartType,
                                     data: {
-                                        labels: version_releases,
+                                        labels: $version_releases,
                                         datasets: [{
-                                            data: downloads_total,
+                                            data: $downloads_total,
                                             label: 'Número de descargas de versión',
                                             borderColor: '#004f16',
                                             backgroundColor: '#004f16',
@@ -1443,7 +1453,7 @@ function loadTemplate(templateid) {
                                                 },
                                                 ticks: {
                                                     min: 0,
-                                                    max: roundNumber(jStat.max(downloads_total) * 0.12, 0) * 10
+                                                    max: roundNumber(jStat.max($downloads_total) * 0.12, 0) * 10
                                                 }
                                             }],
                                             xAxes: [{
@@ -1469,13 +1479,13 @@ function loadTemplate(templateid) {
                                         }
                                     }
                                 });
-                                if (globver_releases.length > 1) {
+                                if ($globver_releases.length > 1) {
                                     new Chart($('#plot-gloverdownloads'), {
                                         type: 'line',
                                         data: {
-                                            labels: globver_releases,
+                                            labels: $globver_releases,
                                             datasets: [{
-                                                data: globver_downloads,
+                                                data: $globver_downloads,
                                                 label: 'Descargas versión global',
                                                 borderColor: '#8f7c31',
                                                 backgroundColor: '#8f7c31',
@@ -1526,14 +1536,21 @@ function loadTemplate(templateid) {
                                     $('#plot-gloverdownloads').remove();
                                 }
                                 let $partDLchart = $('#plot-partdownloads');
+                                let $downloads_prevs_30 = '';
+                                for (let $i = 0; $i < $downloads_link_normal.length; $i++) {
+                                    $downloads_prevs_30 += String.format('[[{0}, {1}], \'{2}\'],\n',
+                                        $downloads_link_normal[$i], $downloads_link_compact[$i],
+                                        $lastversion_releases[$i]);
+                                }
+                                console.info($downloads_prevs_30);
                                 switch (downloadPartChartType) {
                                     case 'style1':
                                         new Chart($partDLchart, {
                                             type: 'bar',
                                             data: {
-                                                labels: lastversion_releases,
+                                                labels: $lastversion_releases,
                                                 datasets: [{
-                                                    data: lastday_total,
+                                                    data: $lastday_total,
                                                     label: 'Días activo',
                                                     borderColor: '#530071',
                                                     backgroundColor: '#530071',
@@ -1545,14 +1562,14 @@ function loadTemplate(templateid) {
                                                     type: 'line'
                                                 },
                                                     {
-                                                        data: downloads_link_normal,
+                                                        data: $downloads_link_normal,
                                                         label: 'Descargas normal',
                                                         borderColor: '#057375',
                                                         backgroundColor: '#057375',
                                                         yAxisID: 'y-axis-1'
                                                     },
                                                     {
-                                                        data: downloads_link_compact,
+                                                        data: $downloads_link_compact,
                                                         label: 'Descargas compacta',
                                                         borderColor: '#aab104',
                                                         backgroundColor: '#aab104',
@@ -1563,7 +1580,7 @@ function loadTemplate(templateid) {
                                             options: {
                                                 title: {
                                                     display: true,
-                                                    text: String.format('Descargas por versión y días activos últimas {0} versiones', last_n_version),
+                                                    text: String.format('Descargas por versión y días activos últimas {0} versiones', $last_n_version),
                                                     fontSize: plotTitleFontSize,
                                                     fontStyle: plotTitleFontStyle
                                                 },
@@ -1606,12 +1623,12 @@ function loadTemplate(templateid) {
                                                     mode: 'index',
                                                     intersect: plotIntersectToShowLegend,
                                                     callbacks: {
-                                                        title: function (tooltipItem) {
-                                                            let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                            if (elemindex !== -1) {
-                                                                return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                        title: function ($tooltipItem) {
+                                                            let $elemindex = $lastversion_releases.indexOf($tooltipItem[0].xLabel);
+                                                            if ($elemindex !== -1) {
+                                                                return String.format('Versión {0} ({1})', $tooltipItem[0].xLabel, $lastday_released_str[$elemindex]);
                                                             } else {
-                                                                return tooltipItem[0].xLabel;
+                                                                return $tooltipItem[0].xLabel;
                                                             }
                                                         }
                                                     }
@@ -1623,9 +1640,9 @@ function loadTemplate(templateid) {
                                         new Chart($partDLchart, {
                                             type: 'line',
                                             data: {
-                                                labels: lastversion_releases,
+                                                labels: $lastversion_releases,
                                                 datasets: [{
-                                                    data: downloads_link_normal,
+                                                    data: $downloads_link_normal,
                                                     label: 'Versión normal',
                                                     borderColor: '#057375',
                                                     backgroundColor: '#057375',
@@ -1637,7 +1654,7 @@ function loadTemplate(templateid) {
                                                     yAxisID: 'y-axis-1'
                                                 },
                                                     {
-                                                        data: downloads_link_compact,
+                                                        data: $downloads_link_compact,
                                                         label: 'Versión compacta',
                                                         borderColor: '#aab104',
                                                         backgroundColor: '#aab104',
@@ -1649,7 +1666,7 @@ function loadTemplate(templateid) {
                                                         yAxisID: 'y-axis-1'
                                                     },
                                                     {
-                                                        data: lastdownloads_total,
+                                                        data: $lastdownloads_total,
                                                         label: 'Suma',
                                                         borderColor: '#001471',
                                                         backgroundColor: '#001471',
@@ -1662,7 +1679,7 @@ function loadTemplate(templateid) {
                                                         yAxisID: 'y-axis-1'
                                                     },
                                                     {
-                                                        data: lastday_total,
+                                                        data: $lastday_total,
                                                         label: 'Días activo',
                                                         borderColor: '#530071',
                                                         backgroundColor: '#530071',
@@ -1719,12 +1736,12 @@ function loadTemplate(templateid) {
                                                     mode: 'index',
                                                     intersect: plotIntersectToShowLegend,
                                                     callbacks: {
-                                                        title: function (tooltipItem) {
-                                                            let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                            if (elemindex !== -1) {
-                                                                return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                                        title: function ($tooltipItem) {
+                                                            let $elemindex = $lastversion_releases.indexOf($tooltipItem[0].xLabel);
+                                                            if ($elemindex !== -1) {
+                                                                return String.format('Versión {0} ({1})', $tooltipItem[0].xLabel, $lastday_released_str[$elemindex]);
                                                             } else {
-                                                                return tooltipItem[0].xLabel;
+                                                                return $tooltipItem[0].xLabel;
                                                             }
                                                         }
                                                     }
@@ -1746,9 +1763,9 @@ function loadTemplate(templateid) {
                             new Chart($('#plot-sizeversion'), {
                                 type: 'line',
                                 data: {
-                                    labels: lastversion_releases,
+                                    labels: $lastversion_releases,
                                     datasets: [{
-                                        data: lastdownloads_normal_size,
+                                        data: $lastdownloads_normal_size,
                                         label: 'Versión normal',
                                         borderColor: '#ff8f2e',
                                         backgroundColor: '#ff8f2e',
@@ -1763,7 +1780,7 @@ function loadTemplate(templateid) {
                                 options: {
                                     title: {
                                         display: true,
-                                        text: String.format('Peso en KB de últimas {0} versiones', last_n_version),
+                                        text: String.format('Peso en KB de últimas {0} versiones', $last_n_version),
                                         fontSize: plotTitleFontSize,
                                         fontStyle: plotTitleFontStyle
                                     },
@@ -1790,18 +1807,18 @@ function loadTemplate(templateid) {
                                         mode: 'index',
                                         intersect: plotIntersectToShowLegend,
                                         callbacks: {
-                                            label: function (tooltipItem, data) {
-                                                var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                                                value = value.toString();
-                                                value = value.replace('.', ',');
-                                                return String.format('{0}: {1} KB', data.datasets[tooltipItem.datasetIndex].label, value);
+                                            label: function ($tooltipItem, $data) {
+                                                let $value = $data.datasets[$tooltipItem.datasetIndex].data[$tooltipItem.index];
+                                                $value = $value.toString();
+                                                $value = $value.replace('.', ',');
+                                                return String.format('{0}: {1} KB', $data.datasets[$tooltipItem.datasetIndex].label, $value);
                                             },
-                                            title: function (tooltipItem) {
-                                                let elemindex = lastversion_releases.indexOf(tooltipItem[0].xLabel);
-                                                if (elemindex !== -1) {
-                                                    return String.format('Versión {0} ({1})', tooltipItem[0].xLabel, lastday_released_str[elemindex]);
+                                            title: function ($tooltipItem) {
+                                                let $elemindex = $lastversion_releases.indexOf($tooltipItem[0].xLabel);
+                                                if ($elemindex !== -1) {
+                                                    return String.format('Versión {0} ({1})', $tooltipItem[0].xLabel, $lastday_released_str[$elemindex]);
                                                 } else {
-                                                    return tooltipItem[0].xLabel;
+                                                    return $tooltipItem[0].xLabel;
                                                 }
                                             }
                                         }
@@ -1812,19 +1829,19 @@ function loadTemplate(templateid) {
                             if (showPieDownloadChart) {
                                 let $pieDL = $('#plot-piedownloads');
                                 $pieDL.css('display', 'block');
-                                let total_downloads_colors_pie = [];
-                                for (let i = 0; i < downloads_total.length; i += 1) {
-                                    total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
+                                let $total_downloads_colors_pie = [];
+                                for (let $i = 0; $i < $downloads_total.length; $i += 1) {
+                                    $total_downloads_colors_pie.push('#' + (Math.random().toString(16) + '0000000').slice(2, 8));
                                 }
                                 new Chart($pieDL, {
                                     type: 'pie',
                                     data: {
-                                        labels: version_releases,
+                                        labels: $version_releases,
                                         datasets: [{
                                             label: 'Descargas por versión',
-                                            backgroundColor: total_downloads_colors_pie,
-                                            borderColor: total_downloads_colors_pie,
-                                            data: downloads_total
+                                            backgroundColor: $total_downloads_colors_pie,
+                                            borderColor: $total_downloads_colors_pie,
+                                            data: $downloads_total
                                         }]
                                     },
                                     options: {
@@ -1849,8 +1866,8 @@ function loadTemplate(templateid) {
                             $('#plot-sizeversion').remove();
                             $('#plot-totaldownloads').remove();
                         }
-                    } catch (e) {
-                        throwErrorID(errorID.downloadgraph, e);
+                    } catch ($e) {
+                        throwErrorID(errorID.downloadgraph, $e);
                         return;
                     } finally {
                     }
@@ -1869,20 +1886,20 @@ function loadTemplate(templateid) {
                         console.log('Carga exitosa');
                     }, timeShowContentOnLoad);
 
-                } catch (e) {
-                    throwErrorID(errorID.getdownloads, e);
+                } catch ($e) {
+                    throwErrorID(errorID.getdownloads, $e);
                 } finally {
                 }
             });
-            jsonQuery2.fail(function () {
+            $jsonQuery2.fail(function () {
                 throwErrorID(errorID.erroraccessjsonreleases, '');
             });
-        } catch (e) {
-            throwErrorID(errorID.criticaltemplateloading, e);
+        } catch ($e) {
+            throwErrorID(errorID.criticaltemplateloading, $e);
         } finally {
         }
     });
-    jsonQuery1.fail(function () {
+    $jsonQuery1.fail(function () {
         throwErrorID(errorID.erroraccessfile, '');
     });
 }
@@ -1905,13 +1922,13 @@ function writeGraphCanvases() {
 /**
  * Obtiene la lista de descargas y versiones de un ID.
  *
- * @param {string} templateid - ID del template
+ * @param {string} $templateid - ID del template
  */
-function getDownloadCounter(templateid) {
-    updateDownloadCounter(0, templateid);
-    for (let i = 0; i < download_list_counter.length; i += 1) {
-        if (Array.isArray(download_list_counter[i][0])) {
-            download_list_counter[i][0] = download_list_counter[i][0][0] + download_list_counter[i][0][1];
+function getDownloadCounter($templateid) {
+    updateDownloadCounter(0, $templateid);
+    for (let $i = 0; $i < download_list_counter.length; $i += 1) {
+        if (Array.isArray(download_list_counter[$i][0])) {
+            download_list_counter[$i][0] = download_list_counter[$i][0][0] + download_list_counter[$i][0][1];
         }
     }
     return download_list_counter;
