@@ -31,7 +31,7 @@ let stat = {
         "header": "Template Articulo",
         "index": 4,
         "json": "https://api.github.com/repos/Template-Latex/Template-Articulo/releases",
-        "link": "",
+        "link": "https://latex.ppizarror.com/articulo",
         "name": "Template-Articulo",
         "subdepto": false,
         "tag": "Articulo"
@@ -42,7 +42,7 @@ let stat = {
         "header": "Template Auxiliares",
         "index": 1,
         "json": "https://api.github.com/repos/Template-Latex/Template-Auxiliares/releases",
-        "link": "https://latex.ppizarror.com/auxiliares.html",
+        "link": "https://latex.ppizarror.com/auxiliares",
         "name": "Template-Auxiliares",
         "subdepto": false,
         "tag": "Auxiliares"
@@ -53,7 +53,7 @@ let stat = {
         "header": "Template Controles",
         "index": 2,
         "json": "https://api.github.com/repos/Template-Latex/Template-Controles/releases",
-        "link": "https://latex.ppizarror.com/controles.html",
+        "link": "https://latex.ppizarror.com/controles",
         "name": "Template-Controles",
         "subdepto": false,
         "tag": "Controles"
@@ -64,7 +64,7 @@ let stat = {
         "header": "Template Informe",
         "index": 0,
         "json": "https://api.github.com/repos/Template-Latex/Template-Informe/releases",
-        "link": "https://latex.ppizarror.com/informe.html",
+        "link": "https://latex.ppizarror.com/informe",
         "name": "Template-Informe",
         "subdepto": true,
         "tag": "Informe"
@@ -75,7 +75,7 @@ let stat = {
         "header": "Template Poster",
         "index": 4,
         "json": "https://api.github.com/repos/Template-Latex/Template-Poster/releases",
-        "link": "",
+        "link": "https://latex.ppizarror.com/poster",
         "name": "Template-Poster",
         "subdepto": false,
         "tag": "Poster"
@@ -97,7 +97,7 @@ let stat = {
         "header": "Professional CV",
         "index": 7,
         "json": "https://api.github.com/repos/Template-Latex/Professional-CV/releases",
-        "link": "https://latex.ppizarror.com/professional-cv.html",
+        "link": "https://latex.ppizarror.com/professional-cv",
         "name": "Professional-CV",
         "subdepto": false,
         "tag": "Professional-CV"
@@ -108,7 +108,7 @@ let stat = {
         "header": "Template Reporte",
         "index": 7,
         "json": "https://api.github.com/repos/Template-Latex/Template-Reporte/releases",
-        "link": "https://latex.ppizarror.com/reporte.html",
+        "link": "https://latex.ppizarror.com/reporte",
         "name": "Template-Reporte",
         "subdepto": true,
         "tag": "Reporte"
@@ -119,7 +119,7 @@ let stat = {
         "header": "Template Tesis",
         "index": 3,
         "json": "https://api.github.com/repos/Template-Latex/Template-Tesis/releases",
-        "link": "",
+        "link": "https://latex.ppizarror.com/tesis",
         "name": "Template-Tesis",
         "subdepto": true,
         "tag": "Tesis"
