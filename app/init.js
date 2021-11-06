@@ -58,11 +58,11 @@ $(function () {
      */
     try {
         let $mainsection = $('#mainSelector');
-        for (let i = 0; i < Object.keys(stat).length; i += 1) {
-            if (stat[Object.keys(stat)[i]].available) {
+        for (let $i = 0; $i < Object.keys(stat).length; $i += 1) {
+            if (stat[Object.keys(stat)[$i]].available) {
                 $mainsection.append($('<option>', {
-                    value: Object.keys(stat)[i],
-                    text: stat[Object.keys(stat)[i]].name
+                    value: Object.keys(stat)[$i],
+                    text: stat[Object.keys(stat)[$i]].name
                 }));
             }
         }
@@ -76,8 +76,8 @@ $(function () {
         // noinspection JSCheckFunctionSignatures
         $($mainsection).find('option[value=\'none\']').attr('disabled', 'disabled');
 
-    } catch (e) {
-        throwErrorID(errorID.errorretrievetemplatelist, e);
+    } catch ($e) {
+        throwErrorID(errorID.errorretrievetemplatelist, $e);
         return;
     } finally {
     }
@@ -86,20 +86,20 @@ $(function () {
      * Obtiene el template desde $GET
      */
     initTemplate = $.urlParam('template');
-    let found;
+    let $found;
     if (initTemplate != null) {
-        found = false;
-        for (let i = 0; i < Object.keys(stat).length; i += 1) {
-            if (stat[Object.keys(stat)[i]].tag === initTemplate && stat[Object.keys(stat)[i]].available) {
-                $('#mainSelector').val(Object.keys(stat)[i]);
+        $found = false;
+        for (let $i = 0; $i < Object.keys(stat).length; $i += 1) {
+            if (stat[Object.keys(stat)[$i]].tag === initTemplate && stat[Object.keys(stat)[$i]].available) {
+                $('#mainSelector').val(Object.keys(stat)[$i]);
                 setTimeout(function () {
-                    loadTemplate(Object.keys(stat)[i]);
+                    loadTemplate(Object.keys(stat)[$i]);
                 }, timeProcessOnGETurl);
-                found = true;
+                $found = true;
                 break;
             }
         }
-        if (!found) {
+        if (!$found) {
             throwErrorID(errorID.badtemplateid, '');
             return;
         }
@@ -108,26 +108,26 @@ $(function () {
     /**
      * Se fija tabla al hacer scroll
      */
-    let lockScrollUpClass = false;
-    let lockScrollDownClass = false;
+    let $lockScrollUpClass = false;
+    let $lockScrollDownClass = false;
     // noinspection JSDeprecatedSymbols
     $(window).scroll(function () {
         let $tabledata = $('#tableData');
 
         // noinspection JSValidateTypes
         if ($(window).scrollTop() > pxScrollDownToFixTable) {
-            lockScrollDownClass = false;
-            if (!lockScrollUpClass && $(window).height() >= $tabledata.height()) {
+            $lockScrollDownClass = false;
+            if (!$lockScrollUpClass && $(window).height() >= $tabledata.height()) {
                 $tabledata.removeClass('nonFixedTableData');
                 $tabledata.addClass('fixedTableData');
-                lockScrollUpClass = true;
+                $lockScrollUpClass = true;
             }
         } else {
-            lockScrollUpClass = false;
-            if (!lockScrollDownClass) {
+            $lockScrollUpClass = false;
+            if (!$lockScrollDownClass) {
                 $tabledata.addClass('nonFixedTableData');
                 $tabledata.removeClass('fixedTableData');
-                lockScrollDownClass = true;
+                $lockScrollDownClass = true;
             }
         }
     });
@@ -135,8 +135,8 @@ $(function () {
     $(window).resize(function () {
         let $tabledata = $('#tableData');
 
-        lockScrollDownClass = false;
-        lockScrollUpClass = false;
+        $lockScrollDownClass = false;
+        $lockScrollUpClass = false;
         if ($(window).height() < $tabledata.height()) {
             $tabledata.addClass('nonFixedTableData');
             $tabledata.removeClass('fixedTableData');
@@ -146,20 +146,6 @@ $(function () {
                 $tabledata.removeClass('nonFixedTableData');
                 $tabledata.addClass('fixedTableData');
             }
-        }
-    });
-
-    // noinspection JSDeprecatedSymbols
-    /**
-     * Muestra botón scrollToTop
-     */
-    $(window).scroll(function () {
-        location.pathname.replace(/^\//, '');
-        // noinspection JSValidateTypes
-        if ($(window).scrollTop() > pxScrollToShowButton) {
-            $('a.back-to-top').fadeIn('slow');
-        } else {
-            $('a.back-to-top').fadeOut('slow');
         }
     });
 });
