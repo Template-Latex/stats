@@ -1306,27 +1306,7 @@ function loadTemplate($templateid) {
                                             fill: false,
                                             radius: 1,
                                             borderWidth: plotLineWidth
-                                        },
-                                            {
-                                                data: $downloads_normal_per_day,
-                                                label: 'Modo normal',
-                                                borderColor: '#606060',
-                                                backgroundColor: '#606060',
-                                                fill: false,
-                                                radius: 1,
-                                                borderWidth: plotLineWidth
-                                            },
-                                            {
-                                                data: $downloads_compact_per_day,
-                                                label: 'Modo compacto',
-                                                borderColor: '#a4a4a4',
-                                                backgroundColor: '#a4a4a4',
-                                                fill: false,
-                                                hidden: true,
-                                                radius: 1,
-                                                borderWidth: plotLineWidth
-                                            }
-                                        ]
+                                        }]
                                     },
                                     options: {
                                         title: {
@@ -1538,7 +1518,7 @@ function loadTemplate($templateid) {
                                 let $partDLchart = $('#plot-partdownloads');
                                 let $downloads_prevs_30 = '';
                                 for (let $i = 0; $i < $downloads_link_normal.length; $i++) {
-                                    $downloads_prevs_30 += String.format('[[{0}, {1}], \'{2}\'],\n',
+                                    $downloads_prevs_30 += String.format('[{0}, \'{2}\'],\n',
                                         $downloads_link_normal[$i], $downloads_link_compact[$i],
                                         $lastversion_releases[$i]);
                                 }
@@ -1563,16 +1543,9 @@ function loadTemplate($templateid) {
                                                 },
                                                     {
                                                         data: $downloads_link_normal,
-                                                        label: 'Descargas normal',
+                                                        label: 'Descargas',
                                                         borderColor: '#057375',
                                                         backgroundColor: '#057375',
-                                                        yAxisID: 'y-axis-1'
-                                                    },
-                                                    {
-                                                        data: $downloads_link_compact,
-                                                        label: 'Descargas compacta',
-                                                        borderColor: '#aab104',
-                                                        backgroundColor: '#aab104',
                                                         yAxisID: 'y-axis-1'
                                                     }
                                                 ]
@@ -1653,18 +1626,6 @@ function loadTemplate($templateid) {
                                                     tension: 0,
                                                     yAxisID: 'y-axis-1'
                                                 },
-                                                    {
-                                                        data: $downloads_link_compact,
-                                                        label: 'Versión compacta',
-                                                        borderColor: '#aab104',
-                                                        backgroundColor: '#aab104',
-                                                        fill: false,
-                                                        borderWidth: plotLineWidth,
-                                                        radius: 2,
-                                                        pointStyle: 'rect',
-                                                        tension: 0,
-                                                        yAxisID: 'y-axis-1'
-                                                    },
                                                     {
                                                         data: $lastdownloads_total,
                                                         label: 'Suma',
