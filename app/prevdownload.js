@@ -26,37 +26,6 @@
 
 var download_list_counter;
 
-/*
-Para actualizar, buscar template en https://hanadigital.github.io/grev/?user=Template-Latex&repo=Template-Informe
-y copiar el siguiente código:
-
-var jq = document.createElement('script');
-jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js";
-document.getElementsByTagName('head')[0].appendChild(jq);
-if (!String.format) {
-    String.format = function ($format) {
-        let $args = Array.prototype.slice.call(arguments, 1);
-        return $format.replace(/{(\d+)}/g, function ($match, $number) {
-            return typeof $args[$number] !== 'undefined' ?
-                $args[$number] :
-                $match;
-        });
-    };
-}
-setTimeout(function(){
-    let $str = '';
-    $($('.col.rightCol.statsShown .assets .asset').get().reverse()).each(function f(data){
-       let $item = $(this);
-       let $tag = $item.find('p');
-       let $version = $tag[0].innerHTML;
-       $version = $version.split(' v')[1];
-       let $count = $tag[1].innerHTML;
-       $str += String.format("[{0}, '{1}'],\n", $count, $version);
-    });
-    console.log($str);
-}, 300);
- */
-
 /**
  * Actualizador de descargas.
  *
