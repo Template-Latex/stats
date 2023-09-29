@@ -31,7 +31,7 @@ Para actualizar, buscar template en https://hanadigital.github.io/grev/?user=Tem
 y copiar el siguiente código:
 
 let jq = document.createElement('script');
-jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js";
+jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js";
 document.getElementsByTagName('head')[0].appendChild(jq);
 if (!String.format) {
     String.format = function ($format) {
