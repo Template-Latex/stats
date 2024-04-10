@@ -39,7 +39,6 @@ let processBarLColor = '#93bad5'; // Color del círculo de progreso + claro
 let processBarSetOpacity = 0.5; // Opacidad en la que se fija la barra de progreso de carga
 let processBarStrokeWidth = 10; // Ancho del círculo de progreso
 let pxScrollDownToFixTable = 90; // Cuántos píxeles scrollear para fixear tabla
-let pxScrollToShowButton = 600; // Cuantos píxeles scrollear para mostrar botón subir
 let showPieDownloadChart = false; // Muestra gráfico pie chart de descargas
 let tableDataNameCols = ['ID', 'VERSIÓN', 'TCMP', 'FECHA', 'LINEAS', 'HASH']; // Nombre columna tabla
 let tableHighReg = 50; // Registros altos a mostrar en tabla
