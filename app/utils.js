@@ -383,7 +383,7 @@ function loadTemplate($templateid) {
                 }
                 $('#mainTable').DataTable({
                     'language': {
-                        'url': 'https://latex.ppizarror.com/stats/res/tableSpanish.json'
+                        'url': 'https://template-latex.github.io/stats/res/tableSpanish.json'
                     },
                     'order': [
                         [0, 'desc']

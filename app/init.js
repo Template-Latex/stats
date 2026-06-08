@@ -29,7 +29,7 @@
  */
 let hasLoaded = false; // Indica si se ha cargado ya un template
 let initTemplate = ''; // Template pasado por get en url
-let mainUrl = 'https://latex.ppizarror.com/stats/'; // Url principal de los datos
+let mainUrl = 'https://template-latex.github.io/stats/'; // Url principal de los datos
 
 /**
  * Inicio de la aplicación
